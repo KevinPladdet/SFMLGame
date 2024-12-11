@@ -2,7 +2,7 @@ workspace "SFMLgame"
     configurations { "Debug", "Release", "Dist" }
     architecture "x64"
 
-project "MouseGame"
+project "SFMLgame"
     kind "ConsoleApp"
     language "C++"
     OutputDir = "%{cfg.system}-%{cfg.architecture}/%{cfg.buildcfg}"
