@@ -1,0 +1,8 @@
+.vs/
+build/
+
+*.vcxproj
+*.vcxproj.user
+*.vcxproj.filters
+*.sln
+UpgradeLog.htm
