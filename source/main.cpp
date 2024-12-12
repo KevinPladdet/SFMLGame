@@ -40,31 +40,34 @@ int main()
                 window.close();
         }
 
-        window.clear(sf::Color(255, 255, 255));
-        window.draw(sprite);
-        window.display();
-
-
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) 
         {
-            changeY -= 2;
+            changeY -= 1;
+            sprite.setPosition(changeX, changeY);
             std::cout << "changeY = " << changeY << "\n";
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         {
-            changeY += 2;
+            changeY += 1;
+            sprite.setPosition(changeX, changeY);
             std::cout << "changeY = " << changeY << "\n";
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         {
-            changeX -= 2;
+            changeX -= 1;
+            sprite.setPosition(changeX, changeY);
             std::cout << "changeX = " << changeX << "\n";
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         {
-            changeX += 2;
+            changeX += 1;
+            sprite.setPosition(changeX, changeY);
             std::cout << "changeX = " << changeX << "\n";
         }
+
+        window.clear(sf::Color(255, 255, 255));
+        window.draw(sprite);
+        window.display();
     }
     return 0;
 }
