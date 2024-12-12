@@ -1,6 +1,7 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include "Time.h"
 
 int main()
 {
@@ -31,6 +32,7 @@ int main()
     // run the program as long as the window is open
     while (window.isOpen())
     {
+        Engine::Time::UpdateTime();
         // check all the window's events that were triggered since the last iteration of the loop
         sf::Event event;
         while (window.pollEvent(event))
@@ -42,27 +44,31 @@ int main()
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) 
         {
-            changeY -= 1;
+            changeY -= 1 * Engine::Time::deltaTime;
             sprite.setPosition(changeX, changeY);
             std::cout << "changeY = " << changeY << "\n";
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         {
-            changeY += 1;
+            changeY += 1 * Engine::Time::deltaTime;
             sprite.setPosition(changeX, changeY);
             std::cout << "changeY = " << changeY << "\n";
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         {
-            changeX -= 1;
+            changeX -= 1 * Engine::Time::deltaTime;
             sprite.setPosition(changeX, changeY);
             std::cout << "changeX = " << changeX << "\n";
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         {
-            changeX += 1;
+            changeX += 1 * Engine::Time::deltaTime;
             sprite.setPosition(changeX, changeY);
             std::cout << "changeX = " << changeX << "\n";
+        }
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        {
+            sprite.setPosition(0, 0);
         }
 
         window.clear(sf::Color(255, 255, 255));
