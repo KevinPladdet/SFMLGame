@@ -9,9 +9,11 @@ int main()
     sf::Texture texture;
     sf::Sprite sprite;
 
-    // Ints for moving the sprite
-    int changeX = 0;
-    int changeY = 0;
+    // float for moving the sprite
+    float posX = 0;
+    float posY = 0;
+    float speed = 200;
+
     std::string movementDirection;
     
     std::string path = "Assets/Jinx.jpg";
@@ -44,27 +46,27 @@ int main()
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) 
         {
-            changeY -= 1 * Engine::Time::deltaTime;
-            sprite.setPosition(changeX, changeY);
-            std::cout << "changeY = " << changeY << "\n";
+            posY -= 1 * speed * Engine::Time::deltaTime;
+            sprite.setPosition(posX, posY);
+            std::cout << "posY = " << posY << "\n";
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         {
-            changeY += 1 * Engine::Time::deltaTime;
-            sprite.setPosition(changeX, changeY);
-            std::cout << "changeY = " << changeY << "\n";
+            posY += 1 * speed * Engine::Time::deltaTime;
+            sprite.setPosition(posX, posY);
+            std::cout << "posY = " << posY << "\n";
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         {
-            changeX -= 1 * Engine::Time::deltaTime;
-            sprite.setPosition(changeX, changeY);
-            std::cout << "changeX = " << changeX << "\n";
+            posX -= 1 * speed * Engine::Time::deltaTime;
+            sprite.setPosition(posX, posY);
+            std::cout << "posX = " << posX << "\n";
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         {
-            changeX += 1 * Engine::Time::deltaTime;
-            sprite.setPosition(changeX, changeY);
-            std::cout << "changeX = " << changeX << "\n";
+            posX += 1 * speed * Engine::Time::deltaTime;
+            sprite.setPosition(posX, posY);
+            std::cout << "posX = " << posX << "\n";
         }
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {
