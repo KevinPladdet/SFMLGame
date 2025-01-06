@@ -1,9 +1,9 @@
 #include "Time.h"
 
-float Engine::Time::deltaTime = 0;
-sf::Clock Engine::Time::clock;
+float Time::deltaTime = 0;
+sf::Clock Time::clock;
 
-void Engine::Time::UpdateTime()
+void Time::UpdateTime()
 {
 	deltaTime = clock.restart().asSeconds();
 }
