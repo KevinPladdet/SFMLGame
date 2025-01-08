@@ -16,6 +16,7 @@ Square::Square(Engine& eng)
 	squareVisual.setSize(sf::Vector2f(100, 100));
 	squareVisual.setFillColor(sf::Color(rand() % 256, rand() % 256, rand() % 256));
 	squareVisual.setFillColor(sf::Color(rand() % 256, rand() % 256, rand() % 256));
+	LoadSprite("Assets/DvdLogo.png");
 }
 
 // Update function
@@ -42,20 +43,12 @@ void Square::Update()
 
 void Square::LoadSprite(std::string path)
 {
-	sf::Texture texture;
-
-	if (texture.loadFromFile(path))
-	{
-		std::cout << "Succesfully loaded " << path << "\n";
-	}
-
+	// Load DvdLogo Sprite
+	texture.loadFromFile(path);
 	sprite.setTexture(texture);
 
-	//sprite.setTexture(txr);
-
-	// Resize sprite to pixelSize
-	/*int size = texture.getSize().x;
+	int size = texture.getSize().x;
 	int pixelSize = 400;
 	float scale = (float)pixelSize / (float)size;
-	sprite.setScale(scale, scale);*/
+	sprite.setScale(scale, scale);
 }

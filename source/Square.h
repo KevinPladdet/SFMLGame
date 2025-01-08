@@ -16,5 +16,6 @@ private:
 
 	Engine& engine;
 
+	sf::Texture texture;
 	sf::Sprite sprite;
 };
