@@ -1,16 +1,24 @@
 #include "Engine.h"
+#include "Square.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
 Engine::Engine()
+	: square(*this)
 {
-	
+	Start();
 }
 
 void Engine::Start()
 {
 	window.create(sf::VideoMode(screenSizeX, screenSizeY), "Insane game");
 	window.setFramerateLimit(framerateLimit);
+	
+	//create a square object	
+	//Engine& eng = *this;
+	//Square square(eng);
+
+	LoopEngine();
 }
 
 void Engine::LoopEngine()
@@ -30,6 +38,9 @@ void Engine::LoopEngine()
 				window.close();
 			}
 		}
+		
+		// Square Loop
+		square.Update();
 
 		// Render
 		window.clear();
