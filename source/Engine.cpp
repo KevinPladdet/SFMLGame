@@ -6,17 +6,6 @@
 Engine::Engine()
 	: square(*this)
 {
-	
-	// Load DvdLogo Sprite
-	/*texture.loadFromFile("Assets/DvdLogo.png");
-	sprite.setTexture(texture);
-
-	int size = texture.getSize().x;
-	int pixelSize = 400;
-	float scale = (float)pixelSize / (float)size;
-	sprite.setScale(scale, scale);*/
-
-	/*LoadSprite("Assets/DvdLogo.png");*/
 	Start();
 }
 
@@ -39,7 +28,6 @@ void Engine::LoopEngine()
 			{
 				window.close();
 			}
-			// Close window with escape key
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 			{
 				window.close();
@@ -49,21 +37,6 @@ void Engine::LoopEngine()
 		// Render
 		window.clear();
 		square.Update();
-
-		//window.draw(sprite);
-
 		window.display();
 	}
 }
-
-//void Engine::LoadSprite(std::string path)
-//{
-//	// Load DvdLogo Sprite
-//	texture.loadFromFile(path);
-//	sprite.setTexture(texture);
-//
-//	int size = texture.getSize().x;
-//	int pixelSize = 400;
-//	float scale = (float)pixelSize / (float)size;
-//	sprite.setScale(scale, scale);
-//}
