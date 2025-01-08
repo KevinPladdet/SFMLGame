@@ -12,31 +12,28 @@ Square::Square(Engine& eng)
 	engine(eng)
 {
 	std::cout << "Create squareVisual" << "\n";
-	sf::RectangleShape squareVisual;
 	squareVisual.setPosition(squarePos);
 	squareVisual.setSize(sf::Vector2f(100, 100));
-	std::cout << "Set color" << "\n";
-	squareVisual.setFillColor(sf::Color(255, 0, 0));
-	std::cout << "Update" << "\n";
+	squareVisual.setFillColor(sf::Color(rand()% 256, rand() % 256, rand() % 256));
 	Update();
 }
 
 // Update function
 void Square::Update()
 {
-	//// Physics
-	//if (squarePos.x < 0 || squarePos.x > engine.screenSizeX - square.getSize().x)
-	//{
-	//	velocityX *= -1;
-	//}
-	//if (squarePos.y < 0 || squarePos.y > engine.screenSizeY - square.getSize().y)
-	//{
-	//	velocityY *= -1;
-	//}
+	// Physics
+	if (squarePos.x < 0 || squarePos.x > engine.screenSizeX - squareVisual.getSize().x)
+	{
+		velocityX *= -1;
+	}
+	if (squarePos.y < 0 || squarePos.y > engine.screenSizeY - squareVisual.getSize().y)
+	{
+		velocityY *= -1;
+	}
 
-	/*squarePos.x += velocityX;
+	squarePos.x += velocityX;
 	squarePos.y += velocityY;
-	square.setPosition(squarePos);*/
+	squareVisual.setPosition(squarePos);
 
-	engine.window.draw(square);
+	engine.window.draw(squareVisual);
 }

@@ -8,7 +8,7 @@ public:
 	Square(Engine& engine);
 	void Update();
 private:
-	sf::RectangleShape square;
+	sf::RectangleShape squareVisual;
 	sf::Vector2f squarePos;
 	float velocityX;
 	float velocityY;

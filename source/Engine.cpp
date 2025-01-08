@@ -38,12 +38,10 @@ void Engine::LoopEngine()
 				window.close();
 			}
 		}
-		
-		// Square Loop
-		square.Update();
 
 		// Render
 		window.clear();
+		square.Update();
 		window.display();
 	}
 }
