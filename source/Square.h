@@ -7,6 +7,7 @@ class Square
 public:
 	Square(Engine& engine);
 	void Update();
+	void LoadSprite(std::string path);
 private:
 	sf::RectangleShape squareVisual;
 	sf::Vector2f squarePos;
@@ -14,4 +15,6 @@ private:
 	float velocityY;
 
 	Engine& engine;
+
+	sf::Sprite sprite;
 };

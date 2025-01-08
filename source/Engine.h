@@ -22,4 +22,6 @@ private:
 
 	Engine& eng = *this;
 	Square square;
+	sf::Sprite sprite;
+
 };

@@ -14,8 +14,8 @@ Square::Square(Engine& eng)
 	std::cout << "Create squareVisual" << "\n";
 	squareVisual.setPosition(squarePos);
 	squareVisual.setSize(sf::Vector2f(100, 100));
-	squareVisual.setFillColor(sf::Color(rand()% 256, rand() % 256, rand() % 256));
-	Update();
+	squareVisual.setFillColor(sf::Color(rand() % 256, rand() % 256, rand() % 256));
+	squareVisual.setFillColor(sf::Color(rand() % 256, rand() % 256, rand() % 256));
 }
 
 // Update function
@@ -34,6 +34,28 @@ void Square::Update()
 	squarePos.x += velocityX;
 	squarePos.y += velocityY;
 	squareVisual.setPosition(squarePos);
+	squareVisual.setPosition(squarePos);
 
 	engine.window.draw(squareVisual);
+	engine.window.draw(sprite);
+}
+
+void Square::LoadSprite(std::string path)
+{
+	sf::Texture texture;
+
+	if (texture.loadFromFile(path))
+	{
+		std::cout << "Succesfully loaded " << path << "\n";
+	}
+
+	sprite.setTexture(texture);
+
+	//sprite.setTexture(txr);
+
+	// Resize sprite to pixelSize
+	/*int size = texture.getSize().x;
+	int pixelSize = 400;
+	float scale = (float)pixelSize / (float)size;
+	sprite.setScale(scale, scale);*/
 }

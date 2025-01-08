@@ -34,12 +34,6 @@ int main()
     float scale = (float)pixelSize / (float)size;
     sprite.setScale(scale, scale);
 
-    // Rectangle shape
-    sf::RectangleShape wall;
-    wall.setSize(sf::Vector2f(200, 400));
-    wall.setFillColor(sf::Color(255, 0, 0));
-    wall.setPosition(600, 200);
-
     // run the program as long as the window is open
     while (window.isOpen())
     {
@@ -93,7 +87,6 @@ int main()
         window.clear(sf::Color(255, 255, 255));
         
         window.draw(sprite);
-        window.draw(wall);
 
         window.display();
     }

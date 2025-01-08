@@ -6,6 +6,12 @@
 Engine::Engine()
 	: square(*this)
 {
+	// Load DvdLogo Sprite
+	/*sf::Texture txr;
+	txr.loadFromFile("Assets/DvdLogo.png");
+	sprite.setTexture(txr);
+	square.LoadSprite(txr);*/
+	
 	Start();
 }
 
@@ -13,10 +19,6 @@ void Engine::Start()
 {
 	window.create(sf::VideoMode(screenSizeX, screenSizeY), "Insane game");
 	window.setFramerateLimit(framerateLimit);
-	
-	//create a square object	
-	//Engine& eng = *this;
-	//Square square(eng);
 
 	LoopEngine();
 }
@@ -42,6 +44,9 @@ void Engine::LoopEngine()
 		// Render
 		window.clear();
 		square.Update();
+
+		//window.draw(sprite);
+
 		window.display();
 	}
 }
