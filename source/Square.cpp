@@ -16,28 +16,48 @@ Square::Square(Engine& eng)
 	squareVisual.setSize(sf::Vector2f(100, 100));
 	squareVisual.setFillColor(sf::Color(rand() % 256, rand() % 256, rand() % 256));
 	squareVisual.setFillColor(sf::Color(rand() % 256, rand() % 256, rand() % 256));
-	LoadSprite("Assets/DvdLogo.png");
+	
+	LoadSprite("Assets/DvdLogoWhite.png");
 }
 
 // Update function
 void Square::Update()
 {
-	// Physics
-	if (squarePos.x < 0 || squarePos.x > engine.screenSizeX - squareVisual.getSize().x)
+	// Square
+	/*if (squarePos.x < 0 || squarePos.x > engine.screenSizeX - squareVisual.getSize().x)
 	{
-		velocityX *= -1;
+		velocity *= -1;
 	}
 	if (squarePos.y < 0 || squarePos.y > engine.screenSizeY - squareVisual.getSize().y)
 	{
+		velocity *= -1;
+	}
+
+	squarePos.x += velocity;
+	squarePos.y += velocity;
+	squareVisual.setPosition(squarePos);
+	squareVisual.setPosition(squarePos);
+	engine.window.draw(squareVisual);*/
+	
+	if (spritePosition.x < 0 || spritePosition.x > engine.screenSizeX - 200)
+	{
+		sprite.setColor(sf::Color(rand()% 256, rand() % 256, rand() % 256, 255));
+		velocityX *= -1;
+	}
+	if (spritePosition.y < 0 || spritePosition.y > engine.screenSizeY - 100)
+	{
+		sprite.setColor(sf::Color(rand() % 256, rand() % 256, rand() % 256, 255));
 		velocityY *= -1;
 	}
 
-	squarePos.x += velocityX;
-	squarePos.y += velocityY;
-	squareVisual.setPosition(squarePos);
-	squareVisual.setPosition(squarePos);
+	spritePosition = sprite.getPosition();
+	spritePosition.x += velocityX;
+	spritePosition.y += velocityY;
+	sprite.setPosition(spritePosition);
+	
+	std::cout << "Sprite X Position: " << spritePosition.x << "\n";
+	std::cout << "Sprite Y Position: " << spritePosition.x << "\n";
 
-	engine.window.draw(squareVisual);
 	engine.window.draw(sprite);
 }
 
@@ -48,7 +68,9 @@ void Square::LoadSprite(std::string path)
 	sprite.setTexture(texture);
 
 	int size = texture.getSize().x;
-	int pixelSize = 400;
+	int pixelSize = 200;
 	float scale = (float)pixelSize / (float)size;
 	sprite.setScale(scale, scale);
+
+	sprite.setColor(sf::Color(255, 255, 255, 255));
 }

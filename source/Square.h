@@ -9,6 +9,7 @@ public:
 	void Update();
 	void LoadSprite(std::string path);
 private:
+	// Square
 	sf::RectangleShape squareVisual;
 	sf::Vector2f squarePos;
 	float velocityX;
@@ -16,6 +17,8 @@ private:
 
 	Engine& engine;
 
+	// Dvd Logo
+	sf::Vector2f spritePosition;
 	sf::Texture texture;
 	sf::Sprite sprite;
 };
