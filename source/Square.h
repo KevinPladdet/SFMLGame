@@ -8,6 +8,13 @@ public:
 	Square(Engine& engine);
 	void Update();
 	void LoadSprite(std::string path);
+	//void DisplayPath()
+	// make the text in square tomorrow
+
+	// BounceText
+	sf::Font font;
+	sf::Text text;
+	int bounceAmount;
 private:
 	// Square
 	sf::RectangleShape squareVisual;
@@ -21,4 +28,6 @@ private:
 	sf::Vector2f spritePosition;
 	sf::Texture texture;
 	sf::Sprite sprite;
+
+	
 };

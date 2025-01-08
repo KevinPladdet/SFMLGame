@@ -9,6 +9,7 @@ Square::Square(Engine& eng)
 	: squarePos(0, 0),
 	velocityX(3),
 	velocityY(3),
+	bounceAmount(0),
 	engine(eng)
 {
 	std::cout << "Create squareVisual" << "\n";
@@ -42,11 +43,14 @@ void Square::Update()
 	if (spritePosition.x < 0 || spritePosition.x > engine.screenSizeX - 200)
 	{
 		sprite.setColor(sf::Color(rand()% 256, rand() % 256, rand() % 256, 255));
+		bounceAmount += 1;
+		text.setString("Bounced: " + std::to_string(bounceAmount));
 		velocityX *= -1;
 	}
-	if (spritePosition.y < 0 || spritePosition.y > engine.screenSizeY - 100)
+	if (spritePosition.y < 0 || spritePosition.y > engine.screenSizeY - 88)
 	{
 		sprite.setColor(sf::Color(rand() % 256, rand() % 256, rand() % 256, 255));
+		bounceAmount += 1;
 		velocityY *= -1;
 	}
 
@@ -55,8 +59,8 @@ void Square::Update()
 	spritePosition.y += velocityY;
 	sprite.setPosition(spritePosition);
 	
-	std::cout << "Sprite X Position: " << spritePosition.x << "\n";
-	std::cout << "Sprite Y Position: " << spritePosition.x << "\n";
+	//std::cout << "Sprite X Position: " << spritePosition.x << "\n";
+	//std::cout << "Sprite Y Position: " << spritePosition.x << "\n";
 
 	engine.window.draw(sprite);
 }
@@ -74,3 +78,5 @@ void Square::LoadSprite(std::string path)
 
 	sprite.setColor(sf::Color(255, 255, 255, 255));
 }
+
+// make the DisplayText in here tomorrow

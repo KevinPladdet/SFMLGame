@@ -8,6 +8,7 @@ public:
 	Engine();
 	void Start();
 	void LoopEngine();
+	void DisplayText();
 
 	sf::RenderWindow window;
 
@@ -16,9 +17,6 @@ public:
 private:
 	float framerateLimit = 60;
 
-	float spriteX = 0;
-	float spriteY = 0;
-	float spriteSpeed = 200;
 
 	Engine& eng = *this;
 	Square square;

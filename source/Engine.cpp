@@ -2,6 +2,7 @@
 #include "Square.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include <iostream>
 
 Engine::Engine()
 	: square(*this)
@@ -13,6 +14,8 @@ void Engine::Start()
 {
 	window.create(sf::VideoMode(screenSizeX, screenSizeY), "Insane game");
 	window.setFramerateLimit(framerateLimit);
+
+	DisplayText();
 
 	LoopEngine();
 }
@@ -37,6 +40,22 @@ void Engine::LoopEngine()
 		// Render
 		window.clear();
 		square.Update();
+		
+		window.draw(text);
+
 		window.display();
 	}
 }
+
+//void Engine::DisplayText()
+//{
+//	
+//	if (square.font.loadFromFile("Assets/Fonts/VerdanaPro-CondRegular.ttf"))
+//	{
+//		std::cout << "Font loaded succesfully" << "\n";
+//	}
+//	text.setFont(font);
+//	text.setCharacterSize(24);
+//	text.setFillColor(sf::Color::Red);
+//	text.setString("Bounced: " + std::to_string(square.bounceAmount));
+//}
