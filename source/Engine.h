@@ -12,8 +12,8 @@ public:
 
 	sf::RenderWindow window;
 
-	float screenSizeX = 800;
-	float screenSizeY = 600;
+	float screenSizeX = 1280;
+	float screenSizeY = 720;
 private:
 	unsigned int framerateLimit = 60;
 

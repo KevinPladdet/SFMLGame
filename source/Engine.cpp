@@ -38,7 +38,7 @@ void Engine::LoopEngine()
 		// Render
 		window.clear();
 		square.Update();
-
+		platform.Update();
 		window.display();
 	}
 }
