@@ -6,7 +6,8 @@
 
 Engine::Engine()
 	: square(*this),
-	platform(*this)
+	platform(*this),
+	player(*this)
 {
 	Start();
 }

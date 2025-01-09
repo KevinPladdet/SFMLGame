@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "Square.h"
 #include "Platform.h"
+#include "Player.h"
 
 class Engine
 {
@@ -20,4 +21,5 @@ private:
 	Engine& eng = *this;
 	Square square;
 	Platform platform;
+	Player player;
 };
