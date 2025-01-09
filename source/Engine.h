@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "Square.h"
+#include "Platform.h"
 
 class Engine
 {
@@ -14,8 +15,9 @@ public:
 	float screenSizeX = 800;
 	float screenSizeY = 600;
 private:
-	float framerateLimit = 60;
+	unsigned int framerateLimit = 60;
 
 	Engine& eng = *this;
 	Square square;
+	Platform platform;
 };

@@ -1,10 +1,12 @@
 #include "Engine.h"
-#include "Square.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include "Square.h"
+#include "Platform.h"
 
 Engine::Engine()
-	: square(*this)
+	: square(*this),
+	platform(*this)
 {
 	Start();
 }
@@ -13,7 +15,6 @@ void Engine::Start()
 {
 	window.create(sf::VideoMode(screenSizeX, screenSizeY), "Insane game");
 	window.setFramerateLimit(framerateLimit);
-
 	LoopEngine();
 }
 
