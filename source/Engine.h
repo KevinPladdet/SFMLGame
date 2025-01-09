@@ -8,7 +8,6 @@ public:
 	Engine();
 	void Start();
 	void LoopEngine();
-	void DisplayText();
 
 	sf::RenderWindow window;
 
@@ -16,7 +15,6 @@ public:
 	float screenSizeY = 600;
 private:
 	float framerateLimit = 60;
-
 
 	Engine& eng = *this;
 	Square square;

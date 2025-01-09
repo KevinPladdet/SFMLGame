@@ -6,63 +6,40 @@
 
 // Start function
 Square::Square(Engine& eng)
-	: squarePos(0, 0),
-	velocityX(3),
+	: velocityX(3),
 	velocityY(3),
 	bounceAmount(0),
 	engine(eng)
-{
-	std::cout << "Create squareVisual" << "\n";
-	squareVisual.setPosition(squarePos);
-	squareVisual.setSize(sf::Vector2f(100, 100));
-	squareVisual.setFillColor(sf::Color(rand() % 256, rand() % 256, rand() % 256));
-	squareVisual.setFillColor(sf::Color(rand() % 256, rand() % 256, rand() % 256));
-	
+{	
 	LoadSprite("Assets/DvdLogoWhite.png");
+	DisplayText();
 }
 
 // Update function
 void Square::Update()
-{
-	// Square
-	/*if (squarePos.x < 0 || squarePos.x > engine.screenSizeX - squareVisual.getSize().x)
-	{
-		velocity *= -1;
-	}
-	if (squarePos.y < 0 || squarePos.y > engine.screenSizeY - squareVisual.getSize().y)
-	{
-		velocity *= -1;
-	}
-
-	squarePos.x += velocity;
-	squarePos.y += velocity;
-	squareVisual.setPosition(squarePos);
-	squareVisual.setPosition(squarePos);
-	engine.window.draw(squareVisual);*/
-	
+{	
 	if (spritePosition.x < 0 || spritePosition.x > engine.screenSizeX - 200)
 	{
 		sprite.setColor(sf::Color(rand()% 256, rand() % 256, rand() % 256, 255));
+		velocityX *= -1;
 		bounceAmount += 1;
 		text.setString("Bounced: " + std::to_string(bounceAmount));
-		velocityX *= -1;
 	}
 	if (spritePosition.y < 0 || spritePosition.y > engine.screenSizeY - 88)
 	{
 		sprite.setColor(sf::Color(rand() % 256, rand() % 256, rand() % 256, 255));
-		bounceAmount += 1;
 		velocityY *= -1;
+		bounceAmount += 1;
+		text.setString("Bounced: " + std::to_string(bounceAmount));
 	}
 
 	spritePosition = sprite.getPosition();
 	spritePosition.x += velocityX;
 	spritePosition.y += velocityY;
 	sprite.setPosition(spritePosition);
-	
-	//std::cout << "Sprite X Position: " << spritePosition.x << "\n";
-	//std::cout << "Sprite Y Position: " << spritePosition.x << "\n";
 
 	engine.window.draw(sprite);
+	engine.window.draw(text);
 }
 
 void Square::LoadSprite(std::string path)
@@ -79,4 +56,11 @@ void Square::LoadSprite(std::string path)
 	sprite.setColor(sf::Color(255, 255, 255, 255));
 }
 
-// make the DisplayText in here tomorrow
+void Square::DisplayText()
+{
+	font.loadFromFile("Assets/Fonts/VerdanaPro-CondRegular.ttf");
+	text.setFont(font);
+	text.setCharacterSize(24);
+	text.setFillColor(sf::Color::Red);
+	text.setString("Bounced: " + std::to_string(bounceAmount));
+}
