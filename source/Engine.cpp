@@ -3,6 +3,7 @@
 #include <SFML/Window.hpp>
 #include "Square.h"
 #include "Platform.h"
+#include "Player.h"
 
 Engine::Engine()
 	: square(*this),
@@ -23,6 +24,8 @@ void Engine::LoopEngine()
 {
 	while (window.isOpen())
 	{
+		dt = dt_clock.restart().asSeconds();
+
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
@@ -40,6 +43,7 @@ void Engine::LoopEngine()
 		window.clear();
 		square.Update();
 		platform.Update();
+		player.Update();
 		window.display();
 	}
 }
