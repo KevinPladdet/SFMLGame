@@ -2,16 +2,18 @@
 #include <SFML/Graphics.hpp>
 
 class Engine;
+class Platform;
 class Player
 {
 public:
-	Player(Engine& engine);
+	Player(Engine& engine, Platform& platform);
 	void Update();
 private:
 	Engine& engine;
+	Platform& platform;
 
 	// Player
-	sf::RectangleShape player;
+	sf::RectangleShape playerVisual;
 	sf::Vector2f playerPos;
 	sf::Vector2f playerSize;
 	const float movementSpeed;

@@ -1,16 +1,18 @@
 #include "Player.h"
 #include "Engine.h"
+#include "Platform.h"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-Player::Player(Engine& eng)
+Player::Player(Engine& eng, Platform& pform)
 	: engine(eng),
+	platform(pform),
 	playerSize(50, 100),
 	playerPos(0, 0),
 	movementSpeed(100)
 {
-	player.setFillColor(sf::Color::Blue);
-	player.setSize((playerSize, playerSize));
+	playerVisual.setFillColor(sf::Color::Blue);
+	playerVisual.setSize((playerSize, playerSize));
 }
 
 void Player::Update()
@@ -35,7 +37,13 @@ void Player::Update()
 		playerPos.x += movementSpeed * engine.dt;
 	}
 
-	player.move(playerPos);
+	playerVisual.move(playerPos);
 
-	engine.window.draw(player);
+	// Colliding with platformVisual
+	if (playerVisual.getGlobalBounds().intersects(platform.platformVisual.getGlobalBounds()))
+	{
+		std::cout << "Colliding" << "\n";
+	}
+
+	engine.window.draw(playerVisual);
 }

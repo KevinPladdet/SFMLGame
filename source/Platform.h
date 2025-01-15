@@ -7,11 +7,12 @@ class Platform
 public:
 	Platform(Engine& engine);
 	void Update();
+
+	sf::RectangleShape platformVisual;
 private:
 	Engine& engine;
 
 	// Platform
-	sf::RectangleShape platformVisual;
 	sf::Vector2f platformPos;
 	float velocityY;
 };
