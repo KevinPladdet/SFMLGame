@@ -18,11 +18,15 @@ project "SFMLgame"
 
     includedirs{
         "Dependencies/SFML-2.6.1/include",
+        "Dependencies/box2d-main/include",
         -- Engine headers
         "source/Engine"
     }
 
-    libdirs{"Dependencies/SFML-2.6.1/lib"}
+    libdirs{
+        "Dependencies/SFML-2.6.1/lib",
+        "Dependencies/box2d-main/lib"
+    }
 
     -- Libs we need for SFML
     links { 
@@ -36,7 +40,8 @@ project "SFMLgame"
         "vorbisfile.lib",
         "vorbis.lib",
         "ogg.lib",
-        "ws2_32.lib" 
+        "ws2_32.lib",
+        "box2d.lib" 
     }
     -- Windows specific settings, maybe needed for Linux support we wont have
     filter "system:windows"
