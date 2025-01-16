@@ -16,5 +16,5 @@ private:
 	sf::RectangleShape playerVisual;
 	sf::Vector2f playerInput;
 	sf::Vector2f playerSize;
-	const float movementSpeed;
+	float movementSpeed;
 };
