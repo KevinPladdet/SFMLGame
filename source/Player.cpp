@@ -8,8 +8,8 @@ Player::Player(Engine& eng, Platform& pform)
 	: engine(eng),
 	platform(pform),
 	playerSize(50, 100),
-	playerPos(0, 0),
-	movementSpeed(100)
+	playerInput(0, 0),
+	movementSpeed(300)
 {
 	playerVisual.setFillColor(sf::Color::Blue);
 	playerVisual.setSize((playerSize, playerSize));
@@ -17,32 +17,60 @@ Player::Player(Engine& eng, Platform& pform)
 
 void Player::Update()
 {
-	playerPos.x = 0.f;
-	playerPos.y = 0.f;
+	playerInput.x = 0.f;
+	playerInput.y = 0.f;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
-		playerPos.y += -movementSpeed * engine.dt;
+		playerInput.y += -movementSpeed * engine.dt;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
-		playerPos.y += movementSpeed * engine.dt;
+		playerInput.y += movementSpeed * engine.dt;
+		
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
-		playerPos.x += -movementSpeed * engine.dt;
+		playerInput.x += -movementSpeed * engine.dt;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
-		playerPos.x += movementSpeed * engine.dt;
+		playerInput.x += movementSpeed * engine.dt;
+	}
+	
+	playerVisual.move(playerInput);
+
+	// Colliding with Screen Edges
+	// Top Edge Collision
+	if (playerVisual.getPosition().y < 0.f)
+	{
+		playerVisual.setPosition(playerVisual.getPosition().x, 0.f);
+	}
+	// Bottom Edge Collision
+	if (playerVisual.getPosition().y + playerVisual.getGlobalBounds().height > engine.screenSizeY)
+	{
+		playerVisual.setPosition(playerVisual.getPosition().x, engine.screenSizeY - playerVisual.getGlobalBounds().height);
+	}
+	// Left Edge Collision
+	if (playerVisual.getPosition().x < 0.f) 
+	{
+		playerVisual.setPosition(0.f, playerVisual.getPosition().y);
+	}
+	// Right Edge Collision
+	if (playerVisual.getPosition().x + playerVisual.getGlobalBounds().width > engine.screenSizeX)
+	{
+		playerVisual.setPosition(engine.screenSizeX - playerVisual.getGlobalBounds().width, playerVisual.getPosition().y);
 	}
 
-	playerVisual.move(playerPos);
-
-	// Colliding with platformVisual
+	// Colliding with Platform
 	if (playerVisual.getGlobalBounds().intersects(platform.platformVisual.getGlobalBounds()))
 	{
 		std::cout << "Colliding" << "\n";
+		movementSpeed = 0;
+	}
+	else
+	{
+		movementSpeed = 100;
 	}
 
 	engine.window.draw(playerVisual);
