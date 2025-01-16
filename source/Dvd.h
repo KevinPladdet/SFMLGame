@@ -2,10 +2,10 @@
 #include <SFML/Graphics.hpp>
 
 class Engine;
-class Square
+class Dvd
 {
 public:
-	Square(Engine& engine);
+	Dvd(Engine& engine);
 	void Update();
 	void LoadSprite(std::string path);
 	void DisplayText();

@@ -1,14 +1,11 @@
 #include "Engine.h"
-#include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
-#include "Square.h"
-#include "Platform.h"
-#include "Player.h"
 
 Engine::Engine()
-	: square(*this),
+	: dvd(*this),
 	player(*this, platform),
-	platform(*this)
+	platform(*this),
+	world(*this)
 {
 	Start();
 }
@@ -41,9 +38,13 @@ void Engine::LoopEngine()
 
 		// Render
 		window.clear();
-		square.Update();
+		dvd.Update();
 		platform.Update();
 		player.Update();
+
+		world.Update();
+		world.Render(window);
+
 		window.display();
 	}
 }

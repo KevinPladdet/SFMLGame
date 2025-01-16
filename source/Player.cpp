@@ -1,8 +1,6 @@
 #include "Player.h"
-#include "Engine.h"
+#include "Engine/Engine.h"
 #include "Platform.h"
-#include <SFML/Graphics.hpp>
-#include "box2d/box2d.h"
 #include <iostream>
 
 Player::Player(Engine& eng, Platform& pform)

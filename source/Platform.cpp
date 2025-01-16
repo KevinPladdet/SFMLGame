@@ -1,6 +1,5 @@
 #include "Platform.h"
-#include "Engine.h"
-#include <SFML/Graphics.hpp>
+#include "Engine/Engine.h"
 #include <iostream>
 
 Platform::Platform(Engine& eng)

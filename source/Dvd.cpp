@@ -1,11 +1,10 @@
-#include "Square.h"
-#include "Engine.h"
-#include <SFML/Graphics.hpp>
+#include "Dvd.h"
+#include "Engine/Engine.h"
 #include <SFML/Window.hpp>
 #include <iostream>
 
 // Start function
-Square::Square(Engine& eng)
+Dvd::Dvd(Engine& eng)
 	: velocityX(3),
 	velocityY(3),
 	bounceAmount(0),
@@ -16,7 +15,7 @@ Square::Square(Engine& eng)
 }
 
 // Update function
-void Square::Update()
+void Dvd::Update()
 {	
 	if (spritePosition.x < 0 || spritePosition.x > engine.screenSizeX - 200)
 	{
@@ -42,7 +41,7 @@ void Square::Update()
 	engine.window.draw(text);
 }
 
-void Square::LoadSprite(std::string path)
+void Dvd::LoadSprite(std::string path)
 {
 	// Load DvdLogo Sprite
 	texture.loadFromFile(path);
@@ -56,7 +55,7 @@ void Square::LoadSprite(std::string path)
 	sprite.setColor(sf::Color(255, 255, 255, 255));
 }
 
-void Square::DisplayText()
+void Dvd::DisplayText()
 {
 	font.loadFromFile("Assets/Fonts/VerdanaPro-CondRegular.ttf");
 	text.setFont(font);

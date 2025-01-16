@@ -20,7 +20,7 @@ project "SFMLgame"
         "Dependencies/SFML-2.6.1/include",
         "Dependencies/box2d-main/include",
         -- Engine headers
-        "source/Engine"
+        "source"
     }
 
     libdirs{
