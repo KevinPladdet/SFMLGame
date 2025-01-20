@@ -13,20 +13,20 @@ World::World(Engine& eng)
 	// Creating Ground
 	b2BodyDef groundBodyDef = b2DefaultBodyDef();
 	groundBodyDef.type = b2_staticBody;
-	groundBodyDef.position = { 0.0f, 720.0f / worldScale };
+	groundBodyDef.position = { 3.0f, 500.0f / worldScale };
 	groundId = b2CreateBody(worldId, &groundBodyDef);
-
-	b2Polygon groundBox = b2MakeBox(50.0f, 1.0f);
+	
+	b2Polygon groundBox = b2MakeBox(0.5f, 0.5f);
 	b2ShapeDef groundShapeDef = b2DefaultShapeDef();
 	b2CreatePolygonShape(groundId, &groundShapeDef, &groundBox);
 
 	// Creating shape/body
 	b2BodyDef bodyDef = b2DefaultBodyDef();
 	bodyDef.type = b2_dynamicBody;
-	bodyDef.position = { 0.5f, 4.0f };
+	bodyDef.position = { 3.95f, 4.0f };
 	bodyId = b2CreateBody(worldId, &bodyDef);
 
-	b2Polygon dynamicBox = b2MakeBox(1.0f, 1.0f);
+	b2Polygon dynamicBox = b2MakeBox(0.5f, 0.5f);
 
 	b2ShapeDef shapeDef = b2DefaultShapeDef();
 	shapeDef.density = 1.0f;
@@ -45,18 +45,23 @@ void World::Render(sf::RenderWindow& window)
 	// Putting a RectangleShape on the shape/body
 	b2Vec2 position = b2Body_GetPosition(bodyId);
 	b2Rot rotation = b2Body_GetRotation(bodyId);
-	shape.setSize(sf::Vector2f(1.0f * worldScale, 1.0f * worldScale));
-	shape.setOrigin(sf::Vector2f(0.5f * worldScale, 0.5f * worldScale));
+
+	float angle = std::atan2(rotation.s, rotation.c) * 180 / 3.14;
+	std::cout << "Angle Radians: " << angle << "\n";
+
+	sf::Vector2f shapeSize(1.0f * worldScale, 1.0f * worldScale);
+	shape.setSize(shapeSize);
+	shape.setOrigin(shapeSize / 2.0f);
 	shape.setPosition(sf::Vector2f(position.x * worldScale, position.y * worldScale));
-	std::cout << "Y Position: " << position.y * 50 << "\n";
+	shape.setRotation(angle);
 	engine.window.draw(shape);
 
 	// Putting a RectangleShape on the ground
 	b2Vec2 groundPosition = b2Body_GetPosition(groundId);
-	b2Rot groundRrotation = b2Body_GetRotation(groundId);
+	sf::Vector2f groundSize(1.0f * worldScale, 1.0f * worldScale);
 	ground.setFillColor(sf::Color(255, 0, 0));
-	ground.setSize(sf::Vector2f(50.0f * worldScale, 1.0f * worldScale));
-	ground.setOrigin(sf::Vector2f(25.0f * worldScale, 0.5f * worldScale));
+	ground.setSize(groundSize);
+	ground.setOrigin(groundSize / 2.0f);
 	ground.setPosition(sf::Vector2f(groundPosition.x * worldScale, groundPosition.y * worldScale));
 	engine.window.draw(ground);
 }
