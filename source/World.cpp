@@ -5,21 +5,22 @@
 World::World(Engine& eng)
 	: engine(eng)
 {
-	std::cout << "Creating World" << "\n";
-
+	// Creating World
 	b2WorldDef worldDef = b2DefaultWorldDef();
 	worldDef.gravity = { 0.0f, 10.0f };
 	worldId = b2CreateWorld(&worldDef);
 
+	// Creating Ground
 	b2BodyDef groundBodyDef = b2DefaultBodyDef();
 	groundBodyDef.type = b2_staticBody;
-	groundBodyDef.position = { 0.0f, 720.0f / 50 };
+	groundBodyDef.position = { 0.0f, 720.0f / worldScale };
 	groundId = b2CreateBody(worldId, &groundBodyDef);
 
 	b2Polygon groundBox = b2MakeBox(50.0f, 1.0f);
 	b2ShapeDef groundShapeDef = b2DefaultShapeDef();
 	b2CreatePolygonShape(groundId, &groundShapeDef, &groundBox);
 
+	// Creating shape/body
 	b2BodyDef bodyDef = b2DefaultBodyDef();
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position = { 0.5f, 4.0f };
@@ -37,19 +38,25 @@ World::World(Engine& eng)
 void World::Update()
 {
 	b2World_Step(worldId, timeStep, subStepCount);
-	//printf("%4.2f %4.2f %4.2f\n", position.x, position.y, b2Rot_GetAngle(rotation));
-	//engine.window.draw(bodyId);
 }
 
 void World::Render(sf::RenderWindow& window)
 {
-	sf::RectangleShape shape;
-	const int worldScale = 50;
+	// Putting a RectangleShape on the shape/body
 	b2Vec2 position = b2Body_GetPosition(bodyId);
 	b2Rot rotation = b2Body_GetRotation(bodyId);
-	shape.setSize(sf::Vector2f(50, 50));
-	shape.setOrigin(sf::Vector2f(25, 25));
+	shape.setSize(sf::Vector2f(1.0f * worldScale, 1.0f * worldScale));
+	shape.setOrigin(sf::Vector2f(0.5f * worldScale, 0.5f * worldScale));
 	shape.setPosition(sf::Vector2f(position.x * worldScale, position.y * worldScale));
 	std::cout << "Y Position: " << position.y * 50 << "\n";
 	engine.window.draw(shape);
+
+	// Putting a RectangleShape on the ground
+	b2Vec2 groundPosition = b2Body_GetPosition(groundId);
+	b2Rot groundRrotation = b2Body_GetRotation(groundId);
+	ground.setFillColor(sf::Color(255, 0, 0));
+	ground.setSize(sf::Vector2f(50.0f * worldScale, 1.0f * worldScale));
+	ground.setOrigin(sf::Vector2f(25.0f * worldScale, 0.5f * worldScale));
+	ground.setPosition(sf::Vector2f(groundPosition.x * worldScale, groundPosition.y * worldScale));
+	engine.window.draw(ground);
 }

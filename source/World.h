@@ -17,7 +17,12 @@ private:
 	b2BodyId groundId;
 	b2BodyId bodyId;
 
+	// Visualising shapes
+	sf::RectangleShape shape;
+	sf::RectangleShape ground;
 
+	// worldScale is 50 because 50 pixels is 1 meter in Box2D
+	const int worldScale = 50;
 	float timeStep = 1.0f / 200.0f;
 	int subStepCount = 4;
 };
