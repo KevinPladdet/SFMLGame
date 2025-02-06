@@ -3,8 +3,7 @@
 
 Engine::Engine()
 	: dvd(*this),
-	player(*this, platform),
-	platform(*this),
+	player(*this),
 	world(*this)
 {
 	Start();
@@ -39,7 +38,6 @@ void Engine::LoopEngine()
 		// Render
 		window.clear();
 		dvd.Update();
-		platform.Update();
 		player.Update();
 
 		world.Update();

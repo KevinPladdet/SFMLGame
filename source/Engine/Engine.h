@@ -1,7 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "Dvd.h" 
-#include "Platform.h"
 #include "Player.h"
 #include "World.h"
 
@@ -24,7 +23,6 @@ private:
 	sf::Clock dt_clock;
 
 	Dvd dvd;
-	Platform platform;
 	Player player;
 	World world;
 };

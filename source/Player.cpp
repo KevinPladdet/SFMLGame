@@ -1,17 +1,16 @@
 #include "Player.h"
 #include "Engine/Engine.h"
-#include "Platform.h"
 #include <iostream>
 
-Player::Player(Engine& eng, Platform& pform)
+Player::Player(Engine& eng)
 	: engine(eng),
-	platform(pform),
 	playerSize(50, 100),
 	playerInput(0, 0),
 	movementSpeed(300)
 {
 	playerVisual.setFillColor(sf::Color::Blue);
 	playerVisual.setSize((playerSize, playerSize));
+	playerVisual.setPosition(0, 30); // The player spawns under the "Bounced" text
 }
 
 void Player::Update()
@@ -46,12 +45,12 @@ void Player::Update()
 		playerVisual.setPosition(playerVisual.getPosition().x, 0.f);
 	}
 	// Bottom Edge Collision
-	if (playerVisual.getPosition().y + playerVisual.getGlobalBounds().height > engine.screenSizeY)
+	if (playerVisual.getPosition().y + playerVisual.getGlobalBounds().height > engine.screenSizeY - 25) // 25 is the size.y of the ground, so it doesn't go into it
 	{
-		playerVisual.setPosition(playerVisual.getPosition().x, engine.screenSizeY - playerVisual.getGlobalBounds().height);
+		playerVisual.setPosition(playerVisual.getPosition().x, engine.screenSizeY - 25 - playerVisual.getGlobalBounds().height);
 	}
 	// Left Edge Collision
-	if (playerVisual.getPosition().x < 0.f) 
+	if (playerVisual.getPosition().x < 0.f)
 	{
 		playerVisual.setPosition(0.f, playerVisual.getPosition().y);
 	}
@@ -59,17 +58,6 @@ void Player::Update()
 	if (playerVisual.getPosition().x + playerVisual.getGlobalBounds().width > engine.screenSizeX)
 	{
 		playerVisual.setPosition(engine.screenSizeX - playerVisual.getGlobalBounds().width, playerVisual.getPosition().y);
-	}
-
-	// Colliding with Platform
-	if (playerVisual.getGlobalBounds().intersects(platform.platformVisual.getGlobalBounds()))
-	{
-		std::cout << "Colliding" << "\n";
-		movementSpeed = 0;
-	}
-	else
-	{
-		movementSpeed = 100;
 	}
 
 	engine.window.draw(playerVisual);

@@ -4,39 +4,42 @@
 
 World::World(Engine& eng)
 	: engine(eng),
-	leftVelocityY(5),
-	rightVelocityY(5),
 	minY(4.4),
 	maxY(10)
 {
+	std::srand(static_cast<unsigned int>(std::time(nullptr))); // Seeds the rng so it's actually random each time
+	leftPlatformSpeedY = (2 + std::rand() % 6),
+	rightPlatformSpeedY = (2 + std::rand() % 6),
+	std::cout << "leftPlatformSpeedY: " << leftPlatformSpeedY << "\n";
+	std::cout << "rightPlatformSpeedY: " << rightPlatformSpeedY << "\n";
 	// Creating World
 	b2WorldDef worldDef = b2DefaultWorldDef();
-	worldDef.gravity = { 0.0f, 10.0f };
+	worldDef.gravity = { 0.0f, 25.0f };
 	worldId = b2CreateWorld(&worldDef);
 
-	// Creating PlayerLeft
-	b2BodyDef playerLeftDef = b2DefaultBodyDef();
-	playerLeftDef.type = b2_dynamicBody;
-	playerLeftDef.position = { 265.0f / worldScale, 200.0f / worldScale };
-	playerLeftId = b2CreateBody(worldId, &playerLeftDef);
-	b2Polygon dynamicBoxLeft = b2MakeBox(0.5f, 0.5f);
+	// Creating Player
+	b2BodyDef playerDef = b2DefaultBodyDef();
+	playerDef.type = b2_dynamicBody;
+	playerDef.position = { 265.0f / worldScale, 200.0f / worldScale };
+	playerId = b2CreateBody(worldId, &playerDef);
+	b2Polygon playerBox = b2MakeBox(0.5f, 0.5f);
 
-	b2ShapeDef playerLeftShapeDef = b2DefaultShapeDef();
-	playerLeftShapeDef.density = 1.0f;
-	playerLeftShapeDef.friction = 0.3f;
-	b2CreatePolygonShape(playerLeftId, &playerLeftShapeDef, &dynamicBoxLeft);
+	b2ShapeDef playerShapeDef = b2DefaultShapeDef();
+	playerShapeDef.density = 1.0f;
+	playerShapeDef.friction = 0.3f;
+	b2CreatePolygonShape(playerId, &playerShapeDef, &playerBox);
 
-	// Creating PlayerRight
-	b2BodyDef playerRightDef = b2DefaultBodyDef();
-	playerRightDef.type = b2_dynamicBody;
-	playerRightDef.position = { 1015.0f / worldScale, 200.0f / worldScale };
-	playerRightId = b2CreateBody(worldId, &playerRightDef);
-	b2Polygon dynamicBoxRight = b2MakeBox(0.5f, 0.5f);
+	// Creating Enemy
+	b2BodyDef enemyDef = b2DefaultBodyDef();
+	enemyDef.type = b2_dynamicBody;
+	enemyDef.position = { 1015.0f / worldScale, 200.0f / worldScale };
+	enemyId = b2CreateBody(worldId, &enemyDef);
+	b2Polygon enemyBox = b2MakeBox(0.5f, 0.5f);
 
-	b2ShapeDef playerRightShapeDef = b2DefaultShapeDef();
-	playerRightShapeDef.density = 1.0f;
-	playerRightShapeDef.friction = 0.3f;
-	b2CreatePolygonShape(playerRightId, &playerRightShapeDef, &dynamicBoxRight);
+	b2ShapeDef enemyShapeDef = b2DefaultShapeDef();
+	enemyShapeDef.density = 1.0f;
+	enemyShapeDef.friction = 0.3f;
+	b2CreatePolygonShape(enemyId, &enemyShapeDef, &enemyBox);
 
 	// Creating PlatformLeft
 	b2BodyDef platformLeftBodyDef = b2DefaultBodyDef();
@@ -78,10 +81,10 @@ void World::Update()
 
 	if (platformLeftPosition.y < minY || platformLeftPosition.y > maxY)
 	{
-		leftVelocityY *= -1;
+		leftPlatformSpeedY *= -1;
 	}
 
-	b2Vec2 velocityLeft = { 0.0f, leftVelocityY };
+	b2Vec2 velocityLeft = { 0.0f, leftPlatformSpeedY };
 	b2Body_SetLinearVelocity(platformLeftId, velocityLeft);
 
 	// Move platformRight
@@ -89,42 +92,42 @@ void World::Update()
 
 	if (platformRightPosition.y < minY || platformRightPosition.y > maxY)
 	{
-		rightVelocityY *= -1;
+		rightPlatformSpeedY *= -1;
 	}
 
-	b2Vec2 velocityRight = { 0.0f, rightVelocityY };
+	b2Vec2 velocityRight = { 0.0f, rightPlatformSpeedY };
 	b2Body_SetLinearVelocity(platformRightId, velocityRight);
 }
 
 void World::Render(sf::RenderWindow& window)
 {
-	// Visualising playerLeft
-	b2Vec2 playerLeftPos = b2Body_GetPosition(playerLeftId);
-	b2Rot playerLeftRot = b2Body_GetRotation(playerLeftId);
+	// Visualising Player
+	b2Vec2 playerPos = b2Body_GetPosition(playerId);
+	b2Rot playerRot = b2Body_GetRotation(playerId);
 
-	float playerLeftAngle = std::atan2(playerLeftRot.s, playerLeftRot.c) * 180 / 3.14;
+	float playerAngle = std::atan2(playerRot.s, playerRot.c) * 180 / 3.14;
 
-	sf::Vector2f playerLeftSize(1.0f * worldScale, 1.0f * worldScale);
-	playerLeft.setSize(playerLeftSize);
-	playerLeft.setOrigin(playerLeftSize / 2.0f);
-	playerLeft.setPosition(sf::Vector2f(playerLeftPos.x * worldScale, playerLeftPos.y * worldScale));
-	playerLeft.setRotation(playerLeftAngle);
-	engine.window.draw(playerLeft);
+	sf::Vector2f playerSize(1.0f * worldScale, 1.0f * worldScale);
+	player.setSize(playerSize);
+	player.setOrigin(playerSize / 2.0f);
+	player.setPosition(sf::Vector2f(playerPos.x * worldScale, playerPos.y * worldScale));
+	player.setRotation(playerAngle);
+	engine.window.draw(player);
 
-	// Visualising playerRight
-	b2Vec2 playerRightPos = b2Body_GetPosition(playerRightId);
-	b2Rot playerRightRot = b2Body_GetRotation(playerRightId);
+	// Visualising Enemy
+	b2Vec2 enemyPos = b2Body_GetPosition(enemyId);
+	b2Rot enemyRot = b2Body_GetRotation(enemyId);
 
-	float playerRightAngle = std::atan2(playerRightRot.s, playerRightRot.c) * 180 / 3.14;
+	float enemyAngle = std::atan2(enemyRot.s, enemyRot.c) * 180 / 3.14;
 
-	sf::Vector2f playerRightSize(1.0f * worldScale, 1.0f * worldScale);
-	playerRight.setSize(playerRightSize);
-	playerRight.setOrigin(playerRightSize / 2.0f);
-	playerRight.setPosition(sf::Vector2f(playerRightPos.x * worldScale, playerRightPos.y * worldScale));
-	playerRight.setRotation(playerRightAngle);
-	engine.window.draw(playerRight);
+	sf::Vector2f enemySize(1.0f * worldScale, 1.0f * worldScale);
+	enemy.setSize(enemySize);
+	enemy.setOrigin(enemySize / 2.0f);
+	enemy.setPosition(sf::Vector2f(enemyPos.x * worldScale, enemyPos.y * worldScale));
+	enemy.setRotation(enemyAngle);
+	engine.window.draw(enemy);
 
-	// Visualizing platformLeft
+	// Visualizing PlatformLeft
 	b2Vec2 platformLeftPosition = b2Body_GetPosition(platformLeftId);
 	sf::Vector2f platformLeftSize(2.0f * worldScale, 0.5f * worldScale);
 	platformLeft.setFillColor(sf::Color(255, 0, 0));
@@ -133,7 +136,7 @@ void World::Render(sf::RenderWindow& window)
 	platformLeft.setPosition(sf::Vector2f(platformLeftPosition.x * worldScale, platformLeftPosition.y * worldScale));
 	engine.window.draw(platformLeft);
 
-	// Visualizing platformRight
+	// Visualizing PlatformRight
 	b2Vec2 platformRightPosition = b2Body_GetPosition(platformRightId);
 	sf::Vector2f platformRightSize(2.0f * worldScale, 0.5f * worldScale);
 	platformRight.setFillColor(sf::Color(255, 0, 0));

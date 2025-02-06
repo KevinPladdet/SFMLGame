@@ -6,11 +6,10 @@ class Platform;
 class Player
 {
 public:
-	Player(Engine& engine, Platform& platform);
+	Player(Engine& engine);
 	void Update();
 private:
 	Engine& engine;
-	Platform& platform;
 
 	// Player
 	sf::RectangleShape playerVisual;

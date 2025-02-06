@@ -15,15 +15,15 @@ private:
 
 	// b2BodyId
 	b2WorldId worldId;
-	b2BodyId playerLeftId;
-	b2BodyId playerRightId;
+	b2BodyId playerId;
+	b2BodyId enemyId;
 	b2BodyId platformLeftId;
 	b2BodyId platformRightId;
 	b2BodyId groundId;
 
 	// Visualising shapes
-	sf::RectangleShape playerLeft;
-	sf::RectangleShape playerRight;
+	sf::RectangleShape player;
+	sf::RectangleShape enemy;
 	sf::RectangleShape platformLeft;
 	sf::RectangleShape platformRight;
 	sf::RectangleShape ground;
@@ -34,8 +34,8 @@ private:
 	int subStepCount = 4;
 
 	// Moving Platform
-	float leftVelocityY;
-	float rightVelocityY;
+	float leftPlatformSpeedY;
+	float rightPlatformSpeedY;
 	float minY;
 	float maxY;
 };
