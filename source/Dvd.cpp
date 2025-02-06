@@ -24,7 +24,7 @@ void Dvd::Update()
 		bounceAmount += 1;
 		text.setString("Bounced: " + std::to_string(bounceAmount));
 	}
-	if (spritePosition.y < 0 || spritePosition.y > engine.screenSizeY - 88)
+	if (spritePosition.y < 0 || spritePosition.y > engine.screenSizeY - 113)
 	{
 		sprite.setColor(sf::Color(rand() % 256, rand() % 256, rand() % 256, 255));
 		velocityY *= -1;

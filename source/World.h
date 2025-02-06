@@ -13,13 +13,20 @@ public:
 private:
 	Engine& engine;
 
+	// b2BodyId
 	b2WorldId worldId;
-	b2BodyId platformOneId;
-	b2BodyId playerOneId;
+	b2BodyId playerLeftId;
+	b2BodyId playerRightId;
+	b2BodyId platformLeftId;
+	b2BodyId platformRightId;
+	b2BodyId groundId;
 
 	// Visualising shapes
-	sf::RectangleShape playerOne;
-	sf::RectangleShape platformOne;
+	sf::RectangleShape playerLeft;
+	sf::RectangleShape playerRight;
+	sf::RectangleShape platformLeft;
+	sf::RectangleShape platformRight;
+	sf::RectangleShape ground;
 
 	// worldScale is 50 because 50 pixels is 1 meter in Box2D
 	const int worldScale = 50;
@@ -27,8 +34,8 @@ private:
 	int subStepCount = 4;
 
 	// Moving Platform
-	float velocityY;
+	float leftVelocityY;
+	float rightVelocityY;
 	float minY;
 	float maxY;
-
 };
