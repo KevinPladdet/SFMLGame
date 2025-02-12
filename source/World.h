@@ -8,13 +8,18 @@ class World
 public:
 	World(Engine& engine);
 	void Update();
-	void Render(sf::RenderWindow& window);
+	void Render();
+	void SpawnArrow(std::string path);
+
+	// worldId is used to spawn body's in the world
+	b2WorldId worldId;
+	// worldScale is 50 because 50 pixels is 1 meter in Box2D
+	const int worldScale = 50;
 
 private:
 	Engine& engine;
 
 	// b2BodyId
-	b2WorldId worldId;
 	b2BodyId playerId;
 	b2BodyId enemyId;
 	b2BodyId platformLeftId;
@@ -27,9 +32,7 @@ private:
 	sf::RectangleShape platformLeft;
 	sf::RectangleShape platformRight;
 	sf::RectangleShape ground;
-
-	// worldScale is 50 because 50 pixels is 1 meter in Box2D
-	const int worldScale = 50;
+	
 	float timeStep = 1.0f / 150.0f;
 	int subStepCount = 4;
 
@@ -38,4 +41,8 @@ private:
 	float rightPlatformSpeedY;
 	float minY;
 	float maxY;
+
+	// Arrow
+	sf::Texture texture;
+	sf::Sprite sprite;
 };

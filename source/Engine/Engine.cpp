@@ -4,7 +4,8 @@
 Engine::Engine()
 	: dvd(*this),
 	player(*this),
-	world(*this)
+	world(*this),
+	arrow(*this, world)
 {
 	Start();
 }
@@ -41,7 +42,8 @@ void Engine::LoopEngine()
 		player.Update();
 
 		world.Update();
-		world.Render(window);
+		world.Render();
+		arrow.Render();
 
 		window.display();
 	}

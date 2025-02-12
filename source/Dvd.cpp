@@ -1,6 +1,5 @@
 #include "Dvd.h"
 #include "Engine/Engine.h"
-#include <SFML/Window.hpp>
 #include <iostream>
 
 // Start function

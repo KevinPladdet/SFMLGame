@@ -3,6 +3,7 @@
 #include "Dvd.h" 
 #include "Player.h"
 #include "World.h"
+#include "Arrow.h"
 
 class Engine
 {
@@ -25,4 +26,5 @@ private:
 	Dvd dvd;
 	Player player;
 	World world;
+	Arrow arrow;
 };

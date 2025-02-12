@@ -20,9 +20,9 @@ World::World(Engine& eng)
 	// Creating Player
 	b2BodyDef playerDef = b2DefaultBodyDef();
 	playerDef.type = b2_dynamicBody;
-	playerDef.position = { 265.0f / worldScale, 200.0f / worldScale };
+	playerDef.position = { 200.0f / worldScale, 200.0f / worldScale };
 	playerId = b2CreateBody(worldId, &playerDef);
-	b2Polygon playerBox = b2MakeBox(0.5f, 0.5f);
+	b2Polygon playerBox = b2MakeBox(0.5f, 1.0f);
 
 	b2ShapeDef playerShapeDef = b2DefaultShapeDef();
 	playerShapeDef.density = 1.0f;
@@ -32,9 +32,9 @@ World::World(Engine& eng)
 	// Creating Enemy
 	b2BodyDef enemyDef = b2DefaultBodyDef();
 	enemyDef.type = b2_dynamicBody;
-	enemyDef.position = { 1015.0f / worldScale, 200.0f / worldScale };
+	enemyDef.position = { 1080.0f / worldScale, 200.0f / worldScale };
 	enemyId = b2CreateBody(worldId, &enemyDef);
-	b2Polygon enemyBox = b2MakeBox(0.5f, 0.5f);
+	b2Polygon enemyBox = b2MakeBox(0.5f, 1.0f);
 
 	b2ShapeDef enemyShapeDef = b2DefaultShapeDef();
 	enemyShapeDef.density = 1.0f;
@@ -99,7 +99,7 @@ void World::Update()
 	b2Body_SetLinearVelocity(platformRightId, velocityRight);
 }
 
-void World::Render(sf::RenderWindow& window)
+void World::Render()
 {
 	// Visualising Player
 	b2Vec2 playerPos = b2Body_GetPosition(playerId);
@@ -107,7 +107,7 @@ void World::Render(sf::RenderWindow& window)
 
 	float playerAngle = std::atan2(playerRot.s, playerRot.c) * 180 / 3.14;
 
-	sf::Vector2f playerSize(1.0f * worldScale, 1.0f * worldScale);
+	sf::Vector2f playerSize(1.0f * worldScale, 2.0f * worldScale);
 	player.setSize(playerSize);
 	player.setOrigin(playerSize / 2.0f);
 	player.setPosition(sf::Vector2f(playerPos.x * worldScale, playerPos.y * worldScale));
@@ -120,7 +120,7 @@ void World::Render(sf::RenderWindow& window)
 
 	float enemyAngle = std::atan2(enemyRot.s, enemyRot.c) * 180 / 3.14;
 
-	sf::Vector2f enemySize(1.0f * worldScale, 1.0f * worldScale);
+	sf::Vector2f enemySize(1.0f * worldScale, 2.0 * worldScale);
 	enemy.setSize(enemySize);
 	enemy.setOrigin(enemySize / 2.0f);
 	enemy.setPosition(sf::Vector2f(enemyPos.x * worldScale, enemyPos.y * worldScale));
@@ -153,4 +153,10 @@ void World::Render(sf::RenderWindow& window)
 	ground.setOrigin(groundSize / 2.0f);
 	ground.setPosition(sf::Vector2f(groundPosition.x * worldScale, groundPosition.y * worldScale));
 	engine.window.draw(ground);
+}
+
+void World::SpawnArrow(std::string path)
+{
+	texture.loadFromFile(path);
+	sprite.setTexture(texture);
 }
