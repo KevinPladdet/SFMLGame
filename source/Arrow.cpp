@@ -34,7 +34,7 @@ void Arrow::CreateArrowBody()
 	arrowDef.type = b2_dynamicBody;
 	arrowDef.position = { 300.0f / world.worldScale, 200.0f / world.worldScale };
 	arrowId = b2CreateBody(world.worldId, &arrowDef);
-	b2Polygon arrowBox = b2MakeBox(0.5f, 0.5f);
+	b2Polygon arrowBox = b2MakeBox(0.5f, 0.125f);
 
 	b2ShapeDef arrowShapeDef = b2DefaultShapeDef();
 	arrowShapeDef.density = 1.0f;
@@ -50,9 +50,9 @@ void Arrow::Render()
 
 	float arrowAngle = std::atan2(arrowRot.s, arrowRot.c) * 180 / 3.14;
 
-	sf::Vector2f arrowSize(1.0f * world.worldScale, 1.0f * world.worldScale);
+	sf::Vector2f arrowSize(1.0f * world.worldScale, 0.25f * world.worldScale);
 	arrowSprite.setScale(arrowSize.x / texture.getSize().x, arrowSize.y / texture.getSize().y);
-	arrowSprite.setOrigin(arrowSize / 2.0f);
+	arrowSprite.setOrigin(texture.getSize().x / 2.0f, texture.getSize().y / 2.0f);
 	arrowSprite.setPosition(sf::Vector2f(arrowPos.x * world.worldScale, arrowPos.y * world.worldScale));
 	arrowSprite.setRotation(arrowAngle);
 
