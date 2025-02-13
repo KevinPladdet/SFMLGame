@@ -5,7 +5,8 @@
 
 Arrow::Arrow(Engine& eng, World& world)
 	: engine(eng),
-	world(world)
+	world(world),
+	keyPressed(false)
 {
 	LoadSprite("Assets/Arrow.png");
 	CreateArrowBody(); // Create Arrow Body with Box2D
@@ -13,18 +14,8 @@ Arrow::Arrow(Engine& eng, World& world)
 
 void Arrow::LoadSprite(std::string path)
 {
-	// Load Arrow Sprite
 	texture.loadFromFile(path);
 	arrowSprite.setTexture(texture);
-
-	/*int size = texture.getSize().x;
-	int pixelSize = 50;
-	float scale = (float)pixelSize / (float)size;
-	arrowSprite.setScale(scale, scale);*/
-
-	//arrowSprite.setPosition(300, 200);
-
-	arrowSprite.setColor(sf::Color(255, 255, 255, 255));
 }
 
 void Arrow::CreateArrowBody()
@@ -47,7 +38,7 @@ void Arrow::Render()
 	// Visualising Arrow
 	b2Vec2 arrowPos = b2Body_GetPosition(arrowId);
 	b2Rot arrowRot = b2Body_GetRotation(arrowId);
-
+	
 	float arrowAngle = std::atan2(arrowRot.s, arrowRot.c) * 180 / 3.14;
 
 	sf::Vector2f arrowSize(1.0f * world.worldScale, 0.25f * world.worldScale);
@@ -55,9 +46,23 @@ void Arrow::Render()
 	arrowSprite.setOrigin(texture.getSize().x / 2.0f, texture.getSize().y / 2.0f);
 	arrowSprite.setPosition(sf::Vector2f(arrowPos.x * world.worldScale, arrowPos.y * world.worldScale));
 	arrowSprite.setRotation(arrowAngle);
-
-	sf::Vector2f spritePosition = arrowSprite.getPosition();
-	std::cout << "Arrow X: " << spritePosition.x << " Y: " << spritePosition.y << "\n";
-
+	
 	engine.window.draw(arrowSprite);
+}
+
+void Arrow::Update()
+{
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::K))
+	{
+		if (!keyPressed)
+		{
+			std::cout << "Spawned in Arrow" << std::endl;
+			// Spawn in arrow here
+			keyPressed = true;
+		}
+	}
+	else
+	{
+		keyPressed = false;
+	}
 }
