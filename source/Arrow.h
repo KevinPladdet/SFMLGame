@@ -8,9 +8,10 @@ class Arrow
 {
 public:
 	Arrow(Engine& engine, World& world);
-	void LoadSprite(std::string path);
+	void LoadSprite();
 	void CreateArrowBody();
 	void Render();
+	void DestroyArrow();
 
 private:
 	Engine& engine;

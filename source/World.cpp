@@ -112,6 +112,23 @@ void World::Update()
 	{
 		keyPressed = false;
 	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
+	{
+		if (!keyPressedTwo)
+		{
+			for (auto& arrow : arrows)
+			{
+				arrow.DestroyArrow();
+			}
+			arrows.clear();
+			keyPressedTwo = true;
+		}
+	}
+	else
+	{
+		keyPressedTwo = false;
+	}
 }
 
 void World::Render()

@@ -25,6 +25,7 @@ private:
 
 	std::vector<Arrow> arrows;
 	bool keyPressed;
+	bool keyPressedTwo;
 
 	// b2BodyId
 	b2BodyId playerId;

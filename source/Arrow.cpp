@@ -7,15 +7,18 @@ Arrow::Arrow(Engine& eng, World& world)
 	: engine(eng),
 	world(world)
 {
-	LoadSprite("Assets/Arrow.png");
+	LoadSprite();
 	CreateArrowBody();
 }
 
-void Arrow::LoadSprite(std::string path)
+void Arrow::LoadSprite()
 {
-	//world.arrowTexture.loadFromFile(path);
 	arrowSprite.setTexture(world.arrowTexture);
 }
+
+// To do tomorrow: A body gets created for the arrow which is invisible but
+// can still collide with other arrows 
+// (which is why the first arrow you spawn in is floating)
 
 void Arrow::CreateArrowBody()
 {
@@ -47,4 +50,9 @@ void Arrow::Render()
 	arrowSprite.setRotation(arrowAngle);
 	
 	engine.window.draw(arrowSprite);
+}
+
+void Arrow::DestroyArrow()
+{
+	b2DestroyBody(arrowId);
 }
