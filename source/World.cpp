@@ -7,6 +7,7 @@ World::World(Engine& eng)
 	minY(4.4),
 	maxY(10)
 {
+	arrowTexture.loadFromFile("Assets/Arrow.png");
 	std::srand(static_cast<unsigned int>(std::time(nullptr))); // Seeds the rng so it's actually random each time
 	leftPlatformSpeedY = (2 + std::rand() % 6),
 	rightPlatformSpeedY = (2 + std::rand() % 6),

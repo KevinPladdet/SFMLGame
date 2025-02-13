@@ -13,8 +13,8 @@ Arrow::Arrow(Engine& eng, World& world)
 
 void Arrow::LoadSprite(std::string path)
 {
-	texture.loadFromFile(path);
-	arrowSprite.setTexture(texture);
+	//world.arrowTexture.loadFromFile(path);
+	arrowSprite.setTexture(world.arrowTexture);
 }
 
 void Arrow::CreateArrowBody()
@@ -41,8 +41,8 @@ void Arrow::Render()
 	float arrowAngle = std::atan2(arrowRot.s, arrowRot.c) * 180 / 3.14;
 
 	sf::Vector2f arrowSize(1.0f * world.worldScale, 0.25f * world.worldScale);
-	arrowSprite.setScale(arrowSize.x / texture.getSize().x, arrowSize.y / texture.getSize().y);
-	arrowSprite.setOrigin(texture.getSize().x / 2.0f, texture.getSize().y / 2.0f);
+	arrowSprite.setScale(arrowSize.x / world.arrowTexture.getSize().x, arrowSize.y / world.arrowTexture.getSize().y);
+	arrowSprite.setOrigin(world.arrowTexture.getSize().x / 2.0f, world.arrowTexture.getSize().y / 2.0f);
 	arrowSprite.setPosition(sf::Vector2f(arrowPos.x * world.worldScale, arrowPos.y * world.worldScale));
 	arrowSprite.setRotation(arrowAngle);
 	

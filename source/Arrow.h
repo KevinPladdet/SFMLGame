@@ -20,6 +20,5 @@ private:
 	b2BodyId arrowId;
 
 	// Arrow
-	sf::Texture texture;
 	sf::Sprite arrowSprite;
 };

@@ -17,6 +17,9 @@ public:
 	// worldScale is 50 because 50 pixels is 1 meter in Box2D
 	const int worldScale = 50;
 
+	// Arrow Texture
+	sf::Texture arrowTexture;
+
 private:
 	Engine& engine;
 
