@@ -11,18 +11,15 @@ public:
 	void LoadSprite(std::string path);
 	void CreateArrowBody();
 	void Render();
-	void Update();
 
 private:
 	Engine& engine;
 	World& world;
 
-	bool keyPressed;
-
 	// b2BodyId
 	b2BodyId arrowId;
 
-	// Arrow Sprite
+	// Arrow
 	sf::Texture texture;
 	sf::Sprite arrowSprite;
 };

@@ -5,11 +5,10 @@
 
 Arrow::Arrow(Engine& eng, World& world)
 	: engine(eng),
-	world(world),
-	keyPressed(false)
+	world(world)
 {
 	LoadSprite("Assets/Arrow.png");
-	CreateArrowBody(); // Create Arrow Body with Box2D
+	CreateArrowBody();
 }
 
 void Arrow::LoadSprite(std::string path)
@@ -48,21 +47,4 @@ void Arrow::Render()
 	arrowSprite.setRotation(arrowAngle);
 	
 	engine.window.draw(arrowSprite);
-}
-
-void Arrow::Update()
-{
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::K))
-	{
-		if (!keyPressed)
-		{
-			std::cout << "Spawned in Arrow" << std::endl;
-			// Spawn in arrow here
-			keyPressed = true;
-		}
-	}
-	else
-	{
-		keyPressed = false;
-	}
 }

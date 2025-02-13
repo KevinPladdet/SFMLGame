@@ -1,6 +1,7 @@
 #pragma once
 #include "box2d/box2d.h"
 #include <SFML/Graphics.hpp>
+#include "Arrow.h"
 
 class Engine;
 class World
@@ -9,7 +10,7 @@ public:
 	World(Engine& engine);
 	void Update();
 	void Render();
-	void SpawnArrow(std::string path);
+	void SpawnArrow();
 
 	// worldId is used to spawn body's in the world
 	b2WorldId worldId;
@@ -18,6 +19,9 @@ public:
 
 private:
 	Engine& engine;
+
+	std::vector<Arrow> arrows;
+	bool keyPressed;
 
 	// b2BodyId
 	b2BodyId playerId;
@@ -41,8 +45,4 @@ private:
 	float rightPlatformSpeedY;
 	float minY;
 	float maxY;
-
-	// Arrow
-	sf::Texture texture;
-	sf::Sprite sprite;
 };

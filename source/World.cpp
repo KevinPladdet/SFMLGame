@@ -97,6 +97,20 @@ void World::Update()
 
 	b2Vec2 velocityRight = { 0.0f, rightPlatformSpeedY };
 	b2Body_SetLinearVelocity(platformRightId, velocityRight);
+
+	// Arrow Spawning
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::K))
+	{
+		if (!keyPressed)
+		{
+			SpawnArrow();
+			keyPressed = true;
+		}
+	}
+	else
+	{
+		keyPressed = false;
+	}
 }
 
 void World::Render()
@@ -153,10 +167,15 @@ void World::Render()
 	ground.setOrigin(groundSize / 2.0f);
 	ground.setPosition(sf::Vector2f(groundPosition.x * worldScale, groundPosition.y * worldScale));
 	engine.window.draw(ground);
+	
+	for (auto& arrow : arrows)
+	{
+		arrow.Render();
+	}
 }
 
-void World::SpawnArrow(std::string path)
+void World::SpawnArrow()
 {
-	texture.loadFromFile(path);
-	sprite.setTexture(texture);
+	std::cout << "Spawned in Arrow" << std::endl;
+	arrows.emplace_back(engine, *this);
 }

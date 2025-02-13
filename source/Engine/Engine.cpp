@@ -43,8 +43,6 @@ void Engine::LoopEngine()
 
 		world.Update();
 		world.Render();
-		arrow.Render();
-		arrow.Update();
 
 		window.display();
 	}
