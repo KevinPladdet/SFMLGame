@@ -12,10 +12,15 @@ public:
 	void CreateArrowBody();
 	void Render();
 	void DestroyArrow();
+	void Update();
 
 private:
 	Engine& engine;
 	World& world;
+
+	// Force
+	b2Vec2 forcePosition;
+	bool keyPressed;
 
 	// b2BodyId
 	b2BodyId arrowId;

@@ -15,10 +15,6 @@ void Arrow::LoadSprite()
 	arrowSprite.setTexture(world.arrowTexture);
 }
 
-// To do tomorrow: A body gets created for the arrow which is invisible but
-// can still collide with other arrows
-// (which is why the first arrow you spawn in is floating)
-
 void Arrow::CreateArrowBody()
 {
 	// Creating Arrow with Box2D
@@ -54,4 +50,25 @@ void Arrow::Render()
 void Arrow::DestroyArrow()
 {
 	b2DestroyBody(arrowId);
+}
+
+void Arrow::Update()
+{
+	// Testing force
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
+	{
+		if (!keyPressed)
+		{
+			std::cout << "Applying force" << "\n";
+			b2Vec2 forcePosition{ 1000.0f, 0.0f };
+			b2Vec2 arrowPos = b2Body_GetPosition(arrowId);
+			//b2Vec2 rightPart{arrowPos.x + 0.5f, arrowPos.y};
+			b2Body_ApplyForce(arrowId, forcePosition, arrowPos, true);
+			keyPressed = true;
+		}
+	}
+	else
+	{
+		keyPressed = false;
+	}
 }

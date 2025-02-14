@@ -189,6 +189,7 @@ void World::Render()
 	for (auto& arrow : arrows)
 	{
 		arrow.Render();
+		arrow.Update();
 	}
 }
 
