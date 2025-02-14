@@ -8,7 +8,6 @@ Arrow::Arrow(Engine& eng, World& world)
 	world(world)
 {
 	LoadSprite();
-	CreateArrowBody();
 }
 
 void Arrow::LoadSprite()
@@ -17,7 +16,7 @@ void Arrow::LoadSprite()
 }
 
 // To do tomorrow: A body gets created for the arrow which is invisible but
-// can still collide with other arrows 
+// can still collide with other arrows
 // (which is why the first arrow you spawn in is floating)
 
 void Arrow::CreateArrowBody()
