@@ -14,6 +14,8 @@ public:
 
 	// worldId is used to spawn body's in the world
 	b2WorldId worldId;
+	b2BodyId playerId;
+
 	// worldScale is 50 because 50 pixels is 1 meter in Box2D
 	const int worldScale = 50;
 
@@ -28,7 +30,6 @@ private:
 	bool keyPressedTwo;
 
 	// b2BodyId
-	b2BodyId playerId;
 	b2BodyId enemyId;
 
 	b2BodyId platformLeftId;

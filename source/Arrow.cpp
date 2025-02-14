@@ -20,7 +20,12 @@ void Arrow::CreateArrowBody()
 	// Creating Arrow with Box2D
 	b2BodyDef arrowDef = b2DefaultBodyDef();
 	arrowDef.type = b2_dynamicBody;
-	arrowDef.position = { 300.0f / world.worldScale, 200.0f / world.worldScale };
+
+	// Spawn Arrow next to Player
+	b2Vec2 playerPos = b2Body_GetPosition(world.playerId);
+	b2Vec2 spawnPos = {playerPos.x + 1.0f, playerPos.y};
+	arrowDef.position = { spawnPos.x, spawnPos.y};
+
 	arrowId = b2CreateBody(world.worldId, &arrowDef);
 	b2Polygon arrowBox = b2MakeBox(0.5f, 0.125f);
 
@@ -54,7 +59,7 @@ void Arrow::DestroyArrow()
 
 void Arrow::Update()
 {
-	b2Body_GetWorldPoint(arrowId, b2Vec2{ -0.5, 0 });
+	//b2Body_GetWorldPoint(arrowId, b2Vec2{ -0.5, 0 });
 
 	// Testing force
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
@@ -62,7 +67,7 @@ void Arrow::Update()
 		if (!keyPressed)
 		{
 			std::cout << "Applying force" << "\n";
-			b2Vec2 forcePosition{ 1000.0f, 0.0f };
+			b2Vec2 forcePosition{ 1500.0f, 0.0f };
 			b2Vec2 arrowPos = b2Body_GetPosition(arrowId);
 			//b2Vec2 rightPart{arrowPos.x, arrowPos.y + 0.5f};
 			b2Body_ApplyForce(arrowId, forcePosition, arrowPos, true);

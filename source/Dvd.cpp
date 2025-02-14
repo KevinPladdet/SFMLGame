@@ -10,13 +10,14 @@ Dvd::Dvd(Engine& eng)
 	engine(eng)
 {	
 	LoadSprite("Assets/DvdLogoWhite.png");
+	sprite.setPosition(25, 0);
 	DisplayText();
 }
 
 // Update function
 void Dvd::Update()
 {	
-	if (spritePosition.x < 0 || spritePosition.x > engine.screenSizeX - 200)
+	if (spritePosition.x < 25 || spritePosition.x > engine.screenSizeX - 225)
 	{
 		sprite.setColor(sf::Color(rand()% 256, rand() % 256, rand() % 256, 255));
 		velocityX *= -1;
