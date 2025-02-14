@@ -59,6 +59,7 @@ void Dvd::DisplayText()
 	font.loadFromFile("Assets/Fonts/VerdanaPro-CondRegular.ttf");
 	text.setFont(font);
 	text.setCharacterSize(24);
+	text.setPosition(25, 0);
 	text.setFillColor(sf::Color::Red);
 	text.setString("Bounced: " + std::to_string(bounceAmount));
 }

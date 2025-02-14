@@ -30,17 +30,27 @@ private:
 	// b2BodyId
 	b2BodyId playerId;
 	b2BodyId enemyId;
+
 	b2BodyId platformLeftId;
 	b2BodyId platformRightId;
+
 	b2BodyId groundId;
+	b2BodyId wallLeftId;
+	b2BodyId wallRightId;
+
 
 	// Visualising shapes
 	sf::RectangleShape player;
 	sf::RectangleShape enemy;
+
 	sf::RectangleShape platformLeft;
 	sf::RectangleShape platformRight;
+
 	sf::RectangleShape ground;
+	sf::RectangleShape wallLeft;
+	sf::RectangleShape wallRight;
 	
+	// World values
 	float timeStep = 1.0f / 150.0f;
 	int subStepCount = 4;
 

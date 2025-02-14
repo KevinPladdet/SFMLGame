@@ -54,6 +54,8 @@ void Arrow::DestroyArrow()
 
 void Arrow::Update()
 {
+	b2Body_GetWorldPoint(arrowId, b2Vec2{ -0.5, 0 });
+
 	// Testing force
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
 	{
@@ -62,7 +64,7 @@ void Arrow::Update()
 			std::cout << "Applying force" << "\n";
 			b2Vec2 forcePosition{ 1000.0f, 0.0f };
 			b2Vec2 arrowPos = b2Body_GetPosition(arrowId);
-			//b2Vec2 rightPart{arrowPos.x + 0.5f, arrowPos.y};
+			//b2Vec2 rightPart{arrowPos.x, arrowPos.y + 0.5f};
 			b2Body_ApplyForce(arrowId, forcePosition, arrowPos, true);
 			keyPressed = true;
 		}

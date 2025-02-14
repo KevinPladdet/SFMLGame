@@ -68,9 +68,29 @@ World::World(Engine& eng)
 	groundBodyDef.position = { 640.0f / worldScale, 710.0f / worldScale };
 	groundId = b2CreateBody(worldId, &groundBodyDef);
 
-	b2Polygon groundBox = b2MakeBox(25.6f, 0.25f);
+	b2Polygon groundBox = b2MakeBox(12.8f, 0.25f);
 	b2ShapeDef groundShapeDef = b2DefaultShapeDef();
 	b2CreatePolygonShape(groundId, &groundShapeDef, &groundBox);
+
+	// Creating WallLeft
+	b2BodyDef wallLeftBodyDef = b2DefaultBodyDef();
+	wallLeftBodyDef.type = b2_kinematicBody;
+	wallLeftBodyDef.position = { 10.0f / worldScale, 50.0f / worldScale };
+	wallLeftId = b2CreateBody(worldId, &wallLeftBodyDef);
+
+	b2Polygon wallLeftBox = b2MakeBox(0.25f, 14.4f);
+	b2ShapeDef wallLeftShapeDef = b2DefaultShapeDef();
+	b2CreatePolygonShape(wallLeftId, &wallLeftShapeDef, &wallLeftBox);
+
+	// Creating WallRight
+	b2BodyDef wallRightBodyDef = b2DefaultBodyDef();
+	wallRightBodyDef.type = b2_kinematicBody;
+	wallRightBodyDef.position = { 1270.0f / worldScale, 50.0f / worldScale };
+	wallRightId = b2CreateBody(worldId, &wallRightBodyDef);
+
+	b2Polygon wallRightBox = b2MakeBox(0.25f, 14.4f);
+	b2ShapeDef wallRightShapeDef = b2DefaultShapeDef();
+	b2CreatePolygonShape(wallRightId, &wallRightShapeDef, &wallRightBox);
 }
 
 void World::Update()
@@ -185,6 +205,24 @@ void World::Render()
 	ground.setOrigin(groundSize / 2.0f);
 	ground.setPosition(sf::Vector2f(groundPosition.x * worldScale, groundPosition.y * worldScale));
 	engine.window.draw(ground);
+
+	// Visualizing WallLeft
+	b2Vec2 wallLeftPosition = b2Body_GetPosition(wallLeftId);
+	sf::Vector2f wallLeftSize(0.5f * worldScale, 28.8f * worldScale);
+	wallLeft.setFillColor(sf::Color(255, 0, 0));
+	wallLeft.setSize(wallLeftSize);
+	wallLeft.setOrigin(wallLeftSize / 2.0f);
+	wallLeft.setPosition(sf::Vector2f(wallLeftPosition.x * worldScale, wallLeftPosition.y * worldScale));
+	engine.window.draw(wallLeft);
+
+	// Visualizing WallRight
+	b2Vec2 wallRightPosition = b2Body_GetPosition(wallRightId);
+	sf::Vector2f wallRightSize(0.5f * worldScale, 28.8f * worldScale);
+	wallRight.setFillColor(sf::Color(255, 0, 0));
+	wallRight.setSize(wallRightSize);
+	wallRight.setOrigin(wallRightSize / 2.0f);
+	wallRight.setPosition(sf::Vector2f(wallRightPosition.x * worldScale, wallRightPosition.y * worldScale));
+	engine.window.draw(wallRight);
 	
 	for (auto& arrow : arrows)
 	{
