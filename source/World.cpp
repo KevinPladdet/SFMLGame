@@ -119,6 +119,18 @@ void World::Update()
 	b2Vec2 velocityRight = { 0.0f, rightPlatformSpeedY };
 	b2Body_SetLinearVelocity(platformRightId, velocityRight);
 
+	// Enemy anti bounce
+	/*b2Vec2 enemyPosition = b2Body_GetPosition(enemyId);
+
+	std::cout << "Enemy Y: " << enemyPosition.y << "\n";
+	std::cout << "Platform Y: " << platformLeftPosition.y << "\n";
+	
+	if (enemyPosition.y < minY)
+	{
+		b2Vec2 velocity{ 0, 5.0f };
+		b2Body_SetLinearVelocity(enemyId, velocity);
+	}*/
+
 	// Arrow Spawning
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::K))
 	{
@@ -137,6 +149,7 @@ void World::Update()
 	{
 		if (!keyPressedTwo)
 		{
+			std::cout << "Destroying all Arrows" << "\n";
 			for (auto& arrow : arrows)
 			{
 				arrow.DestroyArrow();

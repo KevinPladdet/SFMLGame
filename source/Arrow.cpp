@@ -24,7 +24,7 @@ void Arrow::CreateArrowBody()
 	// Spawn Arrow next to Player
 	b2Vec2 playerPos = b2Body_GetPosition(world.playerId);
 	b2Vec2 spawnPos = {playerPos.x + 1.0f, playerPos.y};
-	arrowDef.position = { spawnPos.x, spawnPos.y};
+	arrowDef.position = {spawnPos.x, spawnPos.y};
 
 	arrowId = b2CreateBody(world.worldId, &arrowDef);
 	b2Polygon arrowBox = b2MakeBox(0.5f, 0.125f);
@@ -59,18 +59,26 @@ void Arrow::DestroyArrow()
 
 void Arrow::Update()
 {
-	//b2Body_GetWorldPoint(arrowId, b2Vec2{ -0.5, 0 });
+	// Get mousePos
+	sf::Vector2i mousePixelPos = sf::Mouse::getPosition(engine.window);
+	sf::Vector2f mousePos = engine.window.mapPixelToCoords(mousePixelPos);
 
-	// Testing force
+	// Get arrowPos
+	b2Vec2 arrowPixelPos = b2Body_GetPosition(arrowId);
+	sf::Vector2f arrowPos(arrowPixelPos.x * world.worldScale, arrowPixelPos.y * world.worldScale);
+
+	// Get direction and distance of the arrow
+	sf::Vector2f arrowDirection = mousePos - arrowPos;
+
+	// 200.0f is the amount of force
+	b2Vec2 forceDirection {arrowDirection.x * 200.0f / world.worldScale, arrowDirection.y * 200.0f / world.worldScale};
+	
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
 	{
 		if (!keyPressed)
 		{
 			std::cout << "Applying force" << "\n";
-			b2Vec2 forcePosition{ 1500.0f, 0.0f };
-			b2Vec2 arrowPos = b2Body_GetPosition(arrowId);
-			//b2Vec2 rightPart{arrowPos.x, arrowPos.y + 0.5f};
-			b2Body_ApplyForce(arrowId, forcePosition, arrowPos, true);
+			b2Body_ApplyForce(arrowId, forceDirection, arrowPixelPos, true);
 			keyPressed = true;
 		}
 	}
