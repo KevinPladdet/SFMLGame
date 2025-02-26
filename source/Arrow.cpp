@@ -59,26 +59,12 @@ void Arrow::DestroyArrow()
 
 void Arrow::Update()
 {
-	// Get mousePos
-	sf::Vector2i mousePixelPos = sf::Mouse::getPosition(engine.window);
-	sf::Vector2f mousePos = engine.window.mapPixelToCoords(mousePixelPos);
-
-	// Get arrowPos
-	b2Vec2 arrowPixelPos = b2Body_GetPosition(arrowId);
-	sf::Vector2f arrowPos(arrowPixelPos.x * world.worldScale, arrowPixelPos.y * world.worldScale);
-
-	// Get direction and distance of the arrow
-	sf::Vector2f arrowDirection = mousePos - arrowPos;
-	
-	b2Vec2 forceDirection {arrowDirection.x * 150.0f / world.worldScale, arrowDirection.y * 150.0f / world.worldScale};
-
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
 	{
 		if (!keyPressed)
 		{
 			std::cout << "Applying force" << "\n";
-			// PLAY WHOOSH SFX HERE!!
-			b2Body_ApplyForce(arrowId, forceDirection, arrowPixelPos, true);
+			ArrowForce();
 			keyPressed = true;
 		}
 	}
@@ -87,9 +73,8 @@ void Arrow::Update()
 		keyPressed = false;
 	}
 
-	b2Vec2 arrowVelocity = b2Body_GetLinearVelocity(arrowId);
-
 	// Apply small negative downwards force
+	b2Vec2 arrowVelocity = b2Body_GetLinearVelocity(arrowId);
 	b2Vec2 arrowTip = b2Body_GetWorldPoint(arrowId, b2Vec2{ 0.5f, 0.0f });
 	b2Vec2 downwardsForce = b2Vec2{ arrowVelocity.x * -0.02f, arrowVelocity.y * -0.02f };
 	b2Body_ApplyForce(arrowId, downwardsForce, arrowTip, true);
@@ -107,6 +92,8 @@ void Arrow::ArrowForce()
 
 	// Get direction and distance of the arrow
 	sf::Vector2f arrowDirection = mousePos - arrowPos;
+
+	// ADD WHOOSH SFX HERE!!
 
 	b2Vec2 forceDirection{ arrowDirection.x * 100.0f / world.worldScale, arrowDirection.y * 100.0f / world.worldScale };
 

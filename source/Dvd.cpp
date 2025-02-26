@@ -37,7 +37,7 @@ void Dvd::Update()
 	spritePosition.y += velocityY;
 	sprite.setPosition(spritePosition);
 
-	engine.window.draw(sprite);
+	//engine.window.draw(sprite);
 	engine.window.draw(text);
 }
 
