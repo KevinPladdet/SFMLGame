@@ -249,4 +249,5 @@ void World::SpawnArrow()
 	std::cout << "Spawned in Arrow" << std::endl;
 	arrows.emplace_back(engine, *this);
 	arrows.back().CreateArrowBody();
+	arrows.back().ArrowForce();
 }

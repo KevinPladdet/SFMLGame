@@ -13,6 +13,7 @@ public:
 	void Render();
 	void DestroyArrow();
 	void Update();
+	void ArrowForce();
 
 private:
 	Engine& engine;
