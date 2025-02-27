@@ -1,11 +1,13 @@
 #include "Arrow.h"
 #include "Engine/Engine.h"
 #include "World.h"
+#include "VolumeManager.h"
 #include <iostream>
 
-Arrow::Arrow(Engine& eng, World& world)
+Arrow::Arrow(Engine& eng, World& world, VolumeManager& vm)
 	: engine(eng),
-	world(world)
+	world(world),
+	vm(vm)
 {
 	LoadSprite();
 }
@@ -93,7 +95,8 @@ void Arrow::ArrowForce()
 	// Get direction and distance of the arrow
 	sf::Vector2f arrowDirection = mousePos - arrowPos;
 
-	// ADD WHOOSH SFX HERE!!
+	std::cout << "Play SFX" << "\n";
+	vm.arrowWhooshSFX.play();
 
 	b2Vec2 forceDirection{ arrowDirection.x * 100.0f / world.worldScale, arrowDirection.y * 100.0f / world.worldScale };
 

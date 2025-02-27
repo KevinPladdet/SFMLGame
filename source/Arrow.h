@@ -4,10 +4,11 @@
 
 class Engine;
 class World;
+class VolumeManager;
 class Arrow
 {
 public:
-	Arrow(Engine& engine, World& world);
+	Arrow(Engine& engine, World& world, VolumeManager& vm);
 	void LoadSprite();
 	void CreateArrowBody();
 	void Render();
@@ -18,6 +19,7 @@ public:
 private:
 	Engine& engine;
 	World& world;
+	VolumeManager& vm;
 
 	// Force
 	b2Vec2 forcePosition;
