@@ -109,9 +109,8 @@ void Arrow::ArrowForce()
 
 	// Get direction and distance of the arrow
 	sf::Vector2f arrowDirection = mousePos - arrowPos;
-
-	std::cout << "Play SFX" << "\n";
-	vm.arrowWhooshSFX.play();
+	
+	vm.PlayArrowWhooshSFX();
 
 	b2Vec2 forceDirection{ arrowDirection.x * 100.0f / world.worldScale, arrowDirection.y * 100.0f / world.worldScale };
 

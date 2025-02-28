@@ -131,6 +131,8 @@ void World::Update()
 		b2Body_SetLinearVelocity(enemyId, velocity);
 	}*/
 
+	// Detect Enemy Y position
+
 	// Arrow Spawning
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::K))
 	{
@@ -250,4 +252,9 @@ void World::SpawnArrow()
 	arrows.emplace_back(engine, *this, engine.volumeManager);
 	arrows.back().CreateArrowBody();
 	arrows.back().ArrowForce();
+}
+
+void World::Reset()
+{
+	// Make it here so the platform and enemy reset and that the text goes up in score
 }

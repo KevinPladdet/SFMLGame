@@ -6,9 +6,11 @@ class VolumeManager
 {
 public:
     VolumeManager(Engine& engine);
+    void PlayArrowWhooshSFX();
 
-    sf::SoundBuffer buffer;
-    sf::Sound arrowWhooshSFX;
+    sf::SoundBuffer arrowWhooshSFX;
+
+    std::vector<sf::Sound> arrowWhooshPool;
 private:
     Engine& engine;
 };
