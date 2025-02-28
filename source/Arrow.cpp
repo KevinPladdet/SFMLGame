@@ -26,7 +26,7 @@ void Arrow::CreateArrowBody()
 	// Spawn Arrow next to Player
 	b2Vec2 playerPos = b2Body_GetPosition(world.playerId);
 	b2Vec2 spawnPos = {playerPos.x + 1.0f, playerPos.y};
-	arrowDef.position = {spawnPos.x, spawnPos.y};
+	arrowDef.position = {spawnPos};
 
 	arrowId = b2CreateBody(world.worldId, &arrowDef);
 	b2Polygon arrowBox = b2MakeBox(0.5f, 0.125f);
@@ -35,6 +35,16 @@ void Arrow::CreateArrowBody()
 	arrowShapeDef.density = 1.0f;
 	arrowShapeDef.friction = 0.3f;
 	b2CreatePolygonShape(arrowId, &arrowShapeDef, &arrowBox);
+
+	// Rotate Arrow to mousePos
+	sf::Vector2i mousePixelPos = sf::Mouse::getPosition(engine.window);
+	sf::Vector2f mousePos = engine.window.mapPixelToCoords(mousePixelPos);
+	
+	sf::Vector2f arrowSpawnPos(spawnPos.x * world.worldScale, spawnPos.y * world.worldScale);
+	sf::Vector2f direction = mousePos - arrowSpawnPos;
+	float angleRad = std::atan2(direction.y, direction.x);
+
+	b2Body_SetTransform(arrowId, spawnPos, b2MakeRot(angleRad));
 }
 
 void Arrow::Render()
@@ -75,10 +85,10 @@ void Arrow::Update()
 		keyPressed = false;
 	}
 
-	// Apply small negative downwards force
+	// Apply small force to the front of the arrow
 	b2Vec2 arrowVelocity = b2Body_GetLinearVelocity(arrowId);
 	b2Vec2 arrowTip = b2Body_GetWorldPoint(arrowId, b2Vec2{ 0.5f, 0.0f });
-	b2Vec2 downwardsForce = b2Vec2{ arrowVelocity.x * -0.02f, arrowVelocity.y * -0.02f };
+	b2Vec2 downwardsForce = b2Vec2{ arrowVelocity.x * 0.07f, arrowVelocity.y * 0.07f };
 	b2Body_ApplyForce(arrowId, downwardsForce, arrowTip, true);
 }
 
