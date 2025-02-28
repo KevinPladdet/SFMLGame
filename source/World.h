@@ -27,8 +27,10 @@ private:
 	Engine& engine;
 
 	std::vector<Arrow> arrows;
+	
 	bool keyPressed;
 	bool keyPressedTwo;
+	bool keyPressedThree;
 
 	// b2BodyId
 	b2BodyId enemyId;

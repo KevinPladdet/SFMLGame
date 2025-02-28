@@ -119,19 +119,14 @@ void World::Update()
 	b2Vec2 velocityRight = { 0.0f, rightPlatformSpeedY };
 	b2Body_SetLinearVelocity(platformRightId, velocityRight);
 
-	// Enemy anti bounce
-	/*b2Vec2 enemyPosition = b2Body_GetPosition(enemyId);
-
-	std::cout << "Enemy Y: " << enemyPosition.y << "\n";
-	std::cout << "Platform Y: " << platformLeftPosition.y << "\n";
-	
-	if (enemyPosition.y < minY)
-	{
-		b2Vec2 velocity{ 0, 5.0f };
-		b2Body_SetLinearVelocity(enemyId, velocity);
-	}*/
-
 	// Detect Enemy Y position
+	/*b2Vec2 enemyPosition = b2Body_GetPosition(enemyId);
+	std::cout << "Enemy Y: " << enemyPosition.y << "\n";
+
+	if (enemyPosition.y > 12.5f)
+	{
+		std::cout << "Reset" << "\n";
+	}*/
 
 	// Arrow Spawning
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::K))
@@ -163,6 +158,19 @@ void World::Update()
 	else
 	{
 		keyPressedTwo = false;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+	{
+		if (!keyPressedThree)
+		{
+			Reset();
+			keyPressedThree = true;
+		}
+	}
+	else
+	{
+		keyPressedThree = false;
 	}
 }
 
@@ -257,4 +265,7 @@ void World::SpawnArrow()
 void World::Reset()
 {
 	// Make it here so the platform and enemy reset and that the text goes up in score
+	std::cout << "Resetting" << "\n";
+
+
 }
