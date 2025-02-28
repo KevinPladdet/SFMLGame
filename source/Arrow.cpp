@@ -90,6 +90,11 @@ void Arrow::Update()
 	b2Vec2 arrowTip = b2Body_GetWorldPoint(arrowId, b2Vec2{ 0.5f, 0.0f });
 	b2Vec2 downwardsForce = b2Vec2{ arrowVelocity.x * 0.07f, arrowVelocity.y * 0.07f };
 	b2Body_ApplyForce(arrowId, downwardsForce, arrowTip, true);
+
+	// Apply small drag force to the back of the arrow
+	b2Vec2 arrowTail = b2Body_GetWorldPoint(arrowId, b2Vec2{ -0.5f, 0.0f });
+	b2Vec2 dragForce = b2Vec2{ -arrowVelocity.x * 0.02f, -arrowVelocity.y * 0.02f };
+	b2Body_ApplyForce(arrowId, dragForce, arrowTail, true);
 }
 
 void Arrow::ArrowForce()
