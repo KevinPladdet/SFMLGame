@@ -272,6 +272,12 @@ void World::Reset()
 	std::cout << randomY << "\n";
 	b2Body_SetTransform(platformRightId, { randomX, randomY }, b2MakeRot(0.0f));
 	rightPlatformSpeedY = (2 + std::rand() % 10);
+	// Trying to reverse it here, will continue on it next week
+	rightPlatformSpeedY *= -1;
 
-	// Put enemy reset here
+	// Position enemy above platformRight
+	b2Body_SetTransform(enemyId, { randomX, randomY-1.2f }, b2MakeRot(0.0f));
+
+	// TO DO: Make it so the platform always goes up at the start of resetting
+	// so the enemy wont move / get caught weirdly
 }
