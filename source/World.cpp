@@ -120,13 +120,13 @@ void World::Update()
 	b2Body_SetLinearVelocity(platformRightId, velocityRight);
 
 	// Detect Enemy Y position
-	/*b2Vec2 enemyPosition = b2Body_GetPosition(enemyId);
-	std::cout << "Enemy Y: " << enemyPosition.y << "\n";
+	//b2Vec2 enemyPosition = b2Body_GetPosition(enemyId);
+	//std::cout << "Enemy Y: " << enemyPosition.y << "\n";
 
-	if (enemyPosition.y > 12.5f)
-	{
-		std::cout << "Reset" << "\n";
-	}*/
+	//if (enemyPosition.y > 12.5f)
+	//{
+	//	// Call Reset()
+	//}
 
 	// Arrow Spawning
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::K))
@@ -264,8 +264,14 @@ void World::SpawnArrow()
 
 void World::Reset()
 {
-	// Make it here so the platform and enemy reset and that the text goes up in score
 	std::cout << "Resetting" << "\n";
 
+	// Set random position and speed of platformRightId
+	float randomX = 13.0f + static_cast<float>(std::rand()) / (RAND_MAX / (21.6f - 13.0f));
+	float randomY = 4.4f + static_cast<float>(std::rand()) / (RAND_MAX / (10.0f - 4.4f));
+	std::cout << randomY << "\n";
+	b2Body_SetTransform(platformRightId, { randomX, randomY }, b2MakeRot(0.0f));
+	rightPlatformSpeedY = (2 + std::rand() % 10);
 
+	// Put enemy reset here
 }
