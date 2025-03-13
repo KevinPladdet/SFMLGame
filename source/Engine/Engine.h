@@ -1,6 +1,5 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "Dvd.h" 
 #include "Player.h"
 #include "World.h"
 #include "VolumeManager.h"
@@ -26,8 +25,7 @@ private:
 	Engine& eng = *this;
 	unsigned int framerateLimit = 60;
 	sf::Clock dt_clock;
-
-	Dvd dvd;
+	
 	Player player;
 	World world;
 	Arrow arrow;

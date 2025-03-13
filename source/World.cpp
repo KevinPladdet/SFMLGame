@@ -5,11 +5,21 @@
 World::World(Engine& eng)
 	: engine(eng),
 	minY(4.4),
-	maxY(10)
+	maxY(10),
+	scoreAmount(-1) // -1 because it calls Reset() at the start, which does scoreAmount += 1
 {
 	arrowTexture.loadFromFile("Assets/Arrow.png");
 	std::srand(static_cast<unsigned int>(std::time(nullptr))); // Seeds the rng so it's actually random each time
 	leftPlatformSpeedY = (2 + std::rand() % 6);
+
+	// Create scoreText
+	font.loadFromFile("Assets/Fonts/VerdanaPro-CondRegular.ttf");
+	scoreText.setFont(font);
+	scoreText.setCharacterSize(24);
+	scoreText.setPosition(25, 0);
+	scoreText.setFillColor(sf::Color::Red);
+	scoreText.setString("Score: " + std::to_string(scoreAmount));
+
 	// Creating World
 	b2WorldDef worldDef = b2DefaultWorldDef();
 	worldDef.gravity = { 0.0f, 25.0f };
@@ -225,6 +235,8 @@ void World::Update()
 	{
 		keyPressedThree = false;
 	}
+
+	engine.window.draw(scoreText);
 }
 
 void World::Render()
@@ -330,6 +342,10 @@ void World::Reset()
 
 	// Destroy all Arrows
 	DestroyArrows();
+
+	// Increase Score and update Text
+	scoreAmount += 1;
+	scoreText.setString("Score: " + std::to_string(scoreAmount));
 
 	// Set random position and speed of platformRightId
 	float randomX = 13.0f + static_cast<float>(std::rand()) / (RAND_MAX / (21.6f - 13.0f));

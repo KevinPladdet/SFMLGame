@@ -64,4 +64,9 @@ private:
 	float rightPlatformSpeedY;
 	float minY;
 	float maxY;
+
+	// Score Text
+	sf::Font font;
+	sf::Text scoreText;
+	int scoreAmount;
 };

@@ -2,8 +2,7 @@
 #include <SFML/Window.hpp>
 
 Engine::Engine()
-	: dvd(*this),
-	player(*this),
+	: player(*this),
 	world(*this),
 	volumeManager(*this),
 	arrow(*this, world, volumeManager)
@@ -39,7 +38,6 @@ void Engine::LoopEngine()
 
 		// Render
 		window.clear();
-		dvd.Update();
 		player.Update();
 
 		world.Update();
