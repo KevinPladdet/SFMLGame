@@ -9,10 +9,7 @@ World::World(Engine& eng)
 {
 	arrowTexture.loadFromFile("Assets/Arrow.png");
 	std::srand(static_cast<unsigned int>(std::time(nullptr))); // Seeds the rng so it's actually random each time
-	leftPlatformSpeedY = (2 + std::rand() % 6),
-	rightPlatformSpeedY = (2 + std::rand() % 6),
-	std::cout << "leftPlatformSpeedY: " << leftPlatformSpeedY << "\n";
-	std::cout << "rightPlatformSpeedY: " << rightPlatformSpeedY << "\n";
+	leftPlatformSpeedY = (2 + std::rand() % 6);
 	// Creating World
 	b2WorldDef worldDef = b2DefaultWorldDef();
 	worldDef.gravity = { 0.0f, 25.0f };
@@ -21,7 +18,7 @@ World::World(Engine& eng)
 	// Creating Player
 	b2BodyDef playerDef = b2DefaultBodyDef();
 	playerDef.type = b2_dynamicBody;
-	playerDef.position = { 200.0f / worldScale, 200.0f / worldScale };
+	playerDef.position = { 200.0f / worldScale, 250.0f / worldScale };
 	playerId = b2CreateBody(worldId, &playerDef);
 	b2Polygon playerBox = b2MakeBox(0.5f, 1.0f);
 
@@ -33,7 +30,7 @@ World::World(Engine& eng)
 	// Creating Enemy
 	b2BodyDef enemyDef = b2DefaultBodyDef();
 	enemyDef.type = b2_dynamicBody;
-	enemyDef.position = { 1080.0f / worldScale, 200.0f / worldScale };
+	enemyDef.position = { 1080.0f / worldScale, 350.0f / worldScale };
 	enemyId = b2CreateBody(worldId, &enemyDef);
 	b2Polygon enemyBox = b2MakeBox(0.5f, 1.0f);
 
@@ -45,7 +42,7 @@ World::World(Engine& eng)
 	// Creating PlatformLeft
 	b2BodyDef platformLeftBodyDef = b2DefaultBodyDef();
 	platformLeftBodyDef.type = b2_kinematicBody;
-	platformLeftBodyDef.position = { 200.0f / worldScale, 400.0f / worldScale };
+	platformLeftBodyDef.position = { 200.0f / worldScale, 300.0f / worldScale };
 	platformLeftId = b2CreateBody(worldId, &platformLeftBodyDef);
 	
 	b2Polygon platformLeftBox = b2MakeBox(1.0f, 0.25f);
@@ -57,6 +54,10 @@ World::World(Engine& eng)
 	platformRightBodyDef.type = b2_kinematicBody;
 	platformRightBodyDef.position = { 1080.0f / worldScale, 400.0f / worldScale };
 	platformRightId = b2CreateBody(worldId, &platformRightBodyDef);
+	
+	// Makes both platform move upwards upon running the game
+	leftPlatformSpeedY *= -1;
+	rightPlatformSpeedY *= -1;
 
 	b2Polygon platformRightBox = b2MakeBox(1.0f, 0.25f);
 	b2ShapeDef platformRightShapeDef = b2DefaultShapeDef();
@@ -91,6 +92,9 @@ World::World(Engine& eng)
 	b2Polygon wallRightBox = b2MakeBox(0.25f, 14.4f);
 	b2ShapeDef wallRightShapeDef = b2DefaultShapeDef();
 	b2CreatePolygonShape(wallRightId, &wallRightShapeDef, &wallRightBox);
+
+	// Randomize Enemy position & PlatformRight position + speed
+	Reset();
 }
 
 void World::Update()
@@ -118,6 +122,55 @@ void World::Update()
 
 	b2Vec2 velocityRight = { 0.0f, rightPlatformSpeedY };
 	b2Body_SetLinearVelocity(platformRightId, velocityRight);
+	
+	// PlayerVelocity and EnemeyVelocity makes it so that the player and enemy will have the same velocity as their platform.
+	// (This makes the player and enemy no longer launch in the air when their platform goes down)
+	#pragma region PlayerVelocity
+	b2Vec2 playerPosition = b2Body_GetPosition(playerId);
+
+	// Floats for the platformLeftTopY and playerBottomY 
+	// (will be used to calculate the difference between them)
+	float platformLeftTopY = platformLeftPosition.y - 0.25f;
+	float playerBottomY = playerPosition.y - 1.0f;
+
+	// Checks if player is on the platform, if yes: apply platformLeft velocity to the player
+	if (std::abs(playerBottomY - platformLeftTopY) < 2.02f) // Checks posY difference by 0.02
+	{
+		// Applies the same velocity to the player as platformLeft
+		b2Vec2 playerVelocity = b2Body_GetLinearVelocity(playerId);
+		playerVelocity.y = leftPlatformSpeedY;
+		b2Body_SetLinearVelocity(playerId, playerVelocity);
+	}
+	#pragma endregion PlayerVelocity
+	#pragma region EnemyVelocity
+	b2Vec2 enemyPosition = b2Body_GetPosition(enemyId);
+
+	// Floats for the platformRightTopY and enemyBottomY 
+	// (will be used to calculate difference between them)
+	float platformRightTopY = platformRightPosition.y - 0.25f;
+	float enemyBottomY = enemyPosition.y - 1.0f;
+	
+	b2Rot enemyRot = b2Body_GetRotation(enemyId);
+	float enemyAngle = std::atan2(enemyRot.s, enemyRot.c) * 180 / 3.14;
+
+	// Checks if enemy is on the platform, if yes: apply the platform velocity to the enemy
+	if (std::abs(enemyBottomY - platformRightTopY) < 2.02f) // Checks posY difference by 0.02
+	{
+		// Checks posX difference by 0.62f (0.5 is the amount to be halfway off the platform)
+		if (std::abs(enemyPosition.x - platformRightPosition.x) < 0.62f)
+		{
+			// Checks if the enemy is rotating 
+			// (otherwise it would still apply velocity after being hit by an arrow)
+			if (std::abs(enemyAngle) < 0.5f)
+			{
+				// Applies the same velocity to the enemy as platformRight
+				b2Vec2 enemyVelocity = b2Body_GetLinearVelocity(enemyId);
+				enemyVelocity.y = rightPlatformSpeedY;
+				b2Body_SetLinearVelocity(enemyId, enemyVelocity);
+			}
+		}
+	}
+	#pragma endregion EnemyVelocity
 
 	// Detect Enemy Y position
 	//b2Vec2 enemyPosition = b2Body_GetPosition(enemyId);
@@ -289,7 +342,4 @@ void World::Reset()
 
 	// Position enemy above platform
 	b2Body_SetTransform(enemyId, { randomX, randomY-1.2f }, b2MakeRot(0.0f));
-
-	// TO DO: Make it so the platform always goes up at the start of resetting
-	// so the enemy wont move / get caught weirdly
 }
