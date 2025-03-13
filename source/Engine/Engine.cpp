@@ -2,8 +2,9 @@
 #include <SFML/Window.hpp>
 
 Engine::Engine()
-	: world(*this),
+	: world(*this, clock),
 	volumeManager(*this),
+	clock(*this),
 	arrow(*this, world, volumeManager)
 {
 	Start();

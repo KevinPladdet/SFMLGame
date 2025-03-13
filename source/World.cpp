@@ -2,8 +2,9 @@
 #include "Engine/Engine.h"
 #include <iostream>
 
-World::World(Engine& eng)
+World::World(Engine& eng, Clock& clock)
 	: engine(eng),
+	clock(clock),
 	minY(4.4),
 	maxY(10),
 	scoreAmount(-1) // -1 because it calls Reset() at the start, which does scoreAmount += 1
@@ -209,12 +210,9 @@ void World::Update()
 	{
 		if (!keyPressedTwo)
 		{
-			std::cout << "Destroying all Arrows" << "\n";
-			for (auto& arrow : arrows)
-			{
-				arrow.DestroyArrow();
-			}
-			arrows.clear();
+			std::cout << "Pressed Clock Button" << "\n";
+			clock.WaitForSeconds();
+			Reset(); // Runs after waiting 3 seconds
 			keyPressedTwo = true;
 		}
 	}

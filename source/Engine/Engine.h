@@ -2,8 +2,8 @@
 #include <SFML/Graphics.hpp>
 #include "World.h"
 #include "VolumeManager.h"
+#include "Clock.h"
 #include "Arrow.h"
-
 
 class Engine
 {
@@ -27,4 +27,5 @@ private:
 	
 	World world;
 	Arrow arrow;
+	Clock clock;
 };
