@@ -1,6 +1,5 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "Player.h"
 #include "World.h"
 #include "VolumeManager.h"
 #include "Arrow.h"
@@ -26,7 +25,6 @@ private:
 	unsigned int framerateLimit = 60;
 	sf::Clock dt_clock;
 	
-	Player player;
 	World world;
 	Arrow arrow;
 };

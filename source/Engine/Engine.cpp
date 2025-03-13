@@ -2,8 +2,7 @@
 #include <SFML/Window.hpp>
 
 Engine::Engine()
-	: player(*this),
-	world(*this),
+	: world(*this),
 	volumeManager(*this),
 	arrow(*this, world, volumeManager)
 {
@@ -38,7 +37,6 @@ void Engine::LoopEngine()
 
 		// Render
 		window.clear();
-		player.Update();
 
 		world.Update();
 		world.Render();
