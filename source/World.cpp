@@ -262,20 +262,32 @@ void World::SpawnArrow()
 	arrows.back().ArrowForce();
 }
 
+void World::DestroyArrows()
+{
+	for (auto& arrow : arrows)
+	{
+		arrow.DestroyArrow();
+	}
+	arrows.clear();
+}
+
 void World::Reset()
 {
 	std::cout << "Resetting" << "\n";
 
+	// Destroy all Arrows
+	DestroyArrows();
+
 	// Set random position and speed of platformRightId
 	float randomX = 13.0f + static_cast<float>(std::rand()) / (RAND_MAX / (21.6f - 13.0f));
 	float randomY = 4.4f + static_cast<float>(std::rand()) / (RAND_MAX / (10.0f - 4.4f));
-	std::cout << randomY << "\n";
 	b2Body_SetTransform(platformRightId, { randomX, randomY }, b2MakeRot(0.0f));
 	rightPlatformSpeedY = (2 + std::rand() % 10);
-	// Trying to reverse it here, will continue on it next week
+	
+	// Platform will always spawn while moving upwards, never downwards
 	rightPlatformSpeedY *= -1;
 
-	// Position enemy above platformRight
+	// Position enemy above platform
 	b2Body_SetTransform(enemyId, { randomX, randomY-1.2f }, b2MakeRot(0.0f));
 
 	// TO DO: Make it so the platform always goes up at the start of resetting

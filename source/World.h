@@ -11,6 +11,7 @@ public:
 	void Update();
 	void Render();
 	void SpawnArrow();
+	void DestroyArrows();
 	void Reset();
 
 	// worldId is used to spawn body's in the world
