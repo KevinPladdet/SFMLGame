@@ -31,9 +31,9 @@ private:
 
 	std::vector<Arrow> arrows;
 	
-	bool keyPressed;
-	bool keyPressedTwo;
-	bool keyPressedThree;
+	bool keyPressedK;
+	bool keyPressedR;
+	bool clockRunning;
 
 	// b2BodyId
 	b2BodyId enemyId;

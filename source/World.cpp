@@ -184,54 +184,52 @@ void World::Update()
 	#pragma endregion EnemyVelocity
 
 	// Detect Enemy Y position
-	//b2Vec2 enemyPosition = b2Body_GetPosition(enemyId);
-	//std::cout << "Enemy Y: " << enemyPosition.y << "\n";
+	if (enemyPosition.y > 12.3f)
+	{
+		if (!clockRunning)
+		{
+			std::cout << "Started Clock" << "\n";
+			clock.StartTimer();
+			clockRunning = true;
+		}
+	}
+	else
+	{
+		clockRunning = false;
+	}
 
-	//if (enemyPosition.y > 12.5f)
-	//{
-	//	// Call Reset()
-	//}
+	// Waits 3 seconds before calling Reset()
+	if (clock.WaitForSeconds(3.0f))
+	{
+		std::cout << "Stopped Clock" << "\n";
+		Reset();
+	}
 
 	// Arrow Spawning
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::K))
 	{
-		if (!keyPressed)
+		if (!keyPressedK)
 		{
 			SpawnArrow();
-			keyPressed = true;
+			keyPressedK = true;
 		}
 	}
 	else
 	{
-		keyPressed = false;
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
-	{
-		if (!keyPressedTwo)
-		{
-			std::cout << "Pressed Clock Button" << "\n";
-			clock.WaitForSeconds();
-			Reset(); // Runs after waiting 3 seconds
-			keyPressedTwo = true;
-		}
-	}
-	else
-	{
-		keyPressedTwo = false;
+		keyPressedK = false;
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
 	{
-		if (!keyPressedThree)
+		if (!keyPressedR)
 		{
 			Reset();
-			keyPressedThree = true;
+			keyPressedR = true;
 		}
 	}
 	else
 	{
-		keyPressedThree = false;
+		keyPressedR = false;
 	}
 
 	engine.window.draw(scoreText);
