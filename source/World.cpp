@@ -7,7 +7,8 @@ World::World(Engine& eng, Clock& clock)
 	clock(clock),
 	minY(4.4),
 	maxY(10),
-	scoreAmount(-1) // -1 because it calls Reset() at the start, which does scoreAmount += 1
+	scoreAmount(-1), // -1 because it calls Reset() at the start, which does scoreAmount += 1
+	limitedArrowsAmount(5)
 {
 	arrowTexture.loadFromFile("Assets/Arrow.png");
 	std::srand(static_cast<unsigned int>(std::time(nullptr))); // Seeds the rng so it's actually random each time
@@ -20,6 +21,19 @@ World::World(Engine& eng, Clock& clock)
 	scoreText.setPosition(25, 0);
 	scoreText.setFillColor(sf::Color::Red);
 	scoreText.setString("Score: " + std::to_string(scoreAmount));
+
+	// Create limitedArrowsSprite
+	limitedArrowSprite.setTexture(arrowTexture);
+	limitedArrowSprite.setScale(0.075, 0.075);
+	limitedArrowSprite.setPosition(1205, 10);
+	limitedArrowSprite.setRotation(45);
+
+	// Create limitedArrowsText
+	limitedArrowsText.setFont(font);
+	limitedArrowsText.setCharacterSize(52);
+	limitedArrowsText.setPosition(1160, 2);
+	limitedArrowsText.setFillColor(sf::Color::Red);
+	limitedArrowsText.setString(std::to_string(limitedArrowsAmount));
 
 	// Creating World
 	b2WorldDef worldDef = b2DefaultWorldDef();
@@ -208,8 +222,10 @@ void World::Update()
 	// Arrow Spawning
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::K))
 	{
-		if (!keyPressedK)
+		if (!keyPressedK && limitedArrowsAmount >= 1)
 		{
+			limitedArrowsAmount -= 1;
+			limitedArrowsText.setString(std::to_string(limitedArrowsAmount));
 			SpawnArrow();
 			keyPressedK = true;
 		}
@@ -233,6 +249,8 @@ void World::Update()
 	}
 
 	engine.window.draw(scoreText);
+	engine.window.draw(limitedArrowsText);
+	engine.window.draw(limitedArrowSprite);
 }
 
 void World::Render()
@@ -342,6 +360,10 @@ void World::Reset()
 	// Increase Score and update Text
 	scoreAmount += 1;
 	scoreText.setString("Score: " + std::to_string(scoreAmount));
+
+	// Reset limitedArrowsAmount
+	limitedArrowsAmount = 5;
+	limitedArrowsText.setString(std::to_string(limitedArrowsAmount));
 
 	// Set random position and speed of platformRightId
 	float randomX = 13.0f + static_cast<float>(std::rand()) / (RAND_MAX / (21.6f - 13.0f));

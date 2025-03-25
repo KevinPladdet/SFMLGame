@@ -67,8 +67,13 @@ private:
 	float minY;
 	float maxY;
 
-	// Score Text
+	// Score
 	sf::Font font;
 	sf::Text scoreText;
 	int scoreAmount;
+
+	// Limited Arrows
+	sf::Text limitedArrowsText;
+	sf::Sprite limitedArrowSprite;
+	int limitedArrowsAmount;
 };
