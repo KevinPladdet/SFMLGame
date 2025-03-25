@@ -42,8 +42,8 @@ World::World(Engine& eng, Clock& clock)
 
 	// Creating Player
 	b2BodyDef playerDef = b2DefaultBodyDef();
-	playerDef.type = b2_dynamicBody;
-	playerDef.position = { 200.0f / worldScale, 250.0f / worldScale };
+	playerDef.type = b2_kinematicBody;
+	playerDef.position = { 200.0f / worldScale, 240.0f / worldScale };
 	playerId = b2CreateBody(worldId, &playerDef);
 	b2Polygon playerBox = b2MakeBox(0.5f, 1.0f);
 
@@ -148,25 +148,15 @@ void World::Update()
 	b2Vec2 velocityRight = { 0.0f, rightPlatformSpeedY };
 	b2Body_SetLinearVelocity(platformRightId, velocityRight);
 	
-	// PlayerVelocity and EnemeyVelocity makes it so that the player and enemy will have the same velocity as their platform.
-	// (This makes the player and enemy no longer launch in the air when their platform goes down)
+	// Applies the same velocity to the player as platformLeft
 	#pragma region PlayerVelocity
-	b2Vec2 playerPosition = b2Body_GetPosition(playerId);
-
-	// Floats for the platformLeftTopY and playerBottomY 
-	// (will be used to calculate the difference between them)
-	float platformLeftTopY = platformLeftPosition.y - 0.25f;
-	float playerBottomY = playerPosition.y - 1.0f;
-
-	// Checks if player is on the platform, if yes: apply platformLeft velocity to the player
-	if (std::abs(playerBottomY - platformLeftTopY) < 2.02f) // Checks posY difference by 0.02
-	{
-		// Applies the same velocity to the player as platformLeft
-		b2Vec2 playerVelocity = b2Body_GetLinearVelocity(playerId);
-		playerVelocity.y = leftPlatformSpeedY;
-		b2Body_SetLinearVelocity(playerId, playerVelocity);
-	}
+	
+	b2Vec2 playerVelocity = b2Body_GetLinearVelocity(playerId);
+	playerVelocity.y = leftPlatformSpeedY;
+	b2Body_SetLinearVelocity(playerId, playerVelocity);
 	#pragma endregion PlayerVelocity
+
+	// Enemy doesn't rotate / get launched up anymore unless hit by an arrow
 	#pragma region EnemyVelocity
 	b2Vec2 enemyPosition = b2Body_GetPosition(enemyId);
 
