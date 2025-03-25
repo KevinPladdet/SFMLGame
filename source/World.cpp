@@ -200,23 +200,29 @@ void World::Update()
 	// Detect Enemy Y position
 	if (enemyPosition.y > 12.3f)
 	{
-		if (!clockRunning)
+		if (!waitForReset)
 		{
-			std::cout << "Started Clock" << "\n";
+			std::cout << "Started Reset Clock" << "\n";
 			clock.StartTimer();
-			clockRunning = true;
+			waitForReset = true;
 		}
 	}
 	else
 	{
-		clockRunning = false;
+		waitForReset = false;
 	}
 
 	// Waits 3 seconds before calling Reset()
-	if (clock.WaitForSeconds(3.0f))
+	if (clock.WaitForReset(3.0f) && waitForReset)
 	{
-		std::cout << "Stopped Clock" << "\n";
 		Reset();
+	}
+
+	// Wait 5 seconds before game over
+	if (clock.WaitForGameOver(5.0f) && !waitForReset)
+	{
+		std::cout << "Game Over" << "\n";
+		// Add game over stuff here
 	}
 
 	// Arrow Spawning
@@ -227,6 +233,11 @@ void World::Update()
 			limitedArrowsAmount -= 1;
 			limitedArrowsText.setString(std::to_string(limitedArrowsAmount));
 			SpawnArrow();
+			if (limitedArrowsAmount == 0)
+			{
+				std::cout << "Started Arrow Clock" << "\n";
+				clock.StartTimer();
+			}
 			keyPressedK = true;
 		}
 	}
@@ -357,7 +368,7 @@ void World::Reset()
 	// Destroy all Arrows
 	DestroyArrows();
 
-	// Increase Score and update Text
+	// Increase Score
 	scoreAmount += 1;
 	scoreText.setString("Score: " + std::to_string(scoreAmount));
 

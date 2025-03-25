@@ -33,7 +33,7 @@ private:
 	
 	bool keyPressedK;
 	bool keyPressedR;
-	bool clockRunning;
+	bool waitForReset;
 
 	// b2BodyId
 	b2BodyId enemyId;

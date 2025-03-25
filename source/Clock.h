@@ -8,11 +8,13 @@ class Clock
 public:
     Clock(Engine& engine);
     void StartTimer();
-    bool WaitForSeconds(float duration);
+    bool WaitForReset(float duration);
+    bool WaitForGameOver(float duration);
         
 private:
     Engine& engine;
     
     sf::Clock clock;
-    bool running;
+    bool running1;
+    bool running2;
 };
