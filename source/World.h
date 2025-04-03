@@ -33,6 +33,7 @@ private:
 	
 	bool keyPressedK;
 	bool keyPressedR;
+	bool mouseClicked;
 	bool waitForReset;
 
 	// b2BodyId
@@ -76,4 +77,10 @@ private:
 	sf::Text limitedArrowsText;
 	sf::Sprite limitedArrowSprite;
 	int limitedArrowsAmount;
+
+	// Game Over
+	sf::Text gameOverText;
+	bool gameOver;
+	sf::Sprite retrySprite;
+	sf::Texture retryTexture;
 };

@@ -8,9 +8,11 @@ World::World(Engine& eng, Clock& clock)
 	minY(4.4),
 	maxY(10),
 	scoreAmount(-1), // -1 because it calls Reset() at the start, which does scoreAmount += 1
-	limitedArrowsAmount(5)
+	limitedArrowsAmount(5),
+	gameOver(true)
 {
 	arrowTexture.loadFromFile("Assets/Arrow.png");
+	retryTexture.loadFromFile("Assets/RetryButton.png");
 	std::srand(static_cast<unsigned int>(std::time(nullptr))); // Seeds the rng so it's actually random each time
 	leftPlatformSpeedY = (2 + std::rand() % 6);
 
@@ -34,6 +36,20 @@ World::World(Engine& eng, Clock& clock)
 	limitedArrowsText.setPosition(1160, 2);
 	limitedArrowsText.setFillColor(sf::Color::Red);
 	limitedArrowsText.setString(std::to_string(limitedArrowsAmount));
+
+	#pragma region SetupGameOver
+	// Create gameOverText
+	gameOverText.setFont(font);
+	gameOverText.setCharacterSize(104);
+	gameOverText.setPosition(370, 50);
+	gameOverText.setFillColor(sf::Color::Red);
+	gameOverText.setString("Game Over!");
+
+	// Create retrySprite
+	retrySprite.setTexture(retryTexture);
+	retrySprite.setScale(0.5, 0.5);
+	retrySprite.setPosition(370, 410);
+	#pragma endregion SetupGameOver
 
 	// Creating World
 	b2WorldDef worldDef = b2DefaultWorldDef();
@@ -125,6 +141,9 @@ World::World(Engine& eng, Clock& clock)
 void World::Update()
 {
 	b2World_Step(worldId, timeStep, subStepCount);
+
+	sf::Vector2i mousePixelPos = sf::Mouse::getPosition(engine.window);
+	sf::Vector2f mousePos = engine.window.mapPixelToCoords(mousePixelPos);
 	
 	// Move platformLeft
 	b2Vec2 platformLeftPosition = b2Body_GetPosition(platformLeftId);
@@ -212,7 +231,29 @@ void World::Update()
 	if (clock.WaitForGameOver(5.0f) && !waitForReset)
 	{
 		std::cout << "Game Over" << "\n";
-		// Add game over stuff here
+		gameOver = true;
+	}
+
+	// Game Over
+	if (gameOver)
+	{
+		engine.window.draw(gameOverText);
+		engine.window.draw(retrySprite);
+
+		if (mousePos.x >= 370 && mousePos.x <= 620 
+			&& mousePos.y >= 410 && mousePos.y <= 560)
+		{
+			retrySprite.setColor(sf::Color::Green);
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+			{
+				std::cout << "Clicked Retry" << "\n";
+				// TODO TOMORROW: MAKE IT SO IT ONLY DOES IT ONCE WHEN CLICKING
+			}
+		}
+		else
+		{
+			retrySprite.setColor(sf::Color::Red);
+		}
 	}
 
 	// Arrow Spawning
