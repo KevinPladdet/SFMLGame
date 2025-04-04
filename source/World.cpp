@@ -8,11 +8,12 @@ World::World(Engine& eng, Clock& clock)
 	minY(4.4),
 	maxY(10),
 	scoreAmount(-1), // -1 because it calls Reset() at the start, which does scoreAmount += 1
-	limitedArrowsAmount(5),
-	gameOver(true)
+	highscoreAmount(0),
+	limitedArrowsAmount(5)
 {
 	arrowTexture.loadFromFile("Assets/Arrow.png");
 	retryTexture.loadFromFile("Assets/RetryButton.png");
+	quitTexture.loadFromFile("Assets/QuitButton.png");
 	std::srand(static_cast<unsigned int>(std::time(nullptr))); // Seeds the rng so it's actually random each time
 	leftPlatformSpeedY = (2 + std::rand() % 6);
 
@@ -23,6 +24,13 @@ World::World(Engine& eng, Clock& clock)
 	scoreText.setPosition(25, 0);
 	scoreText.setFillColor(sf::Color::Red);
 	scoreText.setString("Score: " + std::to_string(scoreAmount));
+
+	// Created highscoreText
+	highscoreText.setFont(font);
+	highscoreText.setCharacterSize(24);
+	highscoreText.setPosition(25, 25);
+	highscoreText.setFillColor(sf::Color::Red);
+	highscoreText.setString("High Score: " + std::to_string(highscoreAmount));
 
 	// Create limitedArrowsSprite
 	limitedArrowSprite.setTexture(arrowTexture);
@@ -49,6 +57,11 @@ World::World(Engine& eng, Clock& clock)
 	retrySprite.setTexture(retryTexture);
 	retrySprite.setScale(0.5, 0.5);
 	retrySprite.setPosition(370, 410);
+
+	// Create quitSprite
+	quitSprite.setTexture(quitTexture);
+	quitSprite.setScale(0.5, 0.5);
+	quitSprite.setPosition(670, 410);
 	#pragma endregion SetupGameOver
 
 	// Creating World
@@ -212,7 +225,7 @@ void World::Update()
 		if (!waitForReset)
 		{
 			std::cout << "Started Reset Clock" << "\n";
-			clock.StartTimer();
+			clock.StartClock();
 			waitForReset = true;
 		}
 	}
@@ -239,20 +252,46 @@ void World::Update()
 	{
 		engine.window.draw(gameOverText);
 		engine.window.draw(retrySprite);
+		engine.window.draw(quitSprite);
 
+		// Retry Button
 		if (mousePos.x >= 370 && mousePos.x <= 620 
 			&& mousePos.y >= 410 && mousePos.y <= 560)
 		{
 			retrySprite.setColor(sf::Color::Green);
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 			{
-				std::cout << "Clicked Retry" << "\n";
-				// TODO TOMORROW: MAKE IT SO IT ONLY DOES IT ONCE WHEN CLICKING
+				Reset();
+				scoreAmount -= 1; // Reset() gives +1 score, so this line counters it
+				if (scoreAmount >= highscoreAmount)
+				{
+					highscoreAmount = scoreAmount;
+				}
+				scoreAmount = 0;
+				scoreText.setString("Score: " + std::to_string(scoreAmount));
+				highscoreText.setString("High Score: " + std::to_string(highscoreAmount));
+				gameOver = false;
 			}
 		}
 		else
 		{
 			retrySprite.setColor(sf::Color::Red);
+		}
+
+		// Quit Button
+		if (mousePos.x >= 670 && mousePos.x <= 870
+			&& mousePos.y >= 410 && mousePos.y <= 560)
+		{
+			quitSprite.setColor(sf::Color::Green);
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+			{
+				std::cout << "Quit Game" << "\n";
+				engine.window.close();
+			}
+		}
+		else
+		{
+			quitSprite.setColor(sf::Color::Red);
 		}
 	}
 
@@ -266,8 +305,8 @@ void World::Update()
 			SpawnArrow();
 			if (limitedArrowsAmount == 0)
 			{
-				std::cout << "Started Arrow Clock" << "\n";
-				clock.StartTimer();
+				std::cout << "StartClock();" << "\n";
+				clock.StartClock();
 			}
 			keyPressedK = true;
 		}
@@ -291,6 +330,7 @@ void World::Update()
 	}
 
 	engine.window.draw(scoreText);
+	engine.window.draw(highscoreText);
 	engine.window.draw(limitedArrowsText);
 	engine.window.draw(limitedArrowSprite);
 }
@@ -406,6 +446,7 @@ void World::Reset()
 	// Reset limitedArrowsAmount
 	limitedArrowsAmount = 5;
 	limitedArrowsText.setString(std::to_string(limitedArrowsAmount));
+	clock.StopClock();
 
 	// Set random position and speed of platformRightId
 	float randomX = 13.0f + static_cast<float>(std::rand()) / (RAND_MAX / (21.6f - 13.0f));

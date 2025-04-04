@@ -7,7 +7,8 @@ class Clock
 {
 public:
     Clock(Engine& engine);
-    void StartTimer();
+    void StartClock();
+    void StopClock();
     bool WaitForReset(float duration);
     bool WaitForGameOver(float duration);
         

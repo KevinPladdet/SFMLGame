@@ -33,7 +33,6 @@ private:
 	
 	bool keyPressedK;
 	bool keyPressedR;
-	bool mouseClicked;
 	bool waitForReset;
 
 	// b2BodyId
@@ -72,6 +71,8 @@ private:
 	sf::Font font;
 	sf::Text scoreText;
 	int scoreAmount;
+	sf::Text highscoreText;
+	int highscoreAmount;
 
 	// Limited Arrows
 	sf::Text limitedArrowsText;
@@ -83,4 +84,6 @@ private:
 	bool gameOver;
 	sf::Sprite retrySprite;
 	sf::Texture retryTexture;
+	sf::Sprite quitSprite;
+	sf::Texture quitTexture;
 };

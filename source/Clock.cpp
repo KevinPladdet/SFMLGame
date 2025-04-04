@@ -9,11 +9,17 @@ Clock::Clock(Engine& engine)
 
 }
 
-void Clock::StartTimer()
+void Clock::StartClock()
 {
     clock.restart();
     running1 = true;
     running2 = true;
+}
+
+void Clock::StopClock()
+{
+    running1 = false;
+    running2 = false;
 }
 
 // Checks if clock passed duration, if yes it will call Reset() in World.cpp
