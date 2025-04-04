@@ -8,7 +8,7 @@ World::World(Engine& eng, VolumeManager& vm, Clock& clock)
 	clock(clock),
 	minY(4.4),
 	maxY(10),
-	scoreAmount(-1), // -1 because it calls Reset() at the start, which does scoreAmount += 1
+	scoreAmount(0),
 	highscoreAmount(0),
 	limitedArrowsAmount(5)
 {
@@ -228,6 +228,14 @@ void World::Update()
 			std::cout << "Started Reset Clock" << "\n";
 			clock.StartClock();
 			vm.PlaySFX(SoundEffects::Victory);
+			// Increase Score
+			scoreAmount += 1;
+			scoreText.setString("Score: " + std::to_string(scoreAmount));
+			if (scoreAmount >= highscoreAmount && gameOver == false)
+			{
+				highscoreAmount = scoreAmount;
+			}
+			highscoreText.setString("High Score: " + std::to_string(highscoreAmount));
 			waitForReset = true;
 		}
 	}
@@ -266,14 +274,8 @@ void World::Update()
 			{
 				vm.PlaySFX(SoundEffects::Retry);
 				Reset();
-				scoreAmount -= 1; // Reset() gives +1 score, so this line counters it
-				if (scoreAmount >= highscoreAmount)
-				{
-					highscoreAmount = scoreAmount;
-				}
 				scoreAmount = 0;
 				scoreText.setString("Score: " + std::to_string(scoreAmount));
-				highscoreText.setString("High Score: " + std::to_string(highscoreAmount));
 				gameOver = false;
 			}
 		}
@@ -442,10 +444,6 @@ void World::Reset()
 
 	// Destroy all Arrows
 	DestroyArrows();
-
-	// Increase Score
-	scoreAmount += 1;
-	scoreText.setString("Score: " + std::to_string(scoreAmount));
 
 	// Reset limitedArrowsAmount
 	limitedArrowsAmount = 5;
