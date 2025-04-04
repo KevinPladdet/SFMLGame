@@ -2,8 +2,9 @@
 #include "Engine/Engine.h"
 #include <iostream>
 
-World::World(Engine& eng, Clock& clock)
+World::World(Engine& eng, VolumeManager& vm, Clock& clock)
 	: engine(eng),
+	vm(vm),
 	clock(clock),
 	minY(4.4),
 	maxY(10),
@@ -226,6 +227,7 @@ void World::Update()
 		{
 			std::cout << "Started Reset Clock" << "\n";
 			clock.StartClock();
+			vm.PlaySFX(SoundEffects::Victory);
 			waitForReset = true;
 		}
 	}
@@ -244,6 +246,7 @@ void World::Update()
 	if (clock.WaitForGameOver(5.0f) && !waitForReset)
 	{
 		std::cout << "Game Over" << "\n";
+		vm.PlaySFX(SoundEffects::GameOver);
 		gameOver = true;
 	}
 
@@ -261,6 +264,7 @@ void World::Update()
 			retrySprite.setColor(sf::Color::Green);
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 			{
+				vm.PlaySFX(SoundEffects::Retry);
 				Reset();
 				scoreAmount -= 1; // Reset() gives +1 score, so this line counters it
 				if (scoreAmount >= highscoreAmount)

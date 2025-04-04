@@ -4,11 +4,12 @@
 #include "Arrow.h"
 
 class Engine;
+class VolumeManager;
 class Clock;
 class World
 {
 public:
-	World(Engine& engine, Clock& clock);
+	World(Engine& engine, VolumeManager& vm, Clock& clock);
 	void Update();
 	void Render();
 	void SpawnArrow();
@@ -27,6 +28,7 @@ public:
 
 private:
 	Engine& engine;
+	VolumeManager& vm;
 	Clock& clock;
 
 	std::vector<Arrow> arrows;

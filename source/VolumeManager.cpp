@@ -4,11 +4,10 @@
 VolumeManager::VolumeManager(Engine& engine)
     : engine(engine)
 {
-	// Arrow Whoosh SFX
-	if (!arrowWhooshSFX.loadFromFile("Assets/SFX/Whoosh.mp3"))
-	{
-		std::cout << "ERROR: Whoosh.mp3 didn't load correctly" << "\n";
-	}
+	arrowWhooshSFX.loadFromFile("Assets/SFX/Whoosh.mp3");
+	victorySFX.loadFromFile("Assets/SFX/VictorySFX.mp3");
+	gameoverSFX.loadFromFile("Assets/SFX/GameOverSFX.mp3");
+	retrySFX.loadFromFile("Assets/SFX/RetrySFX.mp3");
 
 	for (int i = 0; i < 5; i++)
 	{
@@ -17,9 +16,9 @@ VolumeManager::VolumeManager(Engine& engine)
 		arrowWhooshPool.push_back(sound);
 	}
 
-	// Hit SFX
-
-	// Victory SFX
+	victorySound.setBuffer(victorySFX);
+	gameoverSound.setBuffer(gameoverSFX);
+	retrySound.setBuffer(retrySFX);
 }
 
 void VolumeManager::PlayArrowWhooshSFX()
@@ -31,5 +30,23 @@ void VolumeManager::PlayArrowWhooshSFX()
 			sound.play();
 			return;
 		}
+	}
+}
+
+void VolumeManager::PlaySFX(SoundEffects sfxName)
+{
+	switch (sfxName) 
+	{
+		case SoundEffects::Victory:
+			victorySound.play();
+			break;
+		case SoundEffects::GameOver:
+			gameoverSound.play();
+			break;
+		case SoundEffects::Retry:
+			retrySound.play();
+			break;
+		default:
+			break;
 	}
 }
