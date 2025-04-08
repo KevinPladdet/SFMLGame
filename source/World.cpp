@@ -84,7 +84,7 @@ World::World(Engine& eng, VolumeManager& vm, Clock& clock)
 	// Creating Player
 	b2BodyDef playerDef = b2DefaultBodyDef();
 	playerDef.type = b2_kinematicBody;
-	playerDef.position = { 200.0f / worldScale, 237.0f / worldScale };
+	playerDef.position = { 200.0f / worldScale, 237.5f / worldScale };
 	playerId = b2CreateBody(worldId, &playerDef);
 	b2Polygon playerBox = b2MakeBox(0.5f, 1.0f);
 
