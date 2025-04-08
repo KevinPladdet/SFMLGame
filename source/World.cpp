@@ -239,6 +239,7 @@ void World::Update()
 			std::cout << "Started Reset Clock" << "\n";
 			clock.StartClock();
 			vm.PlaySFX(SoundEffects::Victory);
+			enemy.setTexture(enemySad);
 			// Increase Score
 			scoreAmount += 1;
 			scoreText.setString("Score: " + std::to_string(scoreAmount));
@@ -276,6 +277,8 @@ void World::Update()
 		engine.window.draw(retrySprite);
 		engine.window.draw(quitSprite);
 
+		player.setTexture(playerSad);
+
 		// Retry Button
 		if (mousePos.x >= 370 && mousePos.x <= 620 
 			&& mousePos.y >= 410 && mousePos.y <= 560)
@@ -285,6 +288,7 @@ void World::Update()
 			{
 				vm.PlaySFX(SoundEffects::Retry);
 				Reset();
+				player.setTexture(playerHappy);
 				scoreAmount = 0;
 				scoreText.setString("Score: " + std::to_string(scoreAmount));
 				gameOver = false;
@@ -474,4 +478,7 @@ void World::Reset()
 
 	// Position enemy above platform
 	b2Body_SetTransform(enemyId, { randomX, randomY-1.2f }, b2MakeRot(0.0f));
+	
+	// Change enemy sprite to enemyHappy
+	enemy.setTexture(enemyHappy);
 }
