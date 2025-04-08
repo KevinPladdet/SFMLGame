@@ -16,10 +16,11 @@ public:
     void PlayArrowWhooshSFX();
     void PlaySFX(SoundEffects sfxName);
 
-    std::vector<sf::Sound> arrowWhooshPool;
+    
 private:
     Engine& engine;
 
+    std::vector<sf::Sound> arrowWhooshPool;
     sf::SoundBuffer arrowWhooshSFX;
 
     sf::SoundBuffer victorySFX;

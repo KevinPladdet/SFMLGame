@@ -14,6 +14,8 @@ void Engine::Start()
 {
 	window.create(sf::VideoMode(screenSizeX, screenSizeY), "Insane game");
 	window.setFramerateLimit(framerateLimit);
+	skyBackground.loadFromFile("Assets/SkyBackground.png");
+	background.setTexture(skyBackground);
 	LoopEngine();
 }
 
@@ -38,6 +40,7 @@ void Engine::LoopEngine()
 
 		// Render
 		window.clear();
+		window.draw(background);
 			
 		world.Render();
 		world.Update();

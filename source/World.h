@@ -49,11 +49,17 @@ private:
 
 
 	// Visualising shapes
-	sf::RectangleShape player;
-	sf::RectangleShape enemy;
+	sf::Sprite player;
+	sf::Sprite enemy;
 
-	sf::RectangleShape platformLeft;
-	sf::RectangleShape platformRight;
+	sf::Texture playerHappy;
+	sf::Texture playerSad;
+	sf::Texture enemyHappy;
+	sf::Texture enemySad;
+	sf::Texture stonePlatform;
+
+	sf::Sprite platformLeft;
+	sf::Sprite platformRight;
 
 	sf::RectangleShape ground;
 	sf::RectangleShape wallLeft;

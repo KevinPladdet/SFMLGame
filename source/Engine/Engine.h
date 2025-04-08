@@ -25,6 +25,9 @@ private:
 	unsigned int framerateLimit = 60;
 	sf::Clock dt_clock;
 	
+	sf::Sprite background;
+	sf::Texture skyBackground;
+
 	World world;
 	Arrow arrow;
 	Clock clock;

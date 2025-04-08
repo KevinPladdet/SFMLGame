@@ -15,8 +15,19 @@ World::World(Engine& eng, VolumeManager& vm, Clock& clock)
 	arrowTexture.loadFromFile("Assets/Arrow.png");
 	retryTexture.loadFromFile("Assets/RetryButton.png");
 	quitTexture.loadFromFile("Assets/QuitButton.png");
+	playerHappy.loadFromFile("Assets/PlayerHappy.png");
+	playerSad.loadFromFile("Assets/PlayerSad.png");
+	enemyHappy.loadFromFile("Assets/EnemyHappy.png");
+	enemySad.loadFromFile("Assets/EnemySad.png");
+	stonePlatform.loadFromFile("Assets/StonePlatform.png");
 	std::srand(static_cast<unsigned int>(std::time(nullptr))); // Seeds the rng so it's actually random each time
 	leftPlatformSpeedY = (2 + std::rand() % 6);
+
+	// Set Sprites
+	player.setTexture(playerHappy);
+	enemy.setTexture(enemyHappy);
+	platformLeft.setTexture(stonePlatform);
+	platformRight.setTexture(stonePlatform);
 
 	// Create scoreText
 	font.loadFromFile("Assets/Fonts/VerdanaPro-CondRegular.ttf");
@@ -73,7 +84,7 @@ World::World(Engine& eng, VolumeManager& vm, Clock& clock)
 	// Creating Player
 	b2BodyDef playerDef = b2DefaultBodyDef();
 	playerDef.type = b2_kinematicBody;
-	playerDef.position = { 200.0f / worldScale, 240.0f / worldScale };
+	playerDef.position = { 200.0f / worldScale, 237.0f / worldScale };
 	playerId = b2CreateBody(worldId, &playerDef);
 	b2Polygon playerBox = b2MakeBox(0.5f, 1.0f);
 
@@ -348,10 +359,11 @@ void World::Render()
 	b2Rot playerRot = b2Body_GetRotation(playerId);
 
 	float playerAngle = std::atan2(playerRot.s, playerRot.c) * 180 / 3.14;
-
-	sf::Vector2f playerSize(1.0f * worldScale, 2.0f * worldScale);
-	player.setSize(playerSize);
-	player.setOrigin(playerSize / 2.0f);
+	
+	sf::Vector2u playerTextureSize = player.getTexture()->getSize();
+	sf::Vector2f playerSize(1.0f * worldScale / playerTextureSize.x, 2.0f * worldScale / playerTextureSize.y);
+	player.setScale(playerSize);
+	player.setOrigin(playerTextureSize.x / 2.0f, playerTextureSize.y / 2.0f);
 	player.setPosition(sf::Vector2f(playerPos.x * worldScale, playerPos.y * worldScale));
 	player.setRotation(playerAngle);
 	engine.window.draw(player);
@@ -362,28 +374,29 @@ void World::Render()
 
 	float enemyAngle = std::atan2(enemyRot.s, enemyRot.c) * 180 / 3.14;
 
-	sf::Vector2f enemySize(1.0f * worldScale, 2.0 * worldScale);
-	enemy.setSize(enemySize);
-	enemy.setOrigin(enemySize / 2.0f);
+	sf::Vector2u enemyTextureSize = enemy.getTexture()->getSize();
+	sf::Vector2f enemySize(1.0f * worldScale / enemyTextureSize.x, 2.0f * worldScale / enemyTextureSize.y);
+	enemy.setScale(enemySize);
+	enemy.setOrigin(enemyTextureSize.x / 2.0f, enemyTextureSize.y / 2.0f);
 	enemy.setPosition(sf::Vector2f(enemyPos.x * worldScale, enemyPos.y * worldScale));
 	enemy.setRotation(enemyAngle);
 	engine.window.draw(enemy);
 
+	// Platforming Values For Both Platforms
+	sf::Vector2u platformTextureSize = platformLeft.getTexture()->getSize();
+	sf::Vector2f platformSize(2.0f * worldScale / platformTextureSize.x, 0.5f * worldScale / platformTextureSize.y);
+
 	// Visualizing PlatformLeft
 	b2Vec2 platformLeftPosition = b2Body_GetPosition(platformLeftId);
-	sf::Vector2f platformLeftSize(2.0f * worldScale, 0.5f * worldScale);
-	platformLeft.setFillColor(sf::Color(255, 0, 0));
-	platformLeft.setSize(platformLeftSize);
-	platformLeft.setOrigin(platformLeftSize / 2.0f);
+	platformLeft.setScale(platformSize);
+	platformLeft.setOrigin(platformTextureSize.x / 2.0f, platformTextureSize.y / 2.0f);
 	platformLeft.setPosition(sf::Vector2f(platformLeftPosition.x * worldScale, platformLeftPosition.y * worldScale));
 	engine.window.draw(platformLeft);
 
 	// Visualizing PlatformRight
 	b2Vec2 platformRightPosition = b2Body_GetPosition(platformRightId);
-	sf::Vector2f platformRightSize(2.0f * worldScale, 0.5f * worldScale);
-	platformRight.setFillColor(sf::Color(255, 0, 0));
-	platformRight.setSize(platformRightSize);
-	platformRight.setOrigin(platformRightSize / 2.0f);
+	platformRight.setScale(platformSize);
+	platformRight.setOrigin(platformTextureSize.x / 2.0f, platformTextureSize.y / 2.0f);
 	platformRight.setPosition(sf::Vector2f(platformRightPosition.x * worldScale, platformRightPosition.y * worldScale));
 	engine.window.draw(platformRight);
 
