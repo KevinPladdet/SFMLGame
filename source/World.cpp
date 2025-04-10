@@ -415,7 +415,7 @@ void World::Render()
 	#pragma region Bow
 	// Visualizing Bow
 	float playerHeight = player.getGlobalBounds().height / worldScale;
-	sf::Vector2f bowPos(playerPos.x * worldScale, (playerPos.y - (playerHeight / 2.f)) * worldScale);
+	sf::Vector2f bowPos(playerPos.x * worldScale, playerPos.y * worldScale);
 	bow.setPosition(bowPos);
 
 	// Setting bow rotation to mousePos
@@ -424,7 +424,7 @@ void World::Render()
 
 	float distanceX = mousePos.x - bowPos.x;
 	float distanceY = mousePos.y - bowPos.y;
-	float bowAngle = std::atan2(distanceY, distanceX) * 180.f / 3.14f;
+	float bowAngle = std::atan2(distanceY, distanceX) * 180 / 3.14;
 	bow.setRotation(bowAngle);
 	engine.window.draw(bow);
 	#pragma endregion Bow
