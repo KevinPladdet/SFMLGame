@@ -20,14 +20,22 @@ World::World(Engine& eng, VolumeManager& vm, Clock& clock)
 	enemyHappy.loadFromFile("Assets/EnemyHappy.png");
 	enemySad.loadFromFile("Assets/EnemySad.png");
 	stonePlatform.loadFromFile("Assets/StonePlatform.png");
+	bowTexture.loadFromFile("Assets/Bow.png");
 	std::srand(static_cast<unsigned int>(std::time(nullptr))); // Seeds the rng so it's actually random each time
 	leftPlatformSpeedY = (2 + std::rand() % 6);
 
+	#pragma region SetSprites
 	// Set Sprites
 	player.setTexture(playerHappy);
 	enemy.setTexture(enemyHappy);
 	platformLeft.setTexture(stonePlatform);
 	platformRight.setTexture(stonePlatform);
+
+	bow.setTexture(bowTexture);
+	bow.setScale(0.1, 0.1);
+	sf::FloatRect bounds = bow.getLocalBounds();
+	bow.setOrigin(0.0f, bounds.height / 2.0f);
+	#pragma endregion SetSprites
 
 	// Create scoreText
 	font.loadFromFile("Assets/Fonts/VerdanaPro-CondRegular.ttf");
@@ -403,6 +411,23 @@ void World::Render()
 	platformRight.setOrigin(platformTextureSize.x / 2.0f, platformTextureSize.y / 2.0f);
 	platformRight.setPosition(sf::Vector2f(platformRightPosition.x * worldScale, platformRightPosition.y * worldScale));
 	engine.window.draw(platformRight);
+
+	#pragma region Bow
+	// Visualizing Bow
+	float playerHeight = player.getGlobalBounds().height / worldScale;
+	sf::Vector2f bowPos(playerPos.x * worldScale, (playerPos.y - (playerHeight / 2.f)) * worldScale);
+	bow.setPosition(bowPos);
+
+	// Setting bow rotation to mousePos
+	sf::Vector2i mousePixelPos = sf::Mouse::getPosition(engine.window);
+	sf::Vector2f mousePos = engine.window.mapPixelToCoords(mousePixelPos);
+
+	float distanceX = mousePos.x - bowPos.x;
+	float distanceY = mousePos.y - bowPos.y;
+	float bowAngle = std::atan2(distanceY, distanceX) * 180.f / 3.14f;
+	bow.setRotation(bowAngle);
+	engine.window.draw(bow);
+	#pragma endregion Bow
 
 	// Visualizing Ground
 	b2Vec2 groundPosition = b2Body_GetPosition(groundId);

@@ -46,20 +46,22 @@ private:
 	b2BodyId groundId;
 	b2BodyId wallLeftId;
 	b2BodyId wallRightId;
-
-
+	
 	// Visualising shapes
 	sf::Sprite player;
-	sf::Sprite enemy;
-
 	sf::Texture playerHappy;
 	sf::Texture playerSad;
+
+	sf::Sprite enemy;
 	sf::Texture enemyHappy;
 	sf::Texture enemySad;
-	sf::Texture stonePlatform;
 
 	sf::Sprite platformLeft;
 	sf::Sprite platformRight;
+	sf::Texture stonePlatform;
+
+	sf::Sprite bow;
+	sf::Texture bowTexture;
 
 	sf::RectangleShape ground;
 	sf::RectangleShape wallLeft;
