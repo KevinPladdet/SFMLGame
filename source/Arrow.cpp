@@ -24,8 +24,7 @@ void Arrow::CreateArrowBody()
 	arrowDef.type = b2_dynamicBody;
 
 	// Spawn Arrow next to Player
-	b2Vec2 playerPos = b2Body_GetPosition(world.playerId);
-	b2Vec2 spawnPos = {playerPos.x + 1.0f, playerPos.y};
+	b2Vec2 spawnPos = {world.bowPos.x / world.worldScale, world.bowPos.y / world.worldScale };
 	arrowDef.position = {spawnPos};
 
 	arrowId = b2CreateBody(world.worldId, &arrowDef);

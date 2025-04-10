@@ -25,6 +25,9 @@ public:
 
 	// Arrow Texture
 	sf::Texture arrowTexture;
+	
+	// Bow position for Arrow.cpp to use
+	sf::Vector2f bowPos;
 
 private:
 	Engine& engine;

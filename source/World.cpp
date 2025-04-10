@@ -413,12 +413,12 @@ void World::Render()
 	engine.window.draw(platformRight);
 
 	#pragma region Bow
-	// Visualizing Bow
+	// Position Bow
 	float playerHeight = player.getGlobalBounds().height / worldScale;
-	sf::Vector2f bowPos(playerPos.x * worldScale, playerPos.y * worldScale);
+	bowPos = sf::Vector2f(playerPos.x * worldScale, playerPos.y * worldScale);
 	bow.setPosition(bowPos);
 
-	// Setting bow rotation to mousePos
+	// Setting Bow rotation to mousePos
 	sf::Vector2i mousePixelPos = sf::Mouse::getPosition(engine.window);
 	sf::Vector2f mousePos = engine.window.mapPixelToCoords(mousePixelPos);
 
@@ -465,7 +465,7 @@ void World::Render()
 
 void World::SpawnArrow()
 {
-	std::cout << "Spawned in Arrow" << std::endl;
+	std::cout << "Spawned in Arrow" << "\n";
 	arrows.emplace_back(engine, *this, engine.volumeManager);
 	arrows.back().CreateArrowBody();
 	arrows.back().ArrowForce();
