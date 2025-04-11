@@ -2,6 +2,10 @@
 #include "box2d/box2d.h"
 #include <SFML/Graphics.hpp>
 #include "Arrow.h"
+// Collision Layers
+constexpr uint16_t LAYER_PLAYER = 0x0001;
+constexpr uint16_t LAYER_ARROW = 0x0002;
+constexpr uint16_t LAYER_OTHER = 0x0003;
 
 class Engine;
 class VolumeManager;
@@ -18,7 +22,6 @@ public:
 
 	// worldId is used to spawn body's in the world
 	b2WorldId worldId;
-	b2BodyId playerId;
 
 	// worldScale is 50 because 50 pixels is 1 meter in Box2D
 	const int worldScale = 50;
@@ -26,8 +29,9 @@ public:
 	// Arrow Texture
 	sf::Texture arrowTexture;
 	
-	// Bow position for Arrow.cpp to use
+	// Bow position and rotation for Arrow.cpp to use
 	sf::Vector2f bowPos;
+	float bowRotation;
 
 private:
 	Engine& engine;
@@ -41,6 +45,7 @@ private:
 	bool waitForReset;
 
 	// b2BodyId
+	b2BodyId playerId;
 	b2BodyId enemyId;
 
 	b2BodyId platformLeftId;

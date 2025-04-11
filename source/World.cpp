@@ -99,6 +99,8 @@ World::World(Engine& eng, VolumeManager& vm, Clock& clock)
 	b2ShapeDef playerShapeDef = b2DefaultShapeDef();
 	playerShapeDef.density = 1.0f;
 	playerShapeDef.friction = 0.3f;
+	playerShapeDef.filter.categoryBits = LAYER_PLAYER; // Set collision layer to LAYER_PLAYER
+	playerShapeDef.filter.maskBits = 0xFFFF & ~LAYER_ARROW; // Collide with every layer except LAYER_ARROW
 	b2CreatePolygonShape(playerId, &playerShapeDef, &playerBox);
 
 	// Creating Enemy
@@ -111,6 +113,8 @@ World::World(Engine& eng, VolumeManager& vm, Clock& clock)
 	b2ShapeDef enemyShapeDef = b2DefaultShapeDef();
 	enemyShapeDef.density = 1.0f;
 	enemyShapeDef.friction = 0.3f;
+	enemyShapeDef.filter.categoryBits = LAYER_OTHER; // Set collision layer to LAYER_OTHER
+	enemyShapeDef.filter.maskBits = 0xFFFF; // Collide with everything
 	b2CreatePolygonShape(enemyId, &enemyShapeDef, &enemyBox);
 
 	// Creating PlatformLeft
@@ -121,6 +125,8 @@ World::World(Engine& eng, VolumeManager& vm, Clock& clock)
 	
 	b2Polygon platformLeftBox = b2MakeBox(1.0f, 0.25f);
 	b2ShapeDef platformLeftShapeDef = b2DefaultShapeDef();
+	platformLeftShapeDef.filter.categoryBits = LAYER_OTHER;
+	platformLeftShapeDef.filter.maskBits = 0xFFFF;
 	b2CreatePolygonShape(platformLeftId, &platformLeftShapeDef, &platformLeftBox);
 
 	// Creating PlatformRight
@@ -135,6 +141,8 @@ World::World(Engine& eng, VolumeManager& vm, Clock& clock)
 
 	b2Polygon platformRightBox = b2MakeBox(1.0f, 0.25f);
 	b2ShapeDef platformRightShapeDef = b2DefaultShapeDef();
+	platformRightShapeDef.filter.categoryBits = LAYER_OTHER;
+	platformRightShapeDef.filter.maskBits = 0xFFFF;
 	b2CreatePolygonShape(platformRightId, &platformRightShapeDef, &platformRightBox);
 
 	// Creating Ground
@@ -145,6 +153,8 @@ World::World(Engine& eng, VolumeManager& vm, Clock& clock)
 
 	b2Polygon groundBox = b2MakeBox(12.8f, 0.25f);
 	b2ShapeDef groundShapeDef = b2DefaultShapeDef();
+	groundShapeDef.filter.categoryBits = LAYER_OTHER;
+	groundShapeDef.filter.maskBits = 0xFFFF;
 	b2CreatePolygonShape(groundId, &groundShapeDef, &groundBox);
 
 	// Creating WallLeft
@@ -155,6 +165,8 @@ World::World(Engine& eng, VolumeManager& vm, Clock& clock)
 
 	b2Polygon wallLeftBox = b2MakeBox(0.25f, 14.4f);
 	b2ShapeDef wallLeftShapeDef = b2DefaultShapeDef();
+	wallLeftShapeDef.filter.categoryBits = LAYER_OTHER;
+	wallLeftShapeDef.filter.maskBits = 0xFFFF;
 	b2CreatePolygonShape(wallLeftId, &wallLeftShapeDef, &wallLeftBox);
 
 	// Creating WallRight
@@ -165,6 +177,8 @@ World::World(Engine& eng, VolumeManager& vm, Clock& clock)
 
 	b2Polygon wallRightBox = b2MakeBox(0.25f, 14.4f);
 	b2ShapeDef wallRightShapeDef = b2DefaultShapeDef();
+	wallRightShapeDef.filter.categoryBits = LAYER_OTHER;
+	wallRightShapeDef.filter.maskBits = 0xFFFF;
 	b2CreatePolygonShape(wallRightId, &wallRightShapeDef, &wallRightBox);
 
 	// Randomize Enemy position & PlatformRight position + speed
@@ -425,7 +439,20 @@ void World::Render()
 	float distanceX = mousePos.x - bowPos.x;
 	float distanceY = mousePos.y - bowPos.y;
 	float bowAngle = std::atan2(distanceY, distanceX) * 180 / 3.14;
-	bow.setRotation(bowAngle);
+	//std::cout << "bowAngle: " << bowAngle << "\n";
+	if (bowAngle <= -45)
+	{
+		bowAngle = -45;
+	}
+	else if (bowAngle >= 15)
+	{
+		bowAngle = 15;
+	}
+	else
+	{
+		bow.setRotation(bowAngle);
+	}
+	bowRotation = bow.getRotation(); // Used for Arrow.cpp for the arrow force direction
 	engine.window.draw(bow);
 	#pragma endregion Bow
 

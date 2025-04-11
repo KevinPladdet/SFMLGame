@@ -33,6 +33,8 @@ void Arrow::CreateArrowBody()
 	b2ShapeDef arrowShapeDef = b2DefaultShapeDef();
 	arrowShapeDef.density = 1.0f;
 	arrowShapeDef.friction = 0.3f;
+	arrowShapeDef.filter.categoryBits = LAYER_ARROW; // Set collision layer to LAYER_PLAYER
+	arrowShapeDef.filter.maskBits = 0xFFFF & ~LAYER_PLAYER; // Collide with every layer except LAYER_ARROW
 	b2CreatePolygonShape(arrowId, &arrowShapeDef, &arrowBox);
 
 	// Rotate Arrow to mousePos
@@ -111,7 +113,7 @@ void Arrow::ArrowForce()
 	
 	vm.PlayArrowWhooshSFX();
 
-	b2Vec2 forceDirection{ arrowDirection.x * 100.0f / world.worldScale, arrowDirection.y * 100.0f / world.worldScale };
+	b2Vec2 forceDirection {arrowDirection.x * 100.0f / world.worldScale, arrowDirection.y * 100.0f / world.worldScale};
 
 	b2Body_ApplyForce(arrowId, forceDirection, arrowPixelPos, true);
 }
