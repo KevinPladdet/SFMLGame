@@ -23,7 +23,6 @@ private:
 
 	// Force
 	b2Vec2 forcePosition;
-	bool keyPressed;
 
 	// b2BodyId
 	b2BodyId arrowId;

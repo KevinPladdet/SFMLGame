@@ -10,7 +10,8 @@ World::World(Engine& eng, VolumeManager& vm, Clock& clock)
 	maxY(10),
 	scoreAmount(0),
 	highscoreAmount(0),
-	limitedArrowsAmount(5)
+	limitedArrowsAmount(5),
+	gameOver(false)
 {
 	arrowTexture.loadFromFile("Assets/Arrow.png");
 	retryTexture.loadFromFile("Assets/RetryButton.png");
@@ -219,7 +220,7 @@ void World::Update()
 	
 	b2Vec2 playerVelocity = b2Body_GetLinearVelocity(playerId);
 	playerVelocity.y = leftPlatformSpeedY;
-	b2Body_SetLinearVelocity(playerId, playerVelocity);
+	//b2Body_SetLinearVelocity(playerId, playerVelocity);
 	#pragma endregion PlayerVelocity
 
 	// Enemy doesn't rotate / get launched up anymore unless hit by an arrow
@@ -436,10 +437,8 @@ void World::Render()
 	sf::Vector2i mousePixelPos = sf::Mouse::getPosition(engine.window);
 	sf::Vector2f mousePos = engine.window.mapPixelToCoords(mousePixelPos);
 
-	float distanceX = mousePos.x - bowPos.x;
-	float distanceY = mousePos.y - bowPos.y;
-	float bowAngle = std::atan2(distanceY, distanceX) * 180 / 3.14;
-	//std::cout << "bowAngle: " << bowAngle << "\n";
+	sf::Vector2f bowDirection = mousePos - bowPos;
+	bowAngle = std::atan2(bowDirection.y, bowDirection.x) * 180 / 3.14;
 	if (bowAngle <= -45)
 	{
 		bowAngle = -45;
@@ -452,7 +451,7 @@ void World::Render()
 	{
 		bow.setRotation(bowAngle);
 	}
-	bowRotation = bow.getRotation(); // Used for Arrow.cpp for the arrow force direction
+	std::cout << "bowAngle: " << bowAngle << "\n";
 	engine.window.draw(bow);
 	#pragma endregion Bow
 

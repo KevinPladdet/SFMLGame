@@ -31,7 +31,7 @@ public:
 	
 	// Bow position and rotation for Arrow.cpp to use
 	sf::Vector2f bowPos;
-	float bowRotation;
+	float bowAngle;
 
 private:
 	Engine& engine;

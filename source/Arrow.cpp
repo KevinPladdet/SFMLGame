@@ -23,7 +23,7 @@ void Arrow::CreateArrowBody()
 	b2BodyDef arrowDef = b2DefaultBodyDef();
 	arrowDef.type = b2_dynamicBody;
 
-	// Spawn Arrow next to Player
+	// Spawn Arrow inside of bow
 	b2Vec2 spawnPos = {world.bowPos.x / world.worldScale, world.bowPos.y / world.worldScale };
 	arrowDef.position = {spawnPos};
 
@@ -33,19 +33,12 @@ void Arrow::CreateArrowBody()
 	b2ShapeDef arrowShapeDef = b2DefaultShapeDef();
 	arrowShapeDef.density = 1.0f;
 	arrowShapeDef.friction = 0.3f;
-	arrowShapeDef.filter.categoryBits = LAYER_ARROW; // Set collision layer to LAYER_PLAYER
-	arrowShapeDef.filter.maskBits = 0xFFFF & ~LAYER_PLAYER; // Collide with every layer except LAYER_ARROW
+	arrowShapeDef.filter.categoryBits = LAYER_ARROW; // Set collision layer to LAYER_ARROW
+	arrowShapeDef.filter.maskBits = 0xFFFF & ~LAYER_PLAYER; // Collide with every layer except LAYER_PLAYER
 	b2CreatePolygonShape(arrowId, &arrowShapeDef, &arrowBox);
 
-	// Rotate Arrow to mousePos
-	sf::Vector2i mousePixelPos = sf::Mouse::getPosition(engine.window);
-	sf::Vector2f mousePos = engine.window.mapPixelToCoords(mousePixelPos);
-	
-	sf::Vector2f arrowSpawnPos(spawnPos.x * world.worldScale, spawnPos.y * world.worldScale);
-	sf::Vector2f direction = mousePos - arrowSpawnPos;
-	float angleRad = std::atan2(direction.y, direction.x);
-
-	b2Body_SetTransform(arrowId, spawnPos, b2MakeRot(angleRad));
+	float bowAngleRadians = world.bowAngle * (3.14 / 180);
+	b2Body_SetTransform(arrowId, spawnPos, b2MakeRot(bowAngleRadians));
 }
 
 void Arrow::Render()
@@ -72,20 +65,6 @@ void Arrow::DestroyArrow()
 
 void Arrow::Update()
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))
-	{
-		if (!keyPressed)
-		{
-			std::cout << "Applying force" << "\n";
-			ArrowForce();
-			keyPressed = true;
-		}
-	}
-	else
-	{
-		keyPressed = false;
-	}
-
 	// Apply small force to the front of the arrow
 	b2Vec2 arrowVelocity = b2Body_GetLinearVelocity(arrowId);
 	b2Vec2 arrowTip = b2Body_GetWorldPoint(arrowId, b2Vec2{ 0.5f, 0.0f });
@@ -113,7 +92,8 @@ void Arrow::ArrowForce()
 	
 	vm.PlayArrowWhooshSFX();
 
-	b2Vec2 forceDirection {arrowDirection.x * 100.0f / world.worldScale, arrowDirection.y * 100.0f / world.worldScale};
+	float forceAmount = 100.0f;
+	b2Vec2 forceDirection {arrowDirection.x * forceAmount / world.worldScale, arrowDirection.y * forceAmount / world.worldScale};
 
 	b2Body_ApplyForce(arrowId, forceDirection, arrowPixelPos, true);
 }
