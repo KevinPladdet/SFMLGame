@@ -37,7 +37,7 @@ void Arrow::CreateArrowBody()
 	arrowShapeDef.filter.maskBits = 0xFFFF & ~LAYER_PLAYER; // Collide with every layer except LAYER_PLAYER
 	b2CreatePolygonShape(arrowId, &arrowShapeDef, &arrowBox);
 
-	float bowAngleRadians = world.bowAngle * (3.14 / 180);
+	float bowAngleRadians = world.bowRotation * (3.14 / 180);
 	b2Body_SetTransform(arrowId, spawnPos, b2MakeRot(bowAngleRadians));
 }
 
@@ -79,21 +79,14 @@ void Arrow::Update()
 
 void Arrow::ArrowForce()
 {
-	// Get mousePos
-	sf::Vector2i mousePixelPos = sf::Mouse::getPosition(engine.window);
-	sf::Vector2f mousePos = engine.window.mapPixelToCoords(mousePixelPos);
+	float bowAngleRadians = world.bowRotation * (3.14159f / 180.0f);
+	b2Vec2 forceDirection = { std::cos(bowAngleRadians), std::sin(bowAngleRadians) };
 
-	// Get arrowPos
-	b2Vec2 arrowPixelPos = b2Body_GetPosition(arrowId);
-	sf::Vector2f arrowPos(arrowPixelPos.x * world.worldScale, arrowPixelPos.y * world.worldScale);
-
-	// Get direction and distance of the arrow
-	sf::Vector2f arrowDirection = mousePos - arrowPos;
+	float forceAmount = 1000.0f;
+	forceDirection.x *= forceAmount;
+	forceDirection.y *= forceAmount;
 	
+	b2Vec2 arrowPos = b2Body_GetPosition(arrowId);
+	b2Body_ApplyForce(arrowId, forceDirection, arrowPos, true);
 	vm.PlayArrowWhooshSFX();
-
-	float forceAmount = 100.0f;
-	b2Vec2 forceDirection {arrowDirection.x * forceAmount / world.worldScale, arrowDirection.y * forceAmount / world.worldScale};
-
-	b2Body_ApplyForce(arrowId, forceDirection, arrowPixelPos, true);
 }

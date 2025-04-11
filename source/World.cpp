@@ -220,7 +220,7 @@ void World::Update()
 	
 	b2Vec2 playerVelocity = b2Body_GetLinearVelocity(playerId);
 	playerVelocity.y = leftPlatformSpeedY;
-	//b2Body_SetLinearVelocity(playerId, playerVelocity);
+	b2Body_SetLinearVelocity(playerId, playerVelocity);
 	#pragma endregion PlayerVelocity
 
 	// Enemy doesn't rotate / get launched up anymore unless hit by an arrow
@@ -438,20 +438,13 @@ void World::Render()
 	sf::Vector2f mousePos = engine.window.mapPixelToCoords(mousePixelPos);
 
 	sf::Vector2f bowDirection = mousePos - bowPos;
-	bowAngle = std::atan2(bowDirection.y, bowDirection.x) * 180 / 3.14;
-	if (bowAngle <= -45)
-	{
-		bowAngle = -45;
-	}
-	else if (bowAngle >= 15)
-	{
-		bowAngle = 15;
-	}
-	else
+	float bowAngle = std::atan2(bowDirection.y, bowDirection.x) * 180 / 3.14;
+	
+	if (bowAngle >= -45 && bowAngle <= 15)
 	{
 		bow.setRotation(bowAngle);
+		bowRotation = bowAngle;
 	}
-	std::cout << "bowAngle: " << bowAngle << "\n";
 	engine.window.draw(bow);
 	#pragma endregion Bow
 
