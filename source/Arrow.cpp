@@ -67,22 +67,28 @@ void Arrow::Update()
 {
 	// Apply small force to the front of the arrow
 	b2Vec2 arrowVelocity = b2Body_GetLinearVelocity(arrowId);
-	b2Vec2 arrowTip = b2Body_GetWorldPoint(arrowId, b2Vec2{ 0.5f, 0.0f });
-	b2Vec2 downwardsForce = b2Vec2{ arrowVelocity.x * 0.07f, arrowVelocity.y * 0.07f };
+	b2Vec2 arrowTip = b2Body_GetWorldPoint(arrowId, b2Vec2 {0.5f, 0.0f});
+	b2Vec2 downwardsForce = b2Vec2{arrowVelocity.x * 0.07f, arrowVelocity.y * 0.07f};
 	b2Body_ApplyForce(arrowId, downwardsForce, arrowTip, true);
 
 	// Apply small drag force to the back of the arrow
-	b2Vec2 arrowTail = b2Body_GetWorldPoint(arrowId, b2Vec2{ -0.5f, 0.0f });
-	b2Vec2 dragForce = b2Vec2{ -arrowVelocity.x * 0.02f, -arrowVelocity.y * 0.02f };
+	b2Vec2 arrowTail = b2Body_GetWorldPoint(arrowId, b2Vec2 {-0.5f, 0.0f});
+	b2Vec2 dragForce = b2Vec2{-arrowVelocity.x * 0.02f, -arrowVelocity.y * 0.02f};
 	b2Body_ApplyForce(arrowId, dragForce, arrowTail, true);
 }
 
 void Arrow::ArrowForce()
 {
-	float bowAngleRadians = world.bowRotation * (3.14159f / 180.0f);
-	b2Vec2 forceDirection = { std::cos(bowAngleRadians), std::sin(bowAngleRadians) };
+	sf::Vector2i mousePixelPos = sf::Mouse::getPosition(engine.window);
+	sf::Vector2f mousePos = engine.window.mapPixelToCoords(mousePixelPos);
 
-	float forceAmount = 1000.0f;
+	sf::Vector2f distanceVector = mousePos - world.bowPos;
+	float distance = std::sqrt(distanceVector.x * distanceVector.x + distanceVector.y * distanceVector.y);
+
+	float bowAngleRadians = world.bowRotation * (3.14f / 180.0f);
+	b2Vec2 forceDirection = {std::cos(bowAngleRadians), std::sin(bowAngleRadians)};
+
+	float forceAmount = distance * 2.0f; // 2.0f is a magic number to increase force more
 	forceDirection.x *= forceAmount;
 	forceDirection.y *= forceAmount;
 	
