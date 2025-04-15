@@ -7,7 +7,7 @@ VolumeManager::VolumeManager(Engine& engine)
 	arrowWhooshSFX.loadFromFile("Assets/SFX/Whoosh.mp3");
 	victorySFX.loadFromFile("Assets/SFX/VictorySFX.mp3");
 	gameoverSFX.loadFromFile("Assets/SFX/GameOverSFX.mp3");
-	retrySFX.loadFromFile("Assets/SFX/RetrySFX.mp3");
+	buttonClickSFX.loadFromFile("Assets/SFX/ButtonClickSFX.mp3");
 
 	for (int i = 0; i < 5; i++)
 	{
@@ -18,7 +18,7 @@ VolumeManager::VolumeManager(Engine& engine)
 
 	victorySound.setBuffer(victorySFX);
 	gameoverSound.setBuffer(gameoverSFX);
-	retrySound.setBuffer(retrySFX);
+	buttonClickSound.setBuffer(buttonClickSFX);
 }
 
 void VolumeManager::PlayArrowWhooshSFX()
@@ -44,7 +44,7 @@ void VolumeManager::PlaySFX(SoundEffects sfxName)
 			gameoverSound.play();
 			break;
 		case SoundEffects::Retry:
-			retrySound.play();
+			buttonClickSound.play();
 			break;
 		default:
 			break;

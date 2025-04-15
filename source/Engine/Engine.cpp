@@ -32,10 +32,6 @@ void Engine::LoopEngine()
 			{
 				window.close();
 			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-			{
-				window.close();
-			}
 		}
 
 		// Render
@@ -44,6 +40,11 @@ void Engine::LoopEngine()
 			
 		world.Render();
 		world.Update();
+		
+		if (world.activeMainMenu)
+		{
+			world.MainMenu();
+		}
 
 		window.display();
 	}

@@ -29,6 +29,6 @@ private:
     sf::SoundBuffer gameoverSFX;
     sf::Sound gameoverSound;
 
-    sf::SoundBuffer retrySFX;
-    sf::Sound retrySound;
+    sf::SoundBuffer buttonClickSFX;
+    sf::Sound buttonClickSound;
 };

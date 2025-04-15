@@ -11,11 +11,14 @@ World::World(Engine& eng, VolumeManager& vm, Clock& clock)
 	scoreAmount(0),
 	highscoreAmount(0),
 	limitedArrowsAmount(5),
-	gameOver(false)
+	gameOver(false),
+	activeMainMenu(true)
 {
 	arrowTexture.loadFromFile("Assets/Arrow.png");
+	backgroundTexture.loadFromFile("Assets/RedBackground.png");
 	retryTexture.loadFromFile("Assets/RetryButton.png");
 	quitTexture.loadFromFile("Assets/QuitButton.png");
+	playTexture.loadFromFile("Assets/PlayButton.png");
 	playerHappy.loadFromFile("Assets/PlayerHappy.png");
 	playerSad.loadFromFile("Assets/PlayerSad.png");
 	enemyHappy.loadFromFile("Assets/EnemyHappy.png");
@@ -84,6 +87,18 @@ World::World(Engine& eng, VolumeManager& vm, Clock& clock)
 	quitSprite.setScale(0.5, 0.5);
 	quitSprite.setPosition(670, 410);
 	#pragma endregion SetupGameOver
+
+	#pragma region SetupMainMenu
+	// Create retrySprite
+	backgroundSprite.setTexture(backgroundTexture);
+	backgroundSprite.setScale(0.75, 0.75);
+	backgroundSprite.setPosition(0, 0);
+	
+	// Create playSprite
+	playSprite.setTexture(playTexture);
+	playSprite.setScale(0.5, 0.5);
+	playSprite.setPosition(370, 410);
+	#pragma endregion SetupMainMenu
 
 	// Creating World
 	b2WorldDef worldDef = b2DefaultWorldDef();
@@ -373,6 +388,29 @@ void World::Update()
 		keyPressedR = false;
 	}
 
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+	{
+		if (!keyPressedEscape)
+		{
+			if (activeMainMenu)
+			{
+				std::cout << "Main Menu Disabled" << "\n";
+				activeMainMenu = false;
+				keyPressedEscape = true;
+			}
+			else
+			{
+				std::cout << "Main Menu Enabled" << "\n";
+				activeMainMenu = true;
+				keyPressedEscape = true;
+			}
+		}
+	}
+	else
+	{
+		keyPressedEscape = false;
+	}
+
 	engine.window.draw(scoreText);
 	engine.window.draw(highscoreText);
 	engine.window.draw(limitedArrowsText);
@@ -525,4 +563,46 @@ void World::Reset()
 	
 	// Change enemy sprite to enemyHappy
 	enemy.setTexture(enemyHappy);
+}
+
+void World::MainMenu()
+{
+	sf::Vector2i mousePixelPos = sf::Mouse::getPosition(engine.window);
+	sf::Vector2f mousePos = engine.window.mapPixelToCoords(mousePixelPos);
+
+	engine.window.draw(backgroundSprite);
+	engine.window.draw(playSprite);
+	engine.window.draw(quitSprite);
+
+	// Play Button
+	if (mousePos.x >= 370 && mousePos.x <= 620
+		&& mousePos.y >= 410 && mousePos.y <= 560)
+	{
+		playSprite.setColor(sf::Color::Green);
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		{
+			vm.PlaySFX(SoundEffects::Retry);
+			activeMainMenu = false;
+		}
+	}
+	else
+	{
+		playSprite.setColor(sf::Color::Red);
+	}
+
+	// Quit Button
+	if (mousePos.x >= 670 && mousePos.x <= 870
+		&& mousePos.y >= 410 && mousePos.y <= 560)
+	{
+		quitSprite.setColor(sf::Color::Green);
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		{
+			std::cout << "Quit Game" << "\n";
+			engine.window.close();
+		}
+	}
+	else
+	{
+		quitSprite.setColor(sf::Color::Red);
+	}
 }
