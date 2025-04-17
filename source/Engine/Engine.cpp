@@ -38,12 +38,15 @@ void Engine::LoopEngine()
 		window.clear();
 		window.draw(background);
 			
-		world.Render();
-		world.Update();
 		
 		if (world.activeMainMenu)
 		{
 			world.MainMenu();
+		}
+		else 
+		{
+			world.Render();
+			world.Update();
 		}
 
 		window.display();

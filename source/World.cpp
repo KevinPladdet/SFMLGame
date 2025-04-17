@@ -318,8 +318,11 @@ void World::Update()
 		player.setTexture(playerSad);
 
 		// Retry Button
-		if (mousePos.x >= 370 && mousePos.x <= 620 
-			&& mousePos.y >= 410 && mousePos.y <= 560)
+		sf::FloatRect retrySpriteValues = retrySprite.getGlobalBounds();
+		if (mousePos.x >= retrySpriteValues.getPosition().x
+			&& mousePos.x <= retrySpriteValues.getPosition().x + retrySpriteValues.getSize().x
+			&& mousePos.y >= retrySpriteValues.getPosition().y
+			&& mousePos.y <= retrySpriteValues.getPosition().y + retrySpriteValues.getSize().y)
 		{
 			retrySprite.setColor(sf::Color::Green);
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
@@ -338,8 +341,11 @@ void World::Update()
 		}
 
 		// Quit Button
-		if (mousePos.x >= 670 && mousePos.x <= 870
-			&& mousePos.y >= 410 && mousePos.y <= 560)
+		sf::FloatRect quitSpriteValues = quitSprite.getGlobalBounds();
+		if (mousePos.x >= quitSpriteValues.getPosition().x
+			&& mousePos.x <= quitSpriteValues.getPosition().x + quitSpriteValues.getSize().x
+			&& mousePos.y >= quitSpriteValues.getPosition().y
+			&& mousePos.y <= quitSpriteValues.getPosition().y + quitSpriteValues.getSize().y)
 		{
 			quitSprite.setColor(sf::Color::Green);
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
@@ -575,8 +581,11 @@ void World::MainMenu()
 	engine.window.draw(quitSprite);
 
 	// Play Button
-	if (mousePos.x >= 370 && mousePos.x <= 620
-		&& mousePos.y >= 410 && mousePos.y <= 560)
+	sf::FloatRect playSpriteValues = playSprite.getGlobalBounds();
+	if (mousePos.x >= playSpriteValues.getPosition().x
+		&& mousePos.x <= playSpriteValues.getPosition().x + playSpriteValues.getSize().x
+		&& mousePos.y >= playSpriteValues.getPosition().y 
+		&& mousePos.y <= playSpriteValues.getPosition().y + playSpriteValues.getSize().y)
 	{
 		playSprite.setColor(sf::Color::Green);
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
@@ -591,8 +600,11 @@ void World::MainMenu()
 	}
 
 	// Quit Button
-	if (mousePos.x >= 670 && mousePos.x <= 870
-		&& mousePos.y >= 410 && mousePos.y <= 560)
+	sf::FloatRect quitSpriteValues = quitSprite.getGlobalBounds();
+	if (mousePos.x >= quitSpriteValues.getPosition().x
+		&& mousePos.x <= quitSpriteValues.getPosition().x + quitSpriteValues.getSize().x
+		&& mousePos.y >= quitSpriteValues.getPosition().y
+		&& mousePos.y <= quitSpriteValues.getPosition().y + quitSpriteValues.getSize().y)
 	{
 		quitSprite.setColor(sf::Color::Green);
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
