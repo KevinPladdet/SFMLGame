@@ -38,7 +38,8 @@ void Engine::LoopEngine()
 		window.clear();
 		window.draw(background);
 			
-		
+		world.ToggleMainMenu();
+
 		if (world.activeMainMenu)
 		{
 			world.MainMenu();

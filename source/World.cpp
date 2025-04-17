@@ -394,29 +394,6 @@ void World::Update()
 		keyPressedR = false;
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-	{
-		if (!keyPressedEscape)
-		{
-			if (activeMainMenu)
-			{
-				std::cout << "Main Menu Disabled" << "\n";
-				activeMainMenu = false;
-				keyPressedEscape = true;
-			}
-			else
-			{
-				std::cout << "Main Menu Enabled" << "\n";
-				activeMainMenu = true;
-				keyPressedEscape = true;
-			}
-		}
-	}
-	else
-	{
-		keyPressedEscape = false;
-	}
-
 	engine.window.draw(scoreText);
 	engine.window.draw(highscoreText);
 	engine.window.draw(limitedArrowsText);
@@ -616,5 +593,31 @@ void World::MainMenu()
 	else
 	{
 		quitSprite.setColor(sf::Color::Red);
+	}
+}
+
+void World::ToggleMainMenu()
+{
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+	{
+		if (!keyPressedEscape)
+		{
+			if (activeMainMenu)
+			{
+				std::cout << "Main Menu Disabled" << "\n";
+				activeMainMenu = false;
+				keyPressedEscape = true;
+			}
+			else
+			{
+				std::cout << "Main Menu Enabled" << "\n";
+				activeMainMenu = true;
+				keyPressedEscape = true;
+			}
+		}
+	}
+	else
+	{
+		keyPressedEscape = false;
 	}
 }

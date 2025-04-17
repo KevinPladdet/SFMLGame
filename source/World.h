@@ -20,6 +20,7 @@ public:
 	void DestroyArrows();
 	void Reset();
 	void MainMenu();
+	void ToggleMainMenu();
 
 	// worldId is used to spawn body's in the world
 	b2WorldId worldId;
