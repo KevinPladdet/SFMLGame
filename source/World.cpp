@@ -317,22 +317,34 @@ void World::Update()
 
 		player.setTexture(playerSad);
 
+		// Waits 0.1s before the play button works
+		if (clock.WaitForReset(0.1f))
+		{
+			vm.PlaySFX(SoundEffects::Retry);
+			Reset();
+			player.setTexture(playerHappy);
+			scoreAmount = 0;
+			scoreText.setString("Score: " + std::to_string(scoreAmount));
+			gameOver = false;
+			clock.StopClock();
+		}
+
 		// Retry Button
-		sf::FloatRect retrySpriteValues = retrySprite.getGlobalBounds();
-		if (mousePos.x >= retrySpriteValues.getPosition().x
-			&& mousePos.x <= retrySpriteValues.getPosition().x + retrySpriteValues.getSize().x
-			&& mousePos.y >= retrySpriteValues.getPosition().y
-			&& mousePos.y <= retrySpriteValues.getPosition().y + retrySpriteValues.getSize().y)
+		if (retrySprite.getGlobalBounds().contains(mousePos))
 		{
 			retrySprite.setColor(sf::Color::Green);
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 			{
-				vm.PlaySFX(SoundEffects::Retry);
-				Reset();
-				player.setTexture(playerHappy);
-				scoreAmount = 0;
-				scoreText.setString("Score: " + std::to_string(scoreAmount));
-				gameOver = false;
+				if (!keyPressedLeftClick)
+				{
+					std::cout << "Started WaitToNotShoot Clock" << "\n";
+					clock.StartClock();
+					keyPressedLeftClick = true;
+				}
+			}
+			else
+			{
+				keyPressedLeftClick = false;
 			}
 		}
 		else
@@ -341,11 +353,7 @@ void World::Update()
 		}
 
 		// Quit Button
-		sf::FloatRect quitSpriteValues = quitSprite.getGlobalBounds();
-		if (mousePos.x >= quitSpriteValues.getPosition().x
-			&& mousePos.x <= quitSpriteValues.getPosition().x + quitSpriteValues.getSize().x
-			&& mousePos.y >= quitSpriteValues.getPosition().y
-			&& mousePos.y <= quitSpriteValues.getPosition().y + quitSpriteValues.getSize().y)
+		if (quitSprite.getGlobalBounds().contains(mousePos))
 		{
 			quitSprite.setColor(sf::Color::Green);
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
@@ -361,37 +369,40 @@ void World::Update()
 	}
 
 	// Arrow Spawning
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::K))
+	if (!gameOver && !activeMainMenu)
 	{
-		if (!keyPressedK && limitedArrowsAmount >= 1)
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
-			limitedArrowsAmount -= 1;
-			limitedArrowsText.setString(std::to_string(limitedArrowsAmount));
-			SpawnArrow();
-			if (limitedArrowsAmount == 0)
+			if (!keyPressedShoot && limitedArrowsAmount >= 1)
 			{
-				std::cout << "StartClock();" << "\n";
-				clock.StartClock();
+				limitedArrowsAmount -= 1;
+				limitedArrowsText.setString(std::to_string(limitedArrowsAmount));
+				SpawnArrow();
+				if (limitedArrowsAmount == 0)
+				{
+					std::cout << "StartClock();" << "\n";
+					clock.StartClock();
+				}
+				keyPressedShoot = true;
 			}
-			keyPressedK = true;
 		}
-	}
-	else
-	{
-		keyPressedK = false;
+		else
+		{
+			keyPressedShoot = false;
+		}
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
 	{
-		if (!keyPressedR)
+		if (!keyPressedReset)
 		{
 			Reset();
-			keyPressedR = true;
+			keyPressedReset = true;
 		}
 	}
 	else
 	{
-		keyPressedR = false;
+		keyPressedReset = false;
 	}
 
 	engine.window.draw(scoreText);
@@ -557,18 +568,30 @@ void World::MainMenu()
 	engine.window.draw(playSprite);
 	engine.window.draw(quitSprite);
 
+	// Waits 0.1s before the play button works
+	if (clock.WaitForReset(0.1f))
+	{
+		vm.PlaySFX(SoundEffects::Retry);
+		activeMainMenu = false;
+		clock.StopClock();
+	}
+
 	// Play Button
-	sf::FloatRect playSpriteValues = playSprite.getGlobalBounds();
-	if (mousePos.x >= playSpriteValues.getPosition().x
-		&& mousePos.x <= playSpriteValues.getPosition().x + playSpriteValues.getSize().x
-		&& mousePos.y >= playSpriteValues.getPosition().y 
-		&& mousePos.y <= playSpriteValues.getPosition().y + playSpriteValues.getSize().y)
+	if (playSprite.getGlobalBounds().contains(mousePos))
 	{
 		playSprite.setColor(sf::Color::Green);
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
-			vm.PlaySFX(SoundEffects::Retry);
-			activeMainMenu = false;
+			if (!keyPressedLeftClick)
+			{
+				std::cout << "Started WaitToNotShoot Clock" << "\n";
+				clock.StartClock();
+				keyPressedLeftClick = true;
+			}
+		}
+		else
+		{
+			keyPressedLeftClick = false;
 		}
 	}
 	else
@@ -577,11 +600,7 @@ void World::MainMenu()
 	}
 
 	// Quit Button
-	sf::FloatRect quitSpriteValues = quitSprite.getGlobalBounds();
-	if (mousePos.x >= quitSpriteValues.getPosition().x
-		&& mousePos.x <= quitSpriteValues.getPosition().x + quitSpriteValues.getSize().x
-		&& mousePos.y >= quitSpriteValues.getPosition().y
-		&& mousePos.y <= quitSpriteValues.getPosition().y + quitSpriteValues.getSize().y)
+	if (quitSprite.getGlobalBounds().contains(mousePos))
 	{
 		quitSprite.setColor(sf::Color::Green);
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))

@@ -43,4 +43,3 @@ bool Clock::WaitForGameOver(float duration)
     }
     return false;
 }
-

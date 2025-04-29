@@ -11,7 +11,7 @@ public:
     void StopClock();
     bool WaitForReset(float duration);
     bool WaitForGameOver(float duration);
-        
+
 private:
     Engine& engine;
     

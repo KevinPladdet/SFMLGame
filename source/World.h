@@ -45,9 +45,10 @@ private:
 
 	std::vector<Arrow> arrows;
 	
-	bool keyPressedK;
-	bool keyPressedR;
+	bool keyPressedShoot;
+	bool keyPressedReset;
 	bool keyPressedEscape;
+	bool keyPressedLeftClick;
 	bool waitForReset;
 
 	// b2BodyId
