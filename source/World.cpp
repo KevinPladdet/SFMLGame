@@ -12,7 +12,8 @@ World::World(Engine& eng, VolumeManager& vm, Clock& clock)
 	highscoreAmount(0),
 	limitedArrowsAmount(5),
 	gameOver(false),
-	activeMainMenu(true)
+	activeMainMenu(true),
+	resetKeyEnabled(false)
 {
 	arrowTexture.loadFromFile("Assets/Arrow.png");
 	backgroundTexture.loadFromFile("Assets/RedBackground.png");
@@ -344,7 +345,6 @@ void World::Update()
 			{
 				if (!keyPressedLeftClick)
 				{
-					std::cout << "Started WaitToNotShoot Clock" << "\n";
 					clock.StartClock();
 					keyPressedLeftClick = true;
 				}
@@ -399,17 +399,20 @@ void World::Update()
 		}
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+	if (resetKeyEnabled)
 	{
-		if (!keyPressedReset)
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
 		{
-			Reset();
-			keyPressedReset = true;
+			if (!keyPressedReset)
+			{
+				Reset();
+				keyPressedReset = true;
+			}
 		}
-	}
-	else
-	{
-		keyPressedReset = false;
+		else
+		{
+			keyPressedReset = false;
+		}
 	}
 
 	engine.window.draw(scoreText);
@@ -591,7 +594,6 @@ void World::MainMenu()
 		{
 			if (!keyPressedLeftClick)
 			{
-				std::cout << "Started WaitToNotShoot Clock" << "\n";
 				clock.StartClock();
 				keyPressedLeftClick = true;
 			}

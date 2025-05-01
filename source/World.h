@@ -50,6 +50,8 @@ private:
 	bool keyPressedEscape;
 	bool keyPressedLeftClick;
 	bool waitForReset;
+	
+	bool resetKeyEnabled;
 
 	// b2BodyId
 	b2BodyId playerId;
