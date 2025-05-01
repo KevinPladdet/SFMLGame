@@ -115,6 +115,7 @@ World::World(Engine& eng, VolumeManager& vm, Clock& clock)
 	b2ShapeDef playerShapeDef = b2DefaultShapeDef();
 	playerShapeDef.density = 1.0f;
 	playerShapeDef.friction = 0.3f;
+	playerShapeDef.enableHitEvents = true;
 	playerShapeDef.filter.categoryBits = LAYER_PLAYER; // Set collision layer to LAYER_PLAYER
 	playerShapeDef.filter.maskBits = 0xFFFF & ~LAYER_ARROW; // Collide with every layer except LAYER_ARROW
 	b2CreatePolygonShape(playerId, &playerShapeDef, &playerBox);
@@ -129,6 +130,7 @@ World::World(Engine& eng, VolumeManager& vm, Clock& clock)
 	b2ShapeDef enemyShapeDef = b2DefaultShapeDef();
 	enemyShapeDef.density = 1.0f;
 	enemyShapeDef.friction = 0.3f;
+	enemyShapeDef.enableHitEvents = true;
 	enemyShapeDef.filter.categoryBits = LAYER_OTHER; // Set collision layer to LAYER_OTHER
 	enemyShapeDef.filter.maskBits = 0xFFFF; // Collide with everything
 	b2CreatePolygonShape(enemyId, &enemyShapeDef, &enemyBox);
@@ -141,6 +143,7 @@ World::World(Engine& eng, VolumeManager& vm, Clock& clock)
 	
 	b2Polygon platformLeftBox = b2MakeBox(1.0f, 0.25f);
 	b2ShapeDef platformLeftShapeDef = b2DefaultShapeDef();
+	platformLeftShapeDef.enableHitEvents = true;
 	platformLeftShapeDef.filter.categoryBits = LAYER_OTHER;
 	platformLeftShapeDef.filter.maskBits = 0xFFFF;
 	b2CreatePolygonShape(platformLeftId, &platformLeftShapeDef, &platformLeftBox);
@@ -157,6 +160,7 @@ World::World(Engine& eng, VolumeManager& vm, Clock& clock)
 
 	b2Polygon platformRightBox = b2MakeBox(1.0f, 0.25f);
 	b2ShapeDef platformRightShapeDef = b2DefaultShapeDef();
+	platformRightShapeDef.enableHitEvents = true;
 	platformRightShapeDef.filter.categoryBits = LAYER_OTHER;
 	platformRightShapeDef.filter.maskBits = 0xFFFF;
 	b2CreatePolygonShape(platformRightId, &platformRightShapeDef, &platformRightBox);
@@ -169,6 +173,7 @@ World::World(Engine& eng, VolumeManager& vm, Clock& clock)
 
 	b2Polygon groundBox = b2MakeBox(12.8f, 0.25f);
 	b2ShapeDef groundShapeDef = b2DefaultShapeDef();
+	groundShapeDef.enableHitEvents = true;
 	groundShapeDef.filter.categoryBits = LAYER_OTHER;
 	groundShapeDef.filter.maskBits = 0xFFFF;
 	b2CreatePolygonShape(groundId, &groundShapeDef, &groundBox);
@@ -181,6 +186,7 @@ World::World(Engine& eng, VolumeManager& vm, Clock& clock)
 
 	b2Polygon wallLeftBox = b2MakeBox(0.25f, 14.4f);
 	b2ShapeDef wallLeftShapeDef = b2DefaultShapeDef();
+	wallLeftShapeDef.enableHitEvents = true;
 	wallLeftShapeDef.filter.categoryBits = LAYER_OTHER;
 	wallLeftShapeDef.filter.maskBits = 0xFFFF;
 	b2CreatePolygonShape(wallLeftId, &wallLeftShapeDef, &wallLeftBox);
@@ -193,6 +199,7 @@ World::World(Engine& eng, VolumeManager& vm, Clock& clock)
 
 	b2Polygon wallRightBox = b2MakeBox(0.25f, 14.4f);
 	b2ShapeDef wallRightShapeDef = b2DefaultShapeDef();
+	wallRightShapeDef.enableHitEvents = true;
 	wallRightShapeDef.filter.categoryBits = LAYER_OTHER;
 	wallRightShapeDef.filter.maskBits = 0xFFFF;
 	b2CreatePolygonShape(wallRightId, &wallRightShapeDef, &wallRightBox);

@@ -12,7 +12,7 @@ Engine::Engine()
 
 void Engine::Start()
 {
-	window.create(sf::VideoMode(screenSizeX, screenSizeY), "Insane game");
+	window.create(sf::VideoMode(screenSizeX, screenSizeY), "Bowborne");
 	window.setFramerateLimit(framerateLimit);
 	skyBackground.loadFromFile("Assets/SkyBackground.png");
 	background.setTexture(skyBackground);

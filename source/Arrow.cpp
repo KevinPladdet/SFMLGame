@@ -33,6 +33,7 @@ void Arrow::CreateArrowBody()
 	b2ShapeDef arrowShapeDef = b2DefaultShapeDef();
 	arrowShapeDef.density = 1.0f;
 	arrowShapeDef.friction = 0.3f;
+	arrowShapeDef.enableHitEvents = true;
 	arrowShapeDef.filter.categoryBits = LAYER_ARROW; // Set collision layer to LAYER_ARROW
 	arrowShapeDef.filter.maskBits = 0xFFFF & ~LAYER_PLAYER; // Collide with every layer except LAYER_PLAYER
 	b2CreatePolygonShape(arrowId, &arrowShapeDef, &arrowBox);
