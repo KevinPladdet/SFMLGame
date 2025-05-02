@@ -19,8 +19,9 @@ public:
 	void SpawnArrow();
 	void DestroyArrows();
 	void Reset();
+	void PauseMenu();
 	void MainMenu();
-	void ToggleMainMenu();
+	void ToggleMenu();
 
 	// worldId is used to spawn body's in the world
 	b2WorldId worldId;
@@ -35,7 +36,8 @@ public:
 	sf::Vector2f bowPos;
 	float bowRotation;
 
-	// Main Menu
+	// Active Menu
+	bool activePauseMenu;
 	bool activeMainMenu;
 
 private:
@@ -119,4 +121,12 @@ private:
 	sf::Texture playTexture;
 	sf::Sprite backgroundSprite;
 	sf::Texture backgroundTexture;
+
+	// Pause Menu
+	sf::Sprite pauseBackgroundSprite;
+	sf::Texture pauseBackgroundTexture;
+	sf::Sprite mainMenuSprite;
+	sf::Texture mainMenuTexture;
+	sf::Sprite resumeSprite;
+	sf::Texture resumeTexture;
 };

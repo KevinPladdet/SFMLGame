@@ -12,14 +12,18 @@ World::World(Engine& eng, VolumeManager& vm, Clock& clock)
 	highscoreAmount(0),
 	limitedArrowsAmount(5),
 	gameOver(false),
+	activePauseMenu(false),
 	activeMainMenu(true),
 	resetKeyEnabled(false)
 {
 	arrowTexture.loadFromFile("Assets/Arrow.png");
 	backgroundTexture.loadFromFile("Assets/RedBackground.png");
+	pauseBackgroundTexture.loadFromFile("Assets/PauseMenuBackground.png");
 	retryTexture.loadFromFile("Assets/RetryButton.png");
 	quitTexture.loadFromFile("Assets/QuitButton.png");
 	playTexture.loadFromFile("Assets/PlayButton.png");
+	mainMenuTexture.loadFromFile("Assets/MainMenuButton.png");
+	resumeTexture.loadFromFile("Assets/ResumeButton.png");
 	playerHappy.loadFromFile("Assets/PlayerHappy.png");
 	playerSad.loadFromFile("Assets/PlayerSad.png");
 	enemyHappy.loadFromFile("Assets/EnemyHappy.png");
@@ -80,26 +84,43 @@ World::World(Engine& eng, VolumeManager& vm, Clock& clock)
 
 	// Create retrySprite
 	retrySprite.setTexture(retryTexture);
-	retrySprite.setScale(0.5, 0.5);
-	retrySprite.setPosition(370, 410);
+	retrySprite.setScale(0.45, 0.45);
+	retrySprite.setPosition(370, 510);
 
 	// Create quitSprite
 	quitSprite.setTexture(quitTexture);
-	quitSprite.setScale(0.5, 0.5);
-	quitSprite.setPosition(670, 410);
+	quitSprite.setScale(0.45, 0.45);
+	quitSprite.setPosition(790, 510);
 	#pragma endregion SetupGameOver
 
 	#pragma region SetupMainMenu
-	// Create retrySprite
+	// Create backgroundSprite
 	backgroundSprite.setTexture(backgroundTexture);
 	backgroundSprite.setScale(0.75, 0.75);
 	backgroundSprite.setPosition(0, 0);
 	
 	// Create playSprite
 	playSprite.setTexture(playTexture);
-	playSprite.setScale(0.5, 0.5);
-	playSprite.setPosition(370, 410);
+	playSprite.setScale(0.45, 0.45);
+	playSprite.setPosition(370, 510);
 	#pragma endregion SetupMainMenu
+
+	#pragma region SetupPauseMenu
+	// Create pauseBackgroundSprite
+	pauseBackgroundSprite.setTexture(pauseBackgroundTexture);
+	pauseBackgroundSprite.setScale(0.667, 0.667);
+	pauseBackgroundSprite.setPosition(0, 0);
+
+	// Create mainMenuSprite
+	mainMenuSprite.setTexture(mainMenuTexture);
+	mainMenuSprite.setScale(0.45, 0.45);
+	mainMenuSprite.setPosition(260, 510);
+
+	// Create resumeSprite
+	resumeSprite.setTexture(resumeTexture);
+	resumeSprite.setScale(0.45, 0.45);
+	resumeSprite.setPosition(315, 340);
+	#pragma endregion SetupPauseMenu
 
 	// Creating World
 	b2WorldDef worldDef = b2DefaultWorldDef();
@@ -376,7 +397,7 @@ void World::Update()
 	}
 
 	// Arrow Spawning
-	if (!gameOver && !activeMainMenu)
+	if (!gameOver && !activePauseMenu && !activeMainMenu)
 	{
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
@@ -569,6 +590,84 @@ void World::Reset()
 	enemy.setTexture(enemyHappy);
 }
 
+void World::PauseMenu()
+{
+	sf::Vector2i mousePixelPos = sf::Mouse::getPosition(engine.window);
+	sf::Vector2f mousePos = engine.window.mapPixelToCoords(mousePixelPos);
+
+	engine.window.draw(pauseBackgroundSprite);
+	engine.window.draw(mainMenuSprite);
+	engine.window.draw(resumeSprite);
+	engine.window.draw(quitSprite);
+
+	// Waits 0.1s before the play button works
+	if (clock.WaitForReset(0.1f))
+	{
+		activePauseMenu = false;
+		clock.StopClock();
+	}
+
+	// Main Menu Button
+	if (mainMenuSprite.getGlobalBounds().contains(mousePos))
+	{
+		mainMenuSprite.setColor(sf::Color::Green);
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		{
+			if (!keyPressedLeftClick)
+			{
+				activePauseMenu = false;
+				activeMainMenu = true;
+				keyPressedLeftClick = true;
+			}
+		}
+		else
+		{
+			keyPressedLeftClick = false;
+		}
+	}
+	else
+	{
+		mainMenuSprite.setColor(sf::Color::Red);
+	}
+
+	// Resume Button
+	if (resumeSprite.getGlobalBounds().contains(mousePos))
+	{
+		resumeSprite.setColor(sf::Color::Green);
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		{
+			if (!keyPressedLeftClick)
+			{
+				clock.StartClock();
+				keyPressedLeftClick = true;
+			}
+		}
+		else
+		{
+			keyPressedLeftClick = false;
+		}
+	}
+	else
+	{
+		resumeSprite.setColor(sf::Color::Red);
+	}
+
+	// Quit Button
+	if (quitSprite.getGlobalBounds().contains(mousePos))
+	{
+		quitSprite.setColor(sf::Color::Green);
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		{
+			std::cout << "Quit Game" << "\n";
+			engine.window.close();
+		}
+	}
+	else
+	{
+		quitSprite.setColor(sf::Color::Red);
+	}
+}
+
 void World::MainMenu()
 {
 	sf::Vector2i mousePixelPos = sf::Mouse::getPosition(engine.window);
@@ -624,22 +723,23 @@ void World::MainMenu()
 	}
 }
 
-void World::ToggleMainMenu()
+void World::ToggleMenu()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 	{
 		if (!keyPressedEscape)
 		{
-			if (activeMainMenu)
+			if (activePauseMenu || activeMainMenu)
 			{
-				std::cout << "Main Menu Disabled" << "\n";
+				std::cout << "Menu Disabled" << "\n";
+				activePauseMenu = false;
 				activeMainMenu = false;
 				keyPressedEscape = true;
 			}
 			else
 			{
-				std::cout << "Main Menu Enabled" << "\n";
-				activeMainMenu = true;
+				std::cout << "Pause Menu Enabled" << "\n";
+				activePauseMenu = true;
 				keyPressedEscape = true;
 			}
 		}
