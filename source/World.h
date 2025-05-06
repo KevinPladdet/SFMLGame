@@ -39,6 +39,7 @@ public:
 	// Active Menu
 	bool activePauseMenu;
 	bool activeMainMenu;
+	bool canActivateMenu; // If disabled, can't press "Escape" to open menu
 
 private:
 	Engine& engine;

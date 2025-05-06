@@ -14,6 +14,7 @@ World::World(Engine& eng, VolumeManager& vm, Clock& clock)
 	gameOver(false),
 	activePauseMenu(false),
 	activeMainMenu(true),
+	canActivateMenu(true),
 	resetKeyEnabled(false)
 {
 	arrowTexture.loadFromFile("Assets/Arrow.png");
@@ -304,6 +305,7 @@ void World::Update()
 		if (!waitForReset)
 		{
 			std::cout << "Started Reset Clock" << "\n";
+			canActivateMenu = false;
 			clock.StartClock();
 			vm.PlaySFX(SoundEffects::Victory);
 			enemy.setTexture(enemySad);
@@ -408,7 +410,7 @@ void World::Update()
 				SpawnArrow();
 				if (limitedArrowsAmount == 0)
 				{
-					std::cout << "StartClock();" << "\n";
+					canActivateMenu = false;
 					clock.StartClock();
 				}
 				keyPressedShoot = true;
@@ -588,6 +590,9 @@ void World::Reset()
 	
 	// Change enemy sprite to enemyHappy
 	enemy.setTexture(enemyHappy);
+
+	// Can press "Escape" to open pause menu
+	canActivateMenu = true;
 }
 
 void World::PauseMenu()
@@ -725,7 +730,7 @@ void World::MainMenu()
 
 void World::ToggleMenu()
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) && canActivateMenu)
 	{
 		if (!keyPressedEscape)
 		{
