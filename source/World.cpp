@@ -86,7 +86,7 @@ World::World(Engine& eng, VolumeManager& vm, Clock& clock)
 	// Create retrySprite
 	retrySprite.setTexture(retryTexture);
 	retrySprite.setScale(0.45, 0.45);
-	retrySprite.setPosition(370, 510);
+	retrySprite.setPosition(280, 510);
 
 	// Create quitSprite
 	quitSprite.setTexture(quitTexture);
@@ -505,7 +505,7 @@ void World::Render()
 	sf::Vector2f bowDirection = mousePos - bowPos;
 	float bowAngle = std::atan2(bowDirection.y, bowDirection.x) * 180 / 3.14;
 	
-	if (bowAngle >= -45 && bowAngle <= 15)
+	if (bowAngle >= -60 && bowAngle <= 20)
 	{
 		bow.setRotation(bowAngle);
 		bowRotation = bowAngle;
